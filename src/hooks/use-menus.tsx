@@ -1,4 +1,4 @@
-import { getMenusUser } from "@/app/dashboard/role-management/api/role-management-service";
+// import { getMenusUser } from "@/app/dashboard/role-management/api/role-management-service";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalStorage } from "./use-local-storage";
 
@@ -42,7 +42,9 @@ export const useMenus = () => {
 
   return useQuery({
     queryKey: ["menus-user", position, division],
-    queryFn: () => getMenusUser({ id_position: position, id_division: division }),
+    queryFn: () => {
+      // getMenusUser({ id_position: position, id_division: division });
+    },
     enabled: isReady,
   });
 };
