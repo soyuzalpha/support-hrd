@@ -6,12 +6,12 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DataTable } from "@/components/data-table";
 import { useDialogModal } from "@/hooks/use-dialog-modal";
-import { activateTypeleave, deleteTypeleave, getTypeleaves } from "./api/master-position-service";
+import { activateTypeleave, deleteTypeleave, getTypeLeaveById, getTypeleaves } from "./api/master-position-service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { columnsMasterPositions, formSchemaPosition } from "./utils";
 import FormRole from "./components/FormRole";
 import * as z from "zod";
-import { createInputOptions, isEmpty, toCapitalized } from "@/utils";
+import { createInputOptions, generateErrorMessage, isEmpty, toCapitalized } from "@/utils";
 import DetailRole from "./components/DetailRole";
 import { ConfirmationDialog } from "@/components/confirmation-dialog";
 import { toastAlert } from "@/lib/toast";
@@ -25,6 +25,10 @@ const MasterPosition = () => {
   const dDetail = useDialogModal();
   const dConfirm = useDialogModal();
 
+  const mutationGetDetailTypeLeave = useMutation({
+    mutationFn: getTypeLeaveById,
+  });
+
   // const permissions = usePermissions();
 
   const {
@@ -33,7 +37,7 @@ const MasterPosition = () => {
     currentState,
     setCurrentState,
   } = useDatatable({
-    queryKey: "positions",
+    queryKey: "type-leaves",
     queryFn: getTypeleaves,
     initialParams: {
       page: 1,
@@ -50,12 +54,23 @@ const MasterPosition = () => {
   );
 
   const handleClickDetail = (row: any) => {
-    Object.entries(row).forEach(([key, value]) => {
-      //@ts-ignore
-      fForm.setValue(key, value);
+    console.log({ row });
+    if (!row) return;
+
+    mutationGetDetailTypeLeave.mutate(row.id_typeleave, {
+      onSuccess: (res) => {
+        Object.entries(res.data).forEach(([key, value]) => {
+          fForm.setValue(key, value);
+        });
+
+        fForm.setValue("status", createInputOptions(toCapitalized(row.status), row.status));
+        dDetail.handleOpen();
+      },
+      onError: (err) => {
+        const message = generateErrorMessage(err);
+        toastAlert.errorList(message);
+      },
     });
-    fForm.setValue("status", createInputOptions(toCapitalized(row.status), row.status));
-    dDetail.handleOpen();
   };
 
   const handleClickEdit = (row: any) => {
@@ -81,14 +96,12 @@ const MasterPosition = () => {
     //@ts-ignore
     const mutation = isEmpty(row.deleted_at) ? mutationDeactive : mutationActive;
 
-    console.log({ row });
-
     mutation.mutate(
-      { id_position: row.id_position },
+      { id_typeleave: row.id_typeleave },
       {
         onSuccess: (res) => {
           toastAlert.success(res.message || "Berhasil");
-          invalidate([["positions"]]);
+          invalidate([["type-leaves"]]);
           dConfirm.handleClose();
         },
         onError: (err) => {
@@ -129,7 +142,7 @@ const MasterPosition = () => {
       />
 
       <FormRole dialogHandler={dDialog} />
-      {/* <DetailRole dialogHandler={dDetail} /> */}
+      <DetailRole dialogHandler={dDetail} />
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}

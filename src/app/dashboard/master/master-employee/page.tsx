@@ -6,15 +6,16 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DataTable } from "@/components/data-table";
 import { useDialogModal } from "@/hooks/use-dialog-modal";
-import { activateEmployee, deactivateEmployee, getEmployees } from "./api/master-position-service";
+import { activateEmployee, deactivateEmployee, getEmployeeById, getEmployees } from "./api/master-position-service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { columnsMasterPositions, formSchemaPosition } from "./utils";
 import * as z from "zod";
-import { createInputOptions, isEmpty, toCapitalized } from "@/utils";
+import { createInputOptions, generateErrorMessage, isEmpty, toCapitalized } from "@/utils";
 import { ConfirmationDialog } from "@/components/confirmation-dialog";
 import { toastAlert } from "@/lib/toast";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import FormRole from "./components/FormRole";
+import DetailRole from "./components/DetailRole";
 
 const MasterEmployee = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -24,6 +25,9 @@ const MasterEmployee = () => {
   const dDetail = useDialogModal();
   const dConfirm = useDialogModal();
 
+  const mutationDetailEmploye = useMutation({
+    mutationFn: getEmployeeById,
+  });
   // const permissions = usePermissions();
 
   const {
@@ -49,12 +53,22 @@ const MasterEmployee = () => {
   );
 
   const handleClickDetail = (row: any) => {
-    Object.entries(row).forEach(([key, value]) => {
-      //@ts-ignore
-      fForm.setValue(key, value);
+    if (!row.id_employee) return;
+
+    mutationDetailEmploye.mutate(row.id_employee, {
+      onSuccess: (res) => {
+        Object.entries(res.data).forEach(([key, value]) => {
+          fForm.setValue(key, value);
+        });
+
+        console.log({ res });
+        dDetail.handleOpen();
+      },
+      onError: (err) => {
+        const message = generateErrorMessage(err);
+        toastAlert.error(message);
+      },
     });
-    fForm.setValue("status", createInputOptions(toCapitalized(row.status), row.status));
-    dDetail.handleOpen();
   };
 
   const handleClickEdit = (row: any) => {
@@ -82,11 +96,11 @@ const MasterEmployee = () => {
     console.log({ row });
 
     mutation.mutate(
-      { id_position: row.id_position },
+      { id_employee: row.id_employee },
       {
         onSuccess: (res) => {
           toastAlert.success(res.message || "Berhasil");
-          invalidate([["positions"]]);
+          invalidate([["employees"]]);
           dConfirm.handleClose();
         },
         onError: (err) => {
@@ -127,7 +141,7 @@ const MasterEmployee = () => {
       />
 
       <FormRole dialogHandler={dDialog} />
-      {/* <DetailRole dialogHandler={dDetail} /> */}
+      <DetailRole dialogHandler={dDetail} />
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}

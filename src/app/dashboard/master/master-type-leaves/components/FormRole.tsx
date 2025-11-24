@@ -10,20 +10,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FieldError, FieldGroup } from "@/components/ui/field";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UseDialogModalReturn } from "@/hooks/use-dialog-modal";
 import { useMutation } from "@tanstack/react-query";
-import { Controller, SubmitHandler, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { createTypeleave, updateTypeleave } from "../api/master-position-service";
 import { createInputOptions, generateErrorMessage, generateSuccessMessage, isEmpty } from "@/utils";
 import { toastAlert } from "@/lib/toast";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
-import * as z from "zod";
-import { formSchemaPosition } from "../utils";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
-import Show from "@/components/show";
 import { SelectOptions } from "@/components/select-options";
 
 const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
@@ -43,9 +40,11 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
   const onSubmit = (data) => {
     try {
       const payload = {
-        id_position: data?.id_position,
-        name_position: data?.name_position,
-        description_position: data?.description_position,
+        id_typeleave: data?.id_typeleave,
+        name_typeleave: data?.name_typeleave,
+        description: data?.description,
+        max_days: data?.max_days,
+        gender_specific: data?.gender_specific?.value ?? null,
         status: data?.status?.value,
       };
 
@@ -54,7 +53,7 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
           const message = generateSuccessMessage(res);
           toastAlert.success(message);
           dialogHandler.handleClose();
-          invalidate([["positions"]]);
+          invalidate([["type-leaves"]]);
         },
         onError: (err) => {
           const message = generateErrorMessage(err);
@@ -70,7 +69,7 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
       <DialogContent glass={true} size="xxl">
         <DialogHeader>
-          <DialogTitle>Form Role</DialogTitle>
+          <DialogTitle>Form Type Leaves</DialogTitle>
           <DialogDescription>Make change to input and save</DialogDescription>
         </DialogHeader>
 
@@ -83,12 +82,18 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                 name="name_typeleave"
                 render={({ field, fieldState }) => (
                   <FormItem>
-                    <FormLabel>Positions</FormLabel>
+                    <FormLabel>Type Leaves Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Annual Leave Updated" {...field} aria-invalid={fieldState.invalid} />
+                      <Input
+                        placeholder="Annual Leave Updated"
+                        {...field}
+                        value={field.value}
+                        onChange={field.onChange}
+                        aria-invalid={fieldState.invalid}
+                      />
                     </FormControl>
-                    <FormDescription>For user positions.</FormDescription>
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    {/* <FormDescription>For user positions.</FormDescription>
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />} */}
                   </FormItem>
                 )}
               />

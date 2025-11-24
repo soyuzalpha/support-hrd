@@ -49,6 +49,7 @@ interface FormFieldGroupProps {
   direction?: DirectionType;
   titleAdd?: string;
   usingPrimary?: boolean;
+  directionContent?: DirectionType;
   onItemRemove?: (item: any, index: number) => void; // ⬅️ tambahan baru
 }
 
@@ -59,6 +60,7 @@ export const DynamicFormFields = ({
   fields,
   repeatable = false,
   direction = "vertical",
+  directionContent = "horizontal",
   titleAdd = "Add Detail",
   usingPrimary = false,
   onItemRemove,
@@ -379,9 +381,9 @@ export const DynamicFormFields = ({
         <div className={cn(direction === "horizontal" ? "flex items-end gap-4" : "flex flex-col gap-4")}>
           <div
             className={cn(
-              "flex-1 grid grid-cols-1 gap-2",
-              "lg:grid-cols-[repeat(auto-fit,minmax(170px,1fr))] lg:items-center gap-3",
-              usingPrimary && repeatable ? "pt-8" : ""
+              "flex-1 gap-3",
+              usingPrimary && repeatable ? "pt-8" : "",
+              directionContent === "horizontal" ? "flex flex-row items-center gap-4" : "flex flex-col gap-4"
             )}
           >
             {fields.map((fieldCfg) => {
@@ -546,47 +548,45 @@ export const DynamicFormFields = ({
   };
 
   return (
-    <GlassContainer>
-      <div className="grid gap-3">
-        <div className="flex items-center justify-between">
-          {title && <Label>{title}</Label>}
-          {usingPrimary && repeatable && items.length > 0 && (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Star className="h-3 w-3" />
-              One item must be set as primary
-            </div>
-          )}
-        </div>
-
-        <Separator className="my-2" />
-
-        {repeatable ? (
-          <div className="grid gap-4">
-            {items.map((_, idx) => (
-              <div key={idx}>{renderFieldGroup(idx)}</div>
-            ))}
-            <div ref={scrollRef} />
-            <Button
-              size="lg"
-              type="button"
-              variant="glassInfo"
-              onClick={() => {
-                const newItem = {
-                  ...fields.reduce((acc, fieldCfg) => ({ ...acc, [fieldCfg.name]: "" }), {}),
-                  is_primary: usingPrimary ? items.length === 0 : false,
-                  step_no: items.length + 1,
-                };
-                append(newItem);
-              }}
-            >
-              <IconPlus className="h-4 w-4" />
-              {titleAdd}
-            </Button>
+    <div className="grid gap-3">
+      <div className="flex items-center justify-between">
+        {title && <Label>{title}</Label>}
+        {usingPrimary && repeatable && items.length > 0 && (
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <Star className="h-3 w-3" />
+            One item must be set as primary
           </div>
-        ) : (
-          renderFieldGroup()
         )}
       </div>
-    </GlassContainer>
+
+      <Separator className="my-2" />
+
+      {repeatable ? (
+        <div className="grid gap-4">
+          {items.map((_, idx) => (
+            <div key={idx}>{renderFieldGroup(idx)}</div>
+          ))}
+          <div ref={scrollRef} />
+          <Button
+            size="lg"
+            type="button"
+            variant="glassInfo"
+            onClick={() => {
+              const newItem = {
+                ...fields.reduce((acc, fieldCfg) => ({ ...acc, [fieldCfg.name]: "" }), {}),
+                is_primary: usingPrimary ? items.length === 0 : false,
+                step_no: items.length + 1,
+              };
+              append(newItem);
+            }}
+          >
+            <IconPlus className="h-4 w-4" />
+            {titleAdd}
+          </Button>
+        </div>
+      ) : (
+        renderFieldGroup()
+      )}
+    </div>
   );
 };

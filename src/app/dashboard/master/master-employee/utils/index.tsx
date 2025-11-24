@@ -7,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toCapitalized } from "@/utils";
 import { defaultColumnsInformation } from "@/utils/tables";
 import { IconCircleCheckFilled, IconDotsVertical, IconXboxX } from "@tabler/icons-react";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -29,27 +30,43 @@ export const formSchemaPosition = z.object({
 const columnHelper = createColumnHelper<any>();
 export const columnsMasterPositions = ({ onClickDetail, onClickEdit, onClickData }) => {
   return [
-    columnHelper.accessor("status", {
-      header: "Status",
-      cell: ({ row }) => (
-        <Badge variant="outline" className="text-muted-foreground px-1.5 gap-1 inline-flex items-center">
-          {row.original.status === "active" ? (
-            <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-          ) : (
-            <IconXboxX className="fill-red-500 dark:fill-red-400" />
-          )}
-          {row.original.status === "active" ? "Active" : "Inactive"}
-        </Badge>
-      ),
-    }),
-    columnHelper.accessor("name_position", {
-      header: "Name Position",
+    // columnHelper.accessor("status", {
+    //   header: "Status",
+    //   cell: ({ row }) => (
+    //     <Badge variant="outline" className="text-muted-foreground px-1.5 gap-1 inline-flex items-center">
+    //       {row.original.status === "active" ? (
+    //         <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+    //       ) : (
+    //         <IconXboxX className="fill-red-500 dark:fill-red-400" />
+    //       )}
+    //       {row.original.status === "active" ? "Active" : "Inactive"}
+    //     </Badge>
+    //   ),
+    // }),
+    columnHelper.accessor("id_employee", {
+      header: "ID",
       cell: (info) => <p>{info.getValue() ?? "-"}</p>,
     }),
-    columnHelper.accessor("description_position", {
-      header: "Description",
-      cell: (info) => <p className="text-wrap w-96">{info.getValue() ?? "-"}</p>,
+    columnHelper.accessor("nik", {
+      header: "NIK",
+      cell: (info) => <p>{info.getValue() ?? "-"}</p>,
     }),
+    columnHelper.accessor("full_name", {
+      header: "Full Name",
+      cell: (info) => <p>{info.getValue() ?? "-"}</p>,
+    }),
+    columnHelper.accessor("gender", {
+      header: "Gender",
+      cell: (info) => <p>{toCapitalized(info.getValue()) ?? "-"}</p>,
+    }),
+    columnHelper.accessor("personal_email", {
+      header: "Email",
+      cell: (info) => <p>{info.getValue() ?? "-"}</p>,
+    }),
+    // columnHelper.accessor("description_position", {
+    //   header: "Description",
+    //   cell: (info) => <p className="text-wrap w-96">{info.getValue() ?? "-"}</p>,
+    // }),
     ...defaultColumnsInformation,
     columnHelper.display({
       id: "actions",

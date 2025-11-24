@@ -31,8 +31,8 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <h1 className="text-4xl font-bold text-white">{details.name_position}</h1>
-                    <span
+                    <h1 className="text-4xl font-bold text-white">{details.name_typeleave}</h1>
+                    {/* <span
                       className={`px-4 py-1.5 rounded-full text-sm font-semibold ${
                         details.status.value === "active"
                           ? "bg-emerald-100 text-emerald-700"
@@ -40,9 +40,9 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                       }`}
                     >
                       {details.status.label}
-                    </span>
+                    </span> */}
                   </div>
-                  <p className="text-white text-sm">Position ID: #{details.id_position}</p>
+                  <p className="text-white text-sm">Position ID: #{details.id_typeleave}</p>
                 </div>
               </div>
 
@@ -51,7 +51,7 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                   <FileText className="text-white mt-1 shrink-0" size={20} />
                   <div>
                     <h3 className="font-semibold text-white mb-2">Description</h3>
-                    <p className="text-white leading-relaxed">{details.description_position}</p>
+                    <p className="text-white leading-relaxed">{details.description}</p>
                   </div>
                 </div>
               </GlassContainer>

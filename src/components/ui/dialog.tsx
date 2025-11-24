@@ -39,7 +39,7 @@ type DialogContentProps = React.ComponentProps<typeof DialogPrimitive.Content> &
   showCloseButton?: boolean;
   glass?: boolean;
   glassDark?: boolean;
-  size?: "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "full"; // Expanded size options
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl" | "jumbo" | "ultra" | "mega" | "full"; // Expanded size options
 };
 
 function DialogContent({
@@ -61,14 +61,18 @@ function DialogContent({
           // base animation & layout
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border p-6 shadow-xl duration-200",
 
-          // Size variants
-          size === "xs" && "max-w-xs", // Extra small size
-          size === "sm" && "max-w-sm", // Small size
-          size === "md" && "max-w-md", // Medium size (default)
-          size === "lg" && "max-w-lg", // Large size
-          size === "xl" && "max-w-xl", // Extra large size
-          size === "xxl" && "max-w-3xl", // Double extra large size (wider)
-          size === "full" && "max-w-full", // Full screen size
+          // Size variants (updated)
+          size === "xs" && "max-w-xs",
+          size === "sm" && "max-w-sm",
+          size === "md" && "max-w-md",
+          size === "lg" && "max-w-lg",
+          size === "xl" && "max-w-xl",
+          size === "xxl" && "max-w-3xl",
+          size === "xxxl" && "max-w-4xl",
+          size === "jumbo" && "max-w-5xl",
+          size === "ultra" && "max-w-6xl",
+          size === "mega" && "max-w-7xl",
+          size === "full" && "max-w-full",
 
           // Default background (non-glass)
           !glass && !glassDark && "bg-background",

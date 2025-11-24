@@ -19,6 +19,14 @@ export const getTypeleaves = async (params) => {
 
   return res;
 };
+export const getTypeLeaveById = async (id: any) => {
+  const response = await apiGet(`/getTypeleaveById`, {
+    params: {
+      id_typeleave: id,
+    },
+  });
+  return response;
+};
 
 export const activateTypeleave = async (payload) => {
   const res = await apiPut("/activateTypeleave", payload);

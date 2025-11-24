@@ -57,15 +57,15 @@ export function SelectOptions<
     }),
     option: (base: any, state: any) => ({
       ...base,
-      backgroundColor: state.isSelected
-        ? "hsl(var(--primary))"
-        : state.isFocused
-        ? "hsl(var(--accent)/0.2)"
-        : "hsl(var(--popover))",
-      color: state.isSelected ? "hsl(var(--primary-foreground))" : "hsl(var(--popover-foreground))",
-      "&:hover": {
-        backgroundColor: state.isSelected ? "hsl(var(--primary)/0.85)" : "hsl(var(--accent)/0.3)",
-      },
+      // backgroundColor: state.isSelected
+      //   ? "hsl(var(--primary))"
+      //   : state.isFocused
+      //   ? "hsl(var(--accent)/0.2)"
+      //   : "hsl(var(--popover))",
+      // color: state.isSelected ? "hsl(var(--primary-foreground))" : "hsl(var(--popover-foreground))",
+      // "&:hover": {
+      //   backgroundColor: state.isSelected ? "hsl(var(--primary)/0.85)" : "hsl(var(--accent)/0.3)",
+      // },
       transition: "background-color 0.15s ease",
       cursor: "pointer",
     }),
@@ -100,7 +100,8 @@ export function SelectOptions<
       `!text-popover-foreground transition-colors duration-150 ${
         state.isSelected ? "!bg-primary !text-primary-foreground" : state.isFocused ? "!bg-accent/30" : "!bg-popover"
       }`,
-    menu: () => "!bg-popover !border !border-border !rounded-[var(--radius)] !shadow-lg text-sm overflow-hidden",
+    menu: () =>
+      "!bg-popover !border !border-border !rounded-[var(--radius)] !shadow-lg text-sm overflow-hidden !backdrop-blur-xl",
     singleValue: () => "!text-foreground",
     input: () => "!text-foreground",
     placeholder: () => "!text-muted-foreground text-sm",
