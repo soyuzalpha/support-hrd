@@ -30,6 +30,8 @@ import { isEmpty } from "@/utils";
 import Show from "./show";
 import { Skeleton } from "./ui/skeleton";
 import Pagination from "./pagination";
+import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 export function DataTable({
   data: initialData,
@@ -57,6 +59,7 @@ export function DataTable({
   const fForm = useFormContext();
   const [data, setData] = React.useState(() => initialData);
   const [rowSelection, setRowSelection] = React.useState({});
+  const [tabValue, setTabValue] = React.useState("table");
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -174,34 +177,47 @@ export function DataTable({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-2 pr-2 mt-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
-              <IconLayoutColumns />
-              <span className="hidden lg:inline">Customize Columns</span>
-              <span className="lg:hidden">Columns</span>
-              <IconChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
+        <div className="flex flex-col lg:flex-row items-center gap-3">
+          <Select value={tabValue} onValueChange={setTabValue}>
+            <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
+              <SelectValue placeholder="Select a view" />
+            </SelectTrigger>
 
-          <DropdownMenuContent align="end" className="w-56">
-            {table
-              .getAllColumns()
-              .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <SelectContent>
+              <SelectItem value="card">Card</SelectItem>
+              <SelectItem value="table">Table</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <IconLayoutColumns />
+                <span className="hidden lg:inline">Customize Columns</span>
+                <span className="lg:hidden">Columns</span>
+                <IconChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="w-56">
+              {table
+                .getAllColumns()
+                .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
 
         {/* <Show.When isTrue={!isEmpty(customButton)}>{customButton}</Show.When> */}
 
@@ -210,7 +226,7 @@ export function DataTable({
             <Button
               type="button"
               variant="glassSuccess"
-              size="lg"
+              size="sm"
               onClick={() => {
                 dialogHandler.handleOpen();
                 fForm.reset();
@@ -238,80 +254,91 @@ export function DataTable({
         </div>
       </div>
 
-      <div
-        className="
+      <Show.When isTrue={tabValue === "card"}>
+        <div className="aspect-video w-full flex-col gap-3 flex-1">
+          <Show.When isTrue={!isEmpty(listCard)}>
+            <div className="mb-3">{listCard}</div>
+          </Show.When>
+          <Pagination table={table} count={count} />
+        </div>
+      </Show.When>
+
+      <Show.When isTrue={tabValue === "table"}>
+        <div
+          className="
     overflow-hidden rounded-xl 
     bg-white/10 dark:bg-white/5 
     border border-white/10 
     backdrop-blur-2xl 
     shadow-[0_0_15px_rgba(255,255,255,0.05)]
   "
-      >
-        <Table>
-          <TableHeader
-            className="
+        >
+          <Table>
+            <TableHeader
+              className="
     sticky top-0 z-10 
     bg-white/20 dark:bg-white/10 
     backdrop-blur-xl 
     border-b border-white/10
   "
-          >
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={`${headerGroup.id}_${header?.id}`} colSpan={header?.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header?.column?.columnDef?.header, header?.getContext())}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody className="**:data-[slot=table-cell]:first:w-8">
-            {isLoading ? (
-              Array.from({ length: 10 }).map((_, rowIdx) => (
-                <TableRow key={`skeleton-${rowIdx}`}>
-                  {table.getVisibleFlatColumns().map((column, colIdx) => (
-                    <TableCell key={column.id || colIdx} className="px-4 py-3 text-left border-b border-white/5">
-                      <Skeleton className="h-4 w-full rounded" />
-                    </TableCell>
-                  ))}
+            >
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={`${headerGroup.id}_${header?.id}`} colSpan={header?.colSpan}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header?.column?.columnDef?.header, header?.getContext())}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : table.getRowModel().rows?.length ? (
-              <>
-                {table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    onClick={() => handleClickRow && handleClickRow(row)}
-                    className="
+              ))}
+            </TableHeader>
+            <TableBody className="**:data-[slot=table-cell]:first:w-8">
+              {isLoading ? (
+                Array.from({ length: 10 }).map((_, rowIdx) => (
+                  <TableRow key={`skeleton-${rowIdx}`}>
+                    {table.getVisibleFlatColumns().map((column, colIdx) => (
+                      <TableCell key={column.id || colIdx} className="px-4 py-3 text-left border-b border-white/5">
+                        <Skeleton className="h-4 w-full rounded" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : table.getRowModel().rows?.length ? (
+                <>
+                  {table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      onClick={() => handleClickRow && handleClickRow(row)}
+                      className="
                       cursor-pointer 
                       hover:bg-white/10 dark:hover:bg-white/5
                       transition-colors duration-200
                     "
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-4 py-3 text-left border-b border-white/5">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </>
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="px-4 py-3 text-center border-b border-white/5">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <Pagination table={table} count={count} />
-      </div>
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="px-4 py-3 text-left border-b border-white/5">
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </>
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="px-4 py-3 text-center border-b border-white/5">
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          <Pagination table={table} count={count} />
+        </div>
+      </Show.When>
     </div>
   );
 }

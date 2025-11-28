@@ -20,7 +20,7 @@ export default function Pagination({ table, disabled = false, count }: Paginatio
   const canNextPage = table.getCanNextPage();
 
   return (
-    <div className="flex flex-col md:flex-row gap-2 items-center justify-between px-2">
+    <div className="flex flex-col md:flex-row gap-2 items-center justify-between px-4 py-3">
       <div className="flex-1 text-sm">
         <h5>
           Showing {pageSize} of {count}

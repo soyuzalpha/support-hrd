@@ -16,6 +16,7 @@ import DetailRole from "./components/DetailRole";
 import { ConfirmationDialog } from "@/components/confirmation-dialog";
 import { toastAlert } from "@/lib/toast";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
+import CardMaster from "@/components/CardMaster";
 
 const MasterPosition = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -133,6 +134,32 @@ const MasterPosition = () => {
         setCurrentState={handleStateChange}
         withSearch={true}
         dialogHandler={dDialog}
+        listCard={
+          <div className="grid grid-cols-3 gap-3">
+            {company?.data?.data?.map((item, index) => (
+              <CardMaster
+                key={index}
+                title={item?.name_position}
+                description={item?.description_position}
+                item={item}
+                onClickDetail={() => {
+                  handleClickDetail(item);
+                }}
+                onClickEdit={() => {
+                  handleClickEdit(item);
+                }}
+                onClickAction={() => {
+                  Object.entries(item).forEach(([key, value]) => {
+                    //@ts-ignore
+                    fForm.setValue(key, value);
+                  });
+                  dConfirm.handleOpen();
+                }}
+                children={<></>}
+              />
+            ))}
+          </div>
+        }
       />
 
       <FormRole dialogHandler={dDialog} />

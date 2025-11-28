@@ -36,11 +36,11 @@ export default function RootLayout({
         {/* Background ReactBits */}
         <div className="absolute inset-0 -z-10">
           <Beams
-            beamWidth={2}
+            beamWidth={3}
             beamHeight={30}
             beamNumber={20}
-            // lightColor="#F93827"
-            lightColor="#ffffff"
+            lightColor="#F93827"
+            // lightColor="#ffffff"
             speed={5}
             noiseIntensity={1.75}
             scale={0.2}

@@ -14,7 +14,13 @@ function DropdownMenuPortal(props: React.ComponentProps<typeof DropdownMenuPrimi
 }
 
 function DropdownMenuTrigger(props: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
-  return <DropdownMenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />;
+  return (
+    <DropdownMenuPrimitive.Trigger
+      data-slot="dropdown-menu-trigger"
+      {...props}
+      className="bg-white/10 backdrop-blur-2xl"
+    />
+  );
 }
 
 function DropdownMenuContent({

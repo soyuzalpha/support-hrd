@@ -14,6 +14,7 @@ import { createInputOptions, isEmpty, toCapitalized } from "@/utils";
 import { toastAlert } from "@/lib/toast";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import { ConfirmationDialog } from "@/components/confirmation-dialog";
+import CardMaster from "@/components/CardMaster";
 
 const MasterCompany = () => {
   const fForm = useForm();
@@ -122,6 +123,32 @@ const MasterCompany = () => {
         setCurrentState={handleStateChange}
         withSearch={true}
         dialogHandler={dDialog}
+        listCard={
+          <div className="grid grid-cols-3 gap-3">
+            {company?.data?.data?.map((item, index) => (
+              <CardMaster
+                key={index}
+                title={item.name_company}
+                description={""}
+                item={item}
+                onClickDetail={() => {
+                  handleClickDetail(item);
+                }}
+                onClickEdit={() => {
+                  handleClickEdit(item);
+                }}
+                onClickAction={() => {
+                  Object.entries(item).forEach(([key, value]) => {
+                    //@ts-ignore
+                    fForm.setValue(key, value);
+                  });
+                  dConfirm.handleOpen();
+                }}
+                children={<></>}
+              />
+            ))}
+          </div>
+        }
       />
 
       <FormCompany dialogForm={dDialog} />
