@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { format } from "date-fns";
 import { FieldError, FieldGroup } from "@/components/ui/field";
 import { FormControl, FormDescription, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -238,17 +239,19 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                     <Popover open={open} onOpenChange={setOpen}>
                       <PopoverTrigger asChild>
                         <Button variant="outline" id="date" className="w-48 justify-between font-normal">
-                          {fForm.getValues("birth_date") ? fForm.getValues("birth_date") : "Select date"}
+                          {fForm.getValues("birth_date")
+                            ? format(fForm.getValues("birth_date"), "yyyy-MM-dd")
+                            : "Select date"}
                           <ChevronDownIcon />
                         </Button>
                       </PopoverTrigger>
+
                       <PopoverContent className="w-auto overflow-hidden p-0" align="start">
                         <Calendar
                           mode="single"
                           selected={fForm.getValues("birth_date")}
                           captionLayout="dropdown"
                           onSelect={(date) => {
-                            // setDate(date);
                             fForm.setValue("birth_date", date);
                             setOpen(false);
                           }}
@@ -256,19 +259,6 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                       </PopoverContent>
                     </Popover>
                   </div>
-                  {/* <FormControl>
-                  <Controller
-                    name="birth_date"
-                    render={({ field }) => (
-                      <DatePicker
-                        {...field}
-                        date={fForm.getValues("birth_date")}
-                        onChange={(value) => field.onChange(value)}
-
-                      />
-                    )}
-                  />
-                </FormControl> */}
                 </FormItem>
 
                 {/* GENDER */}
