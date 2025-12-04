@@ -144,7 +144,7 @@ export function DockMenu({ onItemClick }: DockMenuProps) {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
-          <button
+          {/* <button
             onClick={() => onItemClick?.("create")}
             onMouseEnter={() => setHoveredItem("create")}
             onMouseLeave={() => setHoveredItem(null)}
@@ -158,7 +158,7 @@ export function DockMenu({ onItemClick }: DockMenuProps) {
                 hoveredItem === "create" ? "opacity-90 scale-105" : "opacity-70"
               )}
             />
-          </button>
+          </button> */}
 
           <button
             onClick={() => {

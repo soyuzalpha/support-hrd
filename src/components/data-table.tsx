@@ -190,8 +190,8 @@ export function DataTable({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-2 pr-2 mt-4">
-        <div className="flex flex-col lg:flex-row items-center gap-3">
+      <div className="flex items-end lg:items-center justify-between gap-2 pr-2 mt-4">
+        <div className="flex flex-col items-start lg:flex-row lg:items-center gap-3">
           <Select value={tabValue} onValueChange={setTabValue}>
             <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
               <SelectValue placeholder="Select a view" />
@@ -201,33 +201,35 @@ export function DataTable({
               <SelectItem value="table">Table</SelectItem>
             </SelectContent>
           </Select>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <IconLayoutColumns />
-                <span className="hidden lg:inline">Customize Columns</span>
-                <span className="lg:hidden">Columns</span>
-                <IconChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {table
-                .getAllColumns()
-                .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Show.When isTrue={tabValue === "table"}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <IconLayoutColumns />
+                  <span className="hidden lg:inline">Customize Columns</span>
+                  <span className="lg:hidden">Columns</span>
+                  <IconChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {table
+                  .getAllColumns()
+                  .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Show.When>
 
           <Show.When isTrue={withFilter}>
             <DynamicFilterForm

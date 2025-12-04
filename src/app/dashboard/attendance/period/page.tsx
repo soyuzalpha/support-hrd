@@ -124,12 +124,12 @@ const Period = () => {
         withSearch={true}
         dialogHandler={dDialog}
         listCard={
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {company?.data?.data?.map((item, index) => (
               <CardMaster
                 key={index}
-                title={item.name_company}
-                description={""}
+                title={item?.start_date + " to " + item?.end_date}
+                description={item?.user?.company?.name_company}
                 item={item}
                 onClickDetail={() => {
                   handleClickDetail(item);

@@ -15,47 +15,64 @@ const columnHelper = createColumnHelper<any>();
 
 export const columnsMasterApprovalLeave = ({ onClickDetail, onClickEdit, onClickData }) => {
   return [
-    columnHelper.accessor("status", {
-      header: "Status",
-      cell: ({ row }) => (
-        <Badge variant="outline" className="text-muted-foreground px-1.5 gap-1 inline-flex items-center">
-          {row.original.status === "active" ? (
-            <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-          ) : (
-            <IconXboxX className="fill-red-500 dark:fill-red-400" />
-          )}
-          {row.original.status === "active" ? "Active" : "Inactive"}
-        </Badge>
-      ),
-      //@ts-ignore
-      filterConfig: {
-        id: "status",
-        label: "Status",
-        type: "select",
-        options: [
-          { label: "Active", value: "active" },
-          { label: "Inactive", value: "inactive" },
-        ],
-      },
-    }),
-    columnHelper.accessor("name_company", {
-      header: "Company Name",
+    columnHelper.accessor("step_order", {
+      header: "Step Order",
       cell: (info) => <p>{info.getValue()}</p>,
     }),
-    columnHelper.accessor("phone_company", {
-      header: "Company Phone",
-      cell: (info) => <p>{info.getValue()}</p>,
+
+    columnHelper.accessor((row) => row.request_company_data?.name_company ?? "-", {
+      id: "request_company",
+      header: "Request Company",
+      cell: ({ row }) => <p>{row.original.request_company_data?.name_company ?? "-"}</p>,
     }),
-    columnHelper.accessor("address_company", {
-      header: "Address",
-      cell: (info) => <p className="text-wrap w-96">{info.getValue() ?? "-"}</p>,
+
+    columnHelper.accessor((row) => row.request_position_data?.name_position ?? "-", {
+      id: "request_position",
+      header: "Request Position",
+      cell: ({ row }) => <p>{row.original.request_position_data?.name_position ?? "-"}</p>,
     }),
-    ...defaultColumnsInformation,
+
+    columnHelper.accessor((row) => row.request_division_data?.name_division ?? "-", {
+      id: "request_division",
+      header: "Request Division",
+      cell: ({ row }) => <p>{row.original.request_division_data?.name_division ?? "-"}</p>,
+    }),
+
+    columnHelper.accessor((row) => row.approver_company_data?.name_company ?? "-", {
+      id: "approver_company",
+      header: "Approver Company",
+      cell: ({ row }) => <p>{row.original.approver_company_data?.name_company ?? "-"}</p>,
+    }),
+
+    columnHelper.accessor((row) => row.approver_position_data?.name_position ?? "-", {
+      id: "approver_position",
+      header: "Approver Position",
+      cell: ({ row }) => <p>{row.original.approver_position_data?.name_position ?? "-"}</p>,
+    }),
+
+    columnHelper.accessor((row) => row.approver_division_data?.name_division ?? "-", {
+      id: "approver_division",
+      header: "Approver Division",
+      cell: ({ row }) => <p>{row.original.approver_division_data?.name_division ?? "-"}</p>,
+    }),
+
+    columnHelper.accessor((row) => row.creator?.name ?? "-", {
+      id: "creator",
+      header: "Created By",
+      cell: ({ row }) => <p>{row.original.creator?.name ?? "-"}</p>,
+    }),
+
+    columnHelper.accessor((row) => row.created_at, {
+      id: "created_at",
+      header: "Created At",
+      cell: ({ row }) => <p>{new Date(row.original.created_at).toLocaleString()}</p>,
+    }),
+
     columnHelper.display({
       id: "actions",
+      header: "Actions",
       cell: ({ row }) => {
-        const customer = row.original;
-
+        const item = row.original;
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
@@ -63,10 +80,8 @@ export const columnsMasterApprovalLeave = ({ onClickDetail, onClickEdit, onClick
                 variant="ghost"
                 className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
                 size="icon"
-                onClick={(e) => e.stopPropagation()}
               >
                 <IconDotsVertical />
-                <span className="sr-only">Open menu</span>
               </Button>
             </DropdownMenuTrigger>
 
@@ -79,6 +94,7 @@ export const columnsMasterApprovalLeave = ({ onClickDetail, onClickEdit, onClick
               >
                 Detail
               </DropdownMenuItem>
+
               <DropdownMenuItem
                 onClick={(e) => {
                   onClickEdit(row);
@@ -87,41 +103,17 @@ export const columnsMasterApprovalLeave = ({ onClickDetail, onClickEdit, onClick
               >
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+
+              {/* <DropdownMenuSeparator />
+
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (customer.deleted_at) {
-                    onClickData({ ...row });
-                  } else {
-                    onClickData({ ...row });
-                  }
+                  onClickData(row);
                 }}
-                className={
-                  customer.deleted_at
-                    ? "text-green-500 focus:bg-green-600 dark:focus:bg-green-900/20"
-                    : "text-red-500 focus:bg-red-600 dark:focus:bg-red-900/20"
-                }
+                className={item.deleted_at ? "text-green-500" : "text-red-500"}
               >
-                {customer.deleted_at ? "Restore" : "Delete"}
-              </DropdownMenuItem>
-              {/* <DropdownMenuItem
-                onClick={(e) => {
-                  onClickEdit(row);
-                  e.stopPropagation();
-                }}
-              >
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClickDelete(row);
-                }}
-                className="text-red-500 focus:bg-red-50 dark:focus:bg-red-900/20"
-              >
-                Delete
+                {item.deleted_at ? "Restore" : "Delete"}
               </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>

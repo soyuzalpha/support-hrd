@@ -141,7 +141,7 @@ const MasterUser = () => {
         withSearch={true}
         dialogHandler={dDialog}
         listCard={
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {company?.data?.data?.map((item, index) => (
               <CardMaster
                 key={index}

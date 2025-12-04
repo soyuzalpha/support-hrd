@@ -13,6 +13,7 @@ import FormApproval from "./components/FormApproval";
 import CardMaster from "@/components/CardMaster";
 import { columnsMasterApprovalLeave } from "./utils";
 import { useMutation } from "@tanstack/react-query";
+import DetailApproval from "./components/DetailApproval";
 
 const MasterCompany = () => {
   const fForm = useForm();
@@ -92,16 +93,64 @@ const MasterCompany = () => {
       //@ts-ignore
       fForm.setValue(key, value);
     });
-    fForm.setValue("status", createInputOptions(toCapitalized(row.status), row.status));
   };
 
   const handleClickDetail = (row: any) => {
     assignFormValues(row);
+    fForm.setValue("status", createInputOptions(toCapitalized(row?.status ?? ""), row?.status));
     dDetail.handleOpen();
   };
 
   const handleClickEdit = (row: any) => {
-    assignFormValues(row);
+    if (!row) return;
+
+    // --- mapping request company, position, division
+    const mappedForm = {
+      id_flowapprovalleave: row.id_flowapprovalleave ?? null,
+
+      request_company: row.request_company_data
+        ? {
+            label: row.request_company_data.name_company,
+            value: row.request_company_data.id_company,
+          }
+        : null,
+
+      request_position: row.request_position_data
+        ? {
+            label: row.request_position_data.name_position,
+            value: row.request_position_data.id_position,
+          }
+        : null,
+
+      request_division: row.request_division_data
+        ? {
+            label: row.request_division_data.name_division,
+            value: row.request_division_data.id_division,
+          }
+        : null,
+
+      comments: row.comments ?? "",
+
+      // --- mapping approver list
+      approver:
+        row.approver_list?.length > 0
+          ? row.approver_list.map((item: any) => ({
+              company: item.company ? { label: item.company.name_company, value: item.company.id_company } : null,
+              position: item.position ? { label: item.position.name_position, value: item.position.id_position } : null,
+              division: item.division ? { label: item.division.name_division, value: item.division.id_division } : null,
+            }))
+          : [],
+
+      // --- status mapping (toggle)
+      status: row.request_company_data?.status
+        ? {
+            label: row.request_company_data.status === "active" ? "Active" : "Inactive",
+            value: row.request_company_data.status,
+          }
+        : { label: "Inactive", value: "inactive" },
+    };
+
+    assignFormValues(mappedForm);
     dDialog.handleOpen();
   };
 
@@ -136,7 +185,7 @@ const MasterCompany = () => {
     <FormProvider {...fForm}>
       <DataTable
         isLoading={mutation.isPending}
-        data={mutation.data?.data?.data || []}
+        data={mutation.data?.data || []}
         count={mutation.data?.data?.total || 0}
         currentState={tableState}
         setCurrentState={handlePaginationChange}
@@ -154,12 +203,12 @@ const MasterCompany = () => {
         })}
         dialogHandler={dDialog}
         listCard={
-          <div className="grid grid-cols-3 gap-3">
-            {mutation?.data?.data?.data?.map((item, index) => (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            {mutation.data?.data?.map((item, index) => (
               <CardMaster
                 description=""
                 key={index}
-                title={item.name_company}
+                title={item.request_company_data.name_company}
                 item={item}
                 onClickDetail={() => handleClickDetail(item)}
                 onClickEdit={() => handleClickEdit(item)}
@@ -173,6 +222,7 @@ const MasterCompany = () => {
         }
       />
       <FormApproval dialogForm={dDialog} />
+      <DetailApproval dialogHandler={dDetail} />
     </FormProvider>
   );
 };

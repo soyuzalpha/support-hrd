@@ -55,7 +55,7 @@ const FormApproval = ({ dialogForm }: { dialogForm: any }) => {
     mutationFn: updateFlowapprovalleave,
   });
 
-  const mutation = isEmpty(fForm.getValues("request_company")) ? mutationCreate : mutationUpdate;
+  const mutation = isEmpty(fForm.getValues("id_flowapprovalleave")) ? mutationCreate : mutationUpdate;
 
   const onSubmit = (data) => {
     try {
@@ -72,7 +72,7 @@ const FormApproval = ({ dialogForm }: { dialogForm: any }) => {
         comments: data?.comments,
       };
 
-      mutationCreate.mutate(payload, {
+      mutation.mutate(payload, {
         onSuccess: (res) => {
           dialogForm.handleClose();
           const message = generateSuccessMessage(res);
@@ -264,7 +264,7 @@ const FormApproval = ({ dialogForm }: { dialogForm: any }) => {
               </Button>
             </DialogClose>
             <Button type="submit" variant={"success"} loading={mutationCreate.isPending || mutationUpdate.isPending}>
-              {fForm.getValues("id_company") ? "Update" : "Create"}
+              {fForm.getValues("id_flowapprovalleave") ? "Update" : "Create"}
             </Button>
           </DialogFooter>
         </form>

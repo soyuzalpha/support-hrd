@@ -33,6 +33,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { formatDate } from "@/utils/dates";
 import Show from "@/components/show";
 import { AttachmentViewer } from "@/components/AttachmentViewer";
+import { Textarea } from "@/components/ui/textarea";
+import { getCityByProvince } from "../../master-zones/api/master-zones-service";
 
 const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
@@ -43,6 +45,15 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
     endpoint: "/getUsers",
     labelKey: "name",
     valueKey: "id",
+  });
+  const { loadOptions: loadOptionsProvince } = useSelectFetcher({
+    endpoint: "/getProvinces",
+    labelKey: "province_name",
+    valueKey: "id_province",
+  });
+
+  const mutationGetCityByProvince = useMutation({
+    mutationFn: getCityByProvince,
   });
 
   const mutation = useMutation({
@@ -84,8 +95,8 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
         marital_status: data?.marital_status?.value || null,
         blood_type: data?.blood_type?.value || null,
         address: data?.address || null,
-        city_address: data?.city_address || null,
-        province_address: data?.province_address || null,
+        city_address: data?.city_address?.value || null,
+        province_address: data?.province_address?.value || null,
         postal_code: data?.postal_code || null,
 
         contacts: (data?.contacts || []).map((c) => ({
@@ -120,6 +131,8 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
     }
   };
 
+  console.log({ cityL: mutationGetCityByProvince?.data?.data?.data });
+
   return (
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
       <DialogContent glass={true} size="ultra">
@@ -131,118 +144,119 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
         <form onSubmit={fForm.handleSubmit(onSubmit)}>
           <AppGridContainer maxHeight={useScreenHeight() - 300}>
             <FieldGroup>
-              {/* USER */}
-              <FormItem>
-                <FormLabel>User</FormLabel>
-                <FormControl>
-                  <Controller
-                    control={fForm.control}
-                    name="id_user"
-                    render={({ field }) => (
-                      <SelectOptions
-                        isAsync
-                        loadOptions={loadOptionsUser}
-                        placeholder="Search User"
-                        value={field.value}
-                        aria-invalid={!!fForm.formState.errors.id_user}
-                        onChange={(value) => field.onChange(value)}
-                      />
-                    )}
-                  />
-                </FormControl>
-                {/* <FormDescription>Your division ID</FormDescription> */}
-                {fForm.formState.errors.id_user && <FieldError errors={[fForm.formState.errors.id_user]} />}
-              </FormItem>
+              <div className="grid grid-cols-2 gap-3">
+                {/* USER */}
+                <FormItem>
+                  <FormLabel>User</FormLabel>
+                  <FormControl>
+                    <Controller
+                      control={fForm.control}
+                      name="id_user"
+                      render={({ field }) => (
+                        <SelectOptions
+                          isAsync
+                          loadOptions={loadOptionsUser}
+                          placeholder="Search User"
+                          value={field.value}
+                          aria-invalid={!!fForm.formState.errors.id_user}
+                          onChange={(value) => field.onChange(value)}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                  {/* <FormDescription>Your division ID</FormDescription> */}
+                  {fForm.formState.errors.id_user && <FieldError errors={[fForm.formState.errors.id_user]} />}
+                </FormItem>
 
-              {/* NIK */}
-              <FormItem>
-                <FormLabel>NIK</FormLabel>
-                <FormControl>
-                  <Input {...fForm.register("nik")} placeholder="1234567890123456" />
-                </FormControl>
-              </FormItem>
+                {/* NIK */}
+                <FormItem>
+                  <FormLabel>NIK</FormLabel>
+                  <FormControl>
+                    <Input {...fForm.register("nik")} placeholder="1234567890123456" />
+                  </FormControl>
+                </FormItem>
 
-              {/* NPWP */}
-              <FormItem>
-                <FormLabel>NPWP</FormLabel>
-                <FormControl>
-                  <Input {...fForm.register("npwp")} placeholder="12.345.678.9-012.000" />
-                </FormControl>
-              </FormItem>
+                {/* NPWP */}
+                <FormItem>
+                  <FormLabel>NPWP</FormLabel>
+                  <FormControl>
+                    <Input {...fForm.register("npwp")} placeholder="12.345.678.9-012.000" />
+                  </FormControl>
+                </FormItem>
 
-              {/* BPJS */}
-              <FormItem>
-                <FormLabel>BPJS Kesehatan</FormLabel>
-                <FormControl>
-                  <Input {...fForm.register("bpjs_kesehatan")} placeholder="1234567890123" />
-                </FormControl>
-              </FormItem>
+                {/* BPJS */}
+                <FormItem>
+                  <FormLabel>BPJS Kesehatan</FormLabel>
+                  <FormControl>
+                    <Input {...fForm.register("bpjs_kesehatan")} placeholder="1234567890123" />
+                  </FormControl>
+                </FormItem>
 
-              <FormItem>
-                <FormLabel>BPJS Ketenagakerjaan</FormLabel>
-                <FormControl>
-                  <Input {...fForm.register("bpjs_ketenagakerjaan")} placeholder="9876543210987" />
-                </FormControl>
-              </FormItem>
+                <FormItem>
+                  <FormLabel>BPJS Ketenagakerjaan</FormLabel>
+                  <FormControl>
+                    <Input {...fForm.register("bpjs_ketenagakerjaan")} placeholder="9876543210987" />
+                  </FormControl>
+                </FormItem>
 
-              {/* FULL NAME */}
-              <FormItem>
-                <FormLabel>Full Name</FormLabel>
-                <FormControl>
-                  <Input {...fForm.register("full_name")} placeholder="Norman Ardian" />
-                </FormControl>
-              </FormItem>
+                {/* FULL NAME */}
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input {...fForm.register("full_name")} placeholder="Norman Ardian" />
+                  </FormControl>
+                </FormItem>
 
-              {/* NICK NAME */}
-              <FormItem>
-                <FormLabel>Nick Name</FormLabel>
-                <FormControl>
-                  <Input {...fForm.register("nick_name")} placeholder="Norman" />
-                </FormControl>
-              </FormItem>
+                {/* NICK NAME */}
+                <FormItem>
+                  <FormLabel>Nick Name</FormLabel>
+                  <FormControl>
+                    <Input {...fForm.register("nick_name")} placeholder="Norman" />
+                  </FormControl>
+                </FormItem>
 
-              {/* PERSONAL EMAIL */}
-              <FormItem>
-                <FormLabel>Personal Email</FormLabel>
-                <FormControl>
-                  <Input {...fForm.register("personal_email")} placeholder="email@example.com" />
-                </FormControl>
-              </FormItem>
+                {/* PERSONAL EMAIL */}
+                <FormItem>
+                  <FormLabel>Personal Email</FormLabel>
+                  <FormControl>
+                    <Input {...fForm.register("personal_email")} placeholder="email@example.com" />
+                  </FormControl>
+                </FormItem>
 
-              {/* BIRTH PLACE */}
-              <FormItem>
-                <FormLabel>Birth Place</FormLabel>
-                <FormControl>
-                  <Input {...fForm.register("birth_place")} placeholder="Jakarta" />
-                </FormControl>
-              </FormItem>
+                {/* BIRTH PLACE */}
+                <FormItem>
+                  <FormLabel>Birth Place</FormLabel>
+                  <FormControl>
+                    <Input {...fForm.register("birth_place")} placeholder="Jakarta" />
+                  </FormControl>
+                </FormItem>
 
-              {/* BIRTH DATE */}
-              <FormItem>
-                <FormLabel>Birth Date</FormLabel>
-                <div className="flex flex-col gap-3">
-                  <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" id="date" className="w-48 justify-between font-normal">
-                        {fForm.getValues("birth_date") ? fForm.getValues("birth_date") : "Select date"}
-                        <ChevronDownIcon />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={fForm.getValues("birth_date")}
-                        captionLayout="dropdown"
-                        onSelect={(date) => {
-                          // setDate(date);
-                          fForm.setValue("birth_date", date);
-                          setOpen(false);
-                        }}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                {/* <FormControl>
+                {/* BIRTH DATE */}
+                <FormItem>
+                  <FormLabel>Birth Date</FormLabel>
+                  <div className="flex flex-col gap-3">
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" id="date" className="w-48 justify-between font-normal">
+                          {fForm.getValues("birth_date") ? fForm.getValues("birth_date") : "Select date"}
+                          <ChevronDownIcon />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={fForm.getValues("birth_date")}
+                          captionLayout="dropdown"
+                          onSelect={(date) => {
+                            // setDate(date);
+                            fForm.setValue("birth_date", date);
+                            setOpen(false);
+                          }}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                  {/* <FormControl>
                   <Controller
                     name="birth_date"
                     render={({ field }) => (
@@ -255,139 +269,173 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                     )}
                   />
                 </FormControl> */}
-              </FormItem>
+                </FormItem>
 
-              {/* GENDER */}
-              <FormItem>
-                <FormLabel>Gender</FormLabel>
-                <FormControl>
-                  <Controller
-                    name="gender"
-                    render={({ field }) => (
-                      <SelectOptions
-                        options={[createInputOptions("Male", "male"), createInputOptions("Female", "female")]}
-                        placeholder="Select Gender"
-                        value={field.value}
-                        onChange={(value) => {
-                          field.onChange(value);
-                        }}
-                      />
-                    )}
-                  />
-                </FormControl>
-              </FormItem>
+                {/* GENDER */}
+                <FormItem>
+                  <FormLabel>Gender</FormLabel>
+                  <FormControl>
+                    <Controller
+                      name="gender"
+                      render={({ field }) => (
+                        <SelectOptions
+                          options={[createInputOptions("Male", "male"), createInputOptions("Female", "female")]}
+                          placeholder="Select Gender"
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
+                          }}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
 
-              {/* RELIGION */}
-              <FormItem>
-                <FormLabel>Religion</FormLabel>
-                <FormControl>
-                  <Controller
-                    name="religion"
-                    render={({ field }) => (
-                      <SelectOptions
-                        options={["Islam", "Kristen", "Katolik", "Hindu", "Buddha"].map((i) => ({
-                          label: i,
-                          value: i,
-                        }))}
-                        placeholder="Select Gender"
-                        value={field.value}
-                        onChange={(value) => {
-                          field.onChange(value);
-                        }}
-                      />
-                    )}
-                  />
-                </FormControl>
-              </FormItem>
+                {/* RELIGION */}
+                <FormItem>
+                  <FormLabel>Religion</FormLabel>
+                  <FormControl>
+                    <Controller
+                      name="religion"
+                      render={({ field }) => (
+                        <SelectOptions
+                          options={["Islam", "Kristen", "Katolik", "Hindu", "Buddha"].map((i) => ({
+                            label: i,
+                            value: i,
+                          }))}
+                          placeholder="Select Gender"
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
+                          }}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
 
-              {/* MARITAL STATUS */}
-              <FormItem>
-                <FormLabel>Marital Status</FormLabel>
-                <FormControl>
-                  <Controller
-                    control={fForm.control}
-                    name="marital_status"
-                    render={({ field }) => (
-                      <SelectOptions
-                        options={[
-                          { label: "Single", value: "single" },
-                          { label: "Married", value: "married" },
-                        ]}
-                        value={field.value}
-                        onChange={(value) => {
-                          field.onChange(value);
-                        }}
-                      />
-                    )}
-                  />
-                </FormControl>
-              </FormItem>
+                {/* MARITAL STATUS */}
+                <FormItem>
+                  <FormLabel>Marital Status</FormLabel>
+                  <FormControl>
+                    <Controller
+                      control={fForm.control}
+                      name="marital_status"
+                      render={({ field }) => (
+                        <SelectOptions
+                          options={[
+                            { label: "Single", value: "single" },
+                            { label: "Married", value: "married" },
+                          ]}
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
+                          }}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
 
-              {/* BLOOD TYPE */}
-              <FormItem>
-                <FormLabel>Blood Type</FormLabel>
-                <FormControl>
-                  <Controller
-                    control={fForm.control}
-                    name="blood_type"
-                    render={({ field }) => (
-                      <SelectOptions
-                        options={["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"].map((i) => ({
-                          label: i,
-                          value: i,
-                        }))}
-                        onChange={field.onChange}
-                        value={field.value}
-                      />
-                    )}
-                  />
-                </FormControl>
-              </FormItem>
+                {/* BLOOD TYPE */}
+                <FormItem>
+                  <FormLabel>Blood Type</FormLabel>
+                  <FormControl>
+                    <Controller
+                      control={fForm.control}
+                      name="blood_type"
+                      render={({ field }) => (
+                        <SelectOptions
+                          options={["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"].map((i) => ({
+                            label: i,
+                            value: i,
+                          }))}
+                          onChange={field.onChange}
+                          value={field.value}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
 
-              {/* ADDRESS */}
-              <FormItem>
-                <FormLabel>Address</FormLabel>
-                <FormControl>
-                  <Controller
-                    control={fForm.control}
-                    name="address"
-                    render={({ field }) => <Input {...field} placeholder="Jl. Melati No.45" />}
-                  />
-                </FormControl>
-              </FormItem>
+                <FormItem>
+                  <FormLabel>Province</FormLabel>
+                  <FormControl>
+                    <Controller
+                      control={fForm.control}
+                      name="province_address"
+                      render={({ field }) => (
+                        <SelectOptions
+                          isAsync
+                          loadOptions={loadOptionsProvince}
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
 
-              <FormItem>
-                <FormLabel>City</FormLabel>
-                <FormControl>
-                  <Controller
-                    control={fForm.control}
-                    name="city_address"
-                    render={({ field }) => <Input {...field} placeholder="Jakarta Selatan" />}
-                  />
-                </FormControl>
-              </FormItem>
+                            if (value?.value) {
+                              mutationGetCityByProvince.mutate({ id_province: value.value });
 
-              <FormItem>
-                <FormLabel>Province</FormLabel>
-                <FormControl>
-                  <Controller
-                    control={fForm.control}
-                    name="province_address"
-                    render={({ field }) => <Input {...field} placeholder="DKI Jakarta" />}
-                  />
-                </FormControl>
-              </FormItem>
+                              // Reset city karena provinsi berubah
+                              fForm.setValue("city_address", null);
+                            }
+                          }}
+                          // onChange={() => {
+                          //   field.onChange();
+                          //   mutationGetCityByProvince.mutate({ id_province: field.value?.value });
+                          // }}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
 
-              <FormItem>
-                <FormLabel>Postal Code</FormLabel>
-                <FormControl>
-                  <Controller
-                    control={fForm.control}
-                    name="postal_code"
-                    render={({ field }) => <Input {...field} placeholder="12345" />}
-                  />
-                </FormControl>
-              </FormItem>
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <Controller
+                      control={fForm.control}
+                      name="city_address"
+                      render={({ field }) => (
+                        <SelectOptions
+                          options={
+                            mutationGetCityByProvince?.data?.data?.data?.map((c: any) => ({
+                              label: c.city_name,
+                              value: c.id_city,
+                            })) ?? []
+                          }
+                          isLoading={mutationGetCityByProvince.isPending}
+                          placeholder="Select city"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </FormItem>
+
+                <FormItem>
+                  <FormLabel>Postal Code</FormLabel>
+                  <FormControl>
+                    <Controller
+                      control={fForm.control}
+                      name="postal_code"
+                      render={({ field }) => <Input {...field} placeholder="12345" />}
+                    />
+                  </FormControl>
+                </FormItem>
+
+                {/* ADDRESS */}
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Controller
+                      control={fForm.control}
+                      name="address"
+                      render={({ field }) => <Input {...field} placeholder="Jl. Melati No.45" />}
+                    />
+                  </FormControl>
+                </FormItem>
+              </div>
 
               {/* CONTACTS (REPEATABLE) */}
               <DynamicFormFields
@@ -487,7 +535,7 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" variant="glassSuccess">
+            <Button type="submit" variant="glassSuccess" loading={mutation.isPending || updateMutation.isPending}>
               Save
             </Button>
           </DialogFooter>
