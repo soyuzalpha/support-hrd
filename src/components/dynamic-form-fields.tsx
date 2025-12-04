@@ -575,7 +575,7 @@ export const DynamicFormFields = ({
               const newItem = {
                 ...fields.reduce((acc, fieldCfg) => ({ ...acc, [fieldCfg.name]: "" }), {}),
                 is_primary: usingPrimary ? items.length === 0 : false,
-                step_no: items.length + 1,
+                step_order: items.length + 1,
               };
               append(newItem);
             }}

@@ -9,10 +9,10 @@ export const defaultColumnsInformation = [
     header: "Created At",
     cell: ({ row }) => <p>{dateDisplay(row?.original?.created_at)}</p>,
   }),
-  columnHelper.accessor("created_by_name", {
+  columnHelper.accessor("creator.name", {
     id: "created_by_col",
     header: "Created By",
-    cell: ({ row }) => <p>{row?.original?.created_by_name}</p>,
+    cell: ({ row }) => <p>{row?.original?.creator?.name}</p>,
   }),
   columnHelper.accessor("updated_at", {
     id: "updated_at_col",
@@ -22,7 +22,7 @@ export const defaultColumnsInformation = [
   columnHelper.accessor("update_by_name", {
     id: "updated_by_col",
     header: "Updated By",
-    cell: ({ row }) => <p>{row?.original?.update_by_name}</p>,
+    cell: ({ row }) => <p>{row?.original?.updater?.name}</p>,
   }),
   columnHelper.accessor("deleted_at", {
     id: "deleted_at_col",
@@ -32,6 +32,6 @@ export const defaultColumnsInformation = [
   columnHelper.accessor("delete_by_name", {
     id: "deleted_by_col",
     header: "Deleted By",
-    cell: ({ row }) => <p>{row?.original?.delete_by_name}</p>,
+    cell: ({ row }) => <p>{row?.original?.deleter?.name}</p>,
   }),
 ];

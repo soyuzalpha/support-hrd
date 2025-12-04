@@ -4,19 +4,18 @@ import { useDatatable } from "@/hooks/use-datatable";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { activateCompany, deleteCompany, getCompany } from "./api/master-company-service";
+import { getAttendanceSummaries, deleteAttendanceSummary } from "./api/attendance-summary-service";
 import { DataTable } from "@/components/data-table";
-import { columnsMasterCompany } from "./utils";
+import { columnsSummaryAttendance } from "./utils/index";
 import { useDialogModal } from "@/hooks/use-dialog-modal";
-import FormCompany from "./components/FormCompany";
-import DetailCompany from "./components/DetailCompany";
 import { createInputOptions, isEmpty, toCapitalized } from "@/utils";
 import { toastAlert } from "@/lib/toast";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import { ConfirmationDialog } from "@/components/confirmation-dialog";
 import CardMaster from "@/components/CardMaster";
+import FormAttendancePeriod from "./components/FormAttendanceSummary";
 
-const MasterCompany = () => {
+const Period = () => {
   const fForm = useForm();
   const { invalidate } = useAppRefreshQuery();
   const dDialog = useDialogModal();
@@ -29,8 +28,8 @@ const MasterCompany = () => {
     currentState,
     setCurrentState,
   } = useDatatable({
-    queryKey: "companys",
-    queryFn: getCompany,
+    queryKey: "summary-attendances",
+    queryFn: getAttendanceSummaries,
     initialParams: {
       page: 1,
       limit: 10,
@@ -63,26 +62,26 @@ const MasterCompany = () => {
     dDialog.handleOpen();
   };
 
-  const mutationActive = useMutation({
-    mutationFn: activateCompany,
-  });
+  //   const mutationActive = useMutation({
+  //     mutationFn: activateCompany,
+  //   });
 
   const mutationDeactive = useMutation({
-    mutationFn: deleteCompany,
+    mutationFn: deleteAttendanceSummary,
   });
 
   const handleClickChangeStatus = () => {
     const row = fForm.getValues();
-    const mutation = isEmpty(row?.deleted_at) ? mutationDeactive : mutationActive;
+    const mutation = mutationDeactive;
 
     console.log({ row });
 
     mutation.mutate(
-      { id_company: row.id_company },
+      { id_periodattendance: row.id_periodattendance },
       {
         onSuccess: (res) => {
           toastAlert.success(res.message || "Berhasil");
-          invalidate([["companys"]]);
+          invalidate([["period-attendances"]]);
           dConfirm.handleClose();
         },
         onError: (err) => {
@@ -99,8 +98,8 @@ const MasterCompany = () => {
       <DataTable
         isLoading={isLoading}
         data={company?.data?.data || []}
-        withFilter={true}
-        columns={columnsMasterCompany({
+        withFilter={false}
+        columns={columnsSummaryAttendance({
           onClickData: (row) => {
             Object.entries(row.original).forEach(([key, value]) => {
               //@ts-ignore
@@ -152,14 +151,14 @@ const MasterCompany = () => {
         }
       />
 
-      <FormCompany dialogForm={dDialog} />
-      <DetailCompany dialogHandler={dDetail} />
+      <FormAttendancePeriod dialogHandler={dDialog} />
+      {/* <DetailCompany dialogHandler={dDetail} /> */}
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}
         open={dConfirm.open}
         cancelLabel="Cancel"
-        isLoading={mutationActive.isPending || mutationDeactive.isPending}
+        isLoading={mutationDeactive.isPending}
         title="Change Status"
         onCancel={dConfirm.handleClose}
       />
@@ -167,4 +166,4 @@ const MasterCompany = () => {
   );
 };
 
-export default MasterCompany;
+export default Period;

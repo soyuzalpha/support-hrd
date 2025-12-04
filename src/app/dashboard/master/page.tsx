@@ -1,6 +1,6 @@
 import { AppContainer } from "@/components/app-container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 
 // Lazily load the components for the tabs
 const MasterCompany = lazy(() => import("./master-company/page"));
@@ -8,7 +8,9 @@ const MasterPosition = lazy(() => import("./master-position/page"));
 const MasterDivision = lazy(() => import("./master-division/page"));
 const MasterUser = lazy(() => import("./master-user/page"));
 const MasterEmploye = lazy(() => import("./master-employee/page"));
+const MasterEmployements = lazy(() => import("./master-employments/page"));
 const MasterTypeLeaves = lazy(() => import("./master-type-leaves/page"));
+const MasterApprovalLeaves = lazy(() => import("./master-approval/page"));
 
 export default function Master() {
   return (
@@ -21,6 +23,8 @@ export default function Master() {
             <TabsTrigger value="division">Division</TabsTrigger>
             <TabsTrigger value="user">User</TabsTrigger>
             <TabsTrigger value="employee">Employee</TabsTrigger>
+            <TabsTrigger value="employments">Employements</TabsTrigger>
+            <TabsTrigger value="approval_leave">Approval Leaves</TabsTrigger>
             <TabsTrigger value="type_leaves">Type Leaves</TabsTrigger>
           </TabsList>
 
@@ -50,6 +54,16 @@ export default function Master() {
           <TabsContent value="employee">
             <Suspense fallback={<div>Loading Division...</div>}>
               <MasterEmploye />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="employments">
+            <Suspense fallback={<div>Loading Division...</div>}>
+              <MasterEmployements />
+            </Suspense>
+          </TabsContent>
+          <TabsContent value="approval_leave">
+            <Suspense fallback={<div>Loading Division...</div>}>
+              <MasterApprovalLeaves />
             </Suspense>
           </TabsContent>
           <TabsContent value="type_leaves">

@@ -13,7 +13,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 
 const columnHelper = createColumnHelper<any>();
 
-export const columnsMasterCompany = ({ onClickDetail, onClickEdit, onClickData }) => {
+export const columnsMasterApprovalLeave = ({ onClickDetail, onClickEdit, onClickData }) => {
   return [
     columnHelper.accessor("status", {
       header: "Status",

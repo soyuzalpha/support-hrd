@@ -18,7 +18,7 @@ const CardMaster = ({
 }: {
   title: string;
   description: string;
-  children: React.ReactElement;
+  children?: React.ReactElement;
   item: any;
   onClickDetail: () => void;
   onClickEdit: () => void;

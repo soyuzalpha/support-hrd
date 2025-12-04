@@ -1,22 +1,21 @@
 "use client";
 
 import { useDatatable } from "@/hooks/use-datatable";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { activateCompany, deleteCompany, getCompany } from "./api/master-company-service";
+import { activateEmployment, deleteEmployment, getEmployments } from "./api/master-employements-service";
 import { DataTable } from "@/components/data-table";
-import { columnsMasterCompany } from "./utils";
 import { useDialogModal } from "@/hooks/use-dialog-modal";
-import FormCompany from "./components/FormCompany";
-import DetailCompany from "./components/DetailCompany";
 import { createInputOptions, isEmpty, toCapitalized } from "@/utils";
 import { toastAlert } from "@/lib/toast";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import { ConfirmationDialog } from "@/components/confirmation-dialog";
 import CardMaster from "@/components/CardMaster";
+import { columnsMasterEmployements } from "./utils";
+import FormEmployements from "./components/FormEmployments";
 
-const MasterCompany = () => {
+const MasterEmployements = () => {
   const fForm = useForm();
   const { invalidate } = useAppRefreshQuery();
   const dDialog = useDialogModal();
@@ -29,8 +28,8 @@ const MasterCompany = () => {
     currentState,
     setCurrentState,
   } = useDatatable({
-    queryKey: "companys",
-    queryFn: getCompany,
+    queryKey: "employements",
+    queryFn: getEmployments,
     initialParams: {
       page: 1,
       limit: 10,
@@ -64,11 +63,11 @@ const MasterCompany = () => {
   };
 
   const mutationActive = useMutation({
-    mutationFn: activateCompany,
+    mutationFn: activateEmployment,
   });
 
   const mutationDeactive = useMutation({
-    mutationFn: deleteCompany,
+    mutationFn: deleteEmployment,
   });
 
   const handleClickChangeStatus = () => {
@@ -78,7 +77,7 @@ const MasterCompany = () => {
     console.log({ row });
 
     mutation.mutate(
-      { id_company: row.id_company },
+      { id_employment: row.id_employment },
       {
         onSuccess: (res) => {
           toastAlert.success(res.message || "Berhasil");
@@ -99,8 +98,7 @@ const MasterCompany = () => {
       <DataTable
         isLoading={isLoading}
         data={company?.data?.data || []}
-        withFilter={true}
-        columns={columnsMasterCompany({
+        columns={columnsMasterEmployements({
           onClickData: (row) => {
             Object.entries(row.original).forEach(([key, value]) => {
               //@ts-ignore
@@ -152,8 +150,8 @@ const MasterCompany = () => {
         }
       />
 
-      <FormCompany dialogForm={dDialog} />
-      <DetailCompany dialogHandler={dDetail} />
+      <FormEmployements dialogHandler={dDialog} />
+      {/* <DetailCompany dialogHandler={dDetail} /> */}
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}
@@ -167,4 +165,4 @@ const MasterCompany = () => {
   );
 };
 
-export default MasterCompany;
+export default MasterEmployements;

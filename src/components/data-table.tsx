@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  ColumnDef,
   type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -30,8 +31,14 @@ import { isEmpty } from "@/utils";
 import Show from "./show";
 import { Skeleton } from "./ui/skeleton";
 import Pagination from "./pagination";
-import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { type FilterConfig } from "./data-table-filters";
+import { DynamicFilterForm, FilterField } from "./dynamicFilterForm";
+
+export interface DataTableColumn {
+  [key: string]: any;
+  filterConfig?: FilterConfig;
+}
 
 export function DataTable({
   data: initialData,
@@ -44,9 +51,12 @@ export function DataTable({
   setCurrentState,
   count = 0,
   withSearch = true,
+  withFilter = false,
+  filters,
+  onSubmitFilter,
 }: {
   data: any[];
-  columns: any[];
+  columns: DataTableColumn[];
   isLoading: boolean;
   listCard?: React.ReactNode;
   dialogHandler?: any;
@@ -55,6 +65,9 @@ export function DataTable({
   setCurrentState: Function;
   count: number;
   withSearch?: boolean;
+  withFilter?: boolean;
+  filters?: FilterField[];
+  onSubmitFilter?: any;
 }) {
   const fForm = useFormContext();
   const [data, setData] = React.useState(() => initialData);
@@ -64,16 +77,17 @@ export function DataTable({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [searchKey, setSearchKey] = React.useState(currentState.searchKey || "");
+  const [appliedFilters, setAppliedFilters] = React.useState<Record<string, any>>({});
   const debouncedSearchKey = useDebounce(searchKey, 500);
 
   const [pagination, setPagination] = React.useState({
-    pageIndex: Math.max((currentState.page || 1) - 1, 0), // Convert to 0-based index
+    pageIndex: Math.max((currentState.page || 1) - 1, 0),
     pageSize: currentState.limit || 10,
   });
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columns as ColumnDef<any, any>[],
     state: {
       sorting,
       columnVisibility,
@@ -99,31 +113,17 @@ export function DataTable({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    manualPagination: true, // Enable manual pagination for server-side
+    manualPagination: true,
     pageCount: Math.ceil((currentState.total || 0) / pagination.pageSize),
   });
 
-  //   function handleDragEnd(event: DragEndEvent) {
-  //     const { active, over } = event;
-  //     if (active && over && active.id !== over.id) {
-  //       setData((data) => {
-  //         const oldIndex = dataIds.indexOf(active.id);
-  //         const newIndex = dataIds.indexOf(over.id);
-  //         return arrayMove(data, oldIndex, newIndex);
-  //       });
-  //     }
-  //   }
-
-  // Update data when initialData changes
   React.useEffect(() => {
     setData(initialData);
   }, [initialData]);
 
-  // Handle pagination changes
   React.useEffect(() => {
-    const newPage = pagination.pageIndex + 1; // Convert back to 1-based
+    const newPage = pagination.pageIndex + 1;
     const newLimit = pagination.pageSize;
-
     if (newPage !== currentState.page || newLimit !== currentState.limit) {
       setCurrentState({
         ...currentState,
@@ -133,24 +133,20 @@ export function DataTable({
     }
   }, [pagination.pageIndex, pagination.pageSize, currentState, setCurrentState]);
 
-  // Handle search changes
   React.useEffect(() => {
     if (debouncedSearchKey !== currentState.searchKey) {
       setCurrentState({
         ...currentState,
         searchKey: debouncedSearchKey,
-        page: 1, // Reset to first page when searching
+        page: 1,
       });
-      // Reset pagination to first page
       setPagination((prev) => ({ ...prev, pageIndex: 0 }));
     }
   }, [debouncedSearchKey, currentState, setCurrentState]);
 
-  // Sync pagination state when currentState changes from outside
   React.useEffect(() => {
     const newPageIndex = Math.max((currentState.page || 1) - 1, 0);
     const newPageSize = currentState.limit || 10;
-
     setPagination((prev) => {
       if (prev.pageIndex !== newPageIndex || prev.pageSize !== newPageSize) {
         return {
@@ -162,17 +158,35 @@ export function DataTable({
     });
   }, [currentState.page, currentState.limit]);
 
-  // Sync search state when currentState changes from outside
   React.useEffect(() => {
     if (searchKey !== currentState.searchKey) {
       setSearchKey(currentState.searchKey || "");
     }
   }, [currentState.searchKey]);
 
-  // Update form context with search value
   React.useEffect(() => {
     fForm.setValue("searchKey", searchKey);
   }, [searchKey, fForm]);
+
+  const handleFiltersChange = (filters: Record<string, any>) => {
+    setAppliedFilters(filters);
+    // Apply filters to table
+    const newFilters = Object.entries(filters)
+      .filter(([, value]) => value !== "" && value !== null)
+      .map(([id, value]) => ({
+        id,
+        value,
+      }));
+    setColumnFilters(newFilters);
+
+    // Sync with currentState if needed
+    setCurrentState({
+      ...currentState,
+      filters,
+      page: 1,
+    });
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -182,13 +196,11 @@ export function DataTable({
             <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
               <SelectValue placeholder="Select a view" />
             </SelectTrigger>
-
             <SelectContent>
               <SelectItem value="card">Card</SelectItem>
               <SelectItem value="table">Table</SelectItem>
             </SelectContent>
           </Select>
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
@@ -198,7 +210,6 @@ export function DataTable({
                 <IconChevronDown />
               </Button>
             </DropdownMenuTrigger>
-
             <DropdownMenuContent align="end" className="w-56">
               {table
                 .getAllColumns()
@@ -217,9 +228,20 @@ export function DataTable({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
 
-        {/* <Show.When isTrue={!isEmpty(customButton)}>{customButton}</Show.When> */}
+          <Show.When isTrue={withFilter}>
+            <DynamicFilterForm
+              //@ts-ignore
+              fields={filters}
+              onSubmit={onSubmitFilter}
+            />
+            {/* <DataTableFilters
+              columns={table.getAllColumns()}
+              filterConfigs={filterConfigs}
+              onFilterChange={handleFiltersChange}
+            /> */}
+          </Show.When>
+        </div>
 
         <div className="flex items-center gap-4">
           <Show.When isTrue={!isEmpty(dialogHandler)}>
@@ -264,24 +286,9 @@ export function DataTable({
       </Show.When>
 
       <Show.When isTrue={tabValue === "table"}>
-        <div
-          className="
-    overflow-hidden rounded-xl 
-    bg-white/10 dark:bg-white/5 
-    border border-white/10 
-    backdrop-blur-2xl 
-    shadow-[0_0_15px_rgba(255,255,255,0.05)]
-  "
-        >
+        <div className="overflow-hidden rounded-xl bg-white/10 dark:bg-white/5 border border-white/10 backdrop-blur-2xl shadow-[0_0_15px_rgba(255,255,255,0.05)]">
           <Table>
-            <TableHeader
-              className="
-    sticky top-0 z-10 
-    bg-white/20 dark:bg-white/10 
-    backdrop-blur-xl 
-    border-b border-white/10
-  "
-            >
+            <TableHeader className="sticky top-0 z-10 bg-white/20 dark:bg-white/10 backdrop-blur-xl border-b border-white/10">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -313,11 +320,7 @@ export function DataTable({
                     <TableRow
                       key={row.id}
                       onClick={() => handleClickRow && handleClickRow(row)}
-                      className="
-                      cursor-pointer 
-                      hover:bg-white/10 dark:hover:bg-white/5
-                      transition-colors duration-200
-                    "
+                      className="cursor-pointer hover:bg-white/10 dark:hover:bg-white/5 transition-colors duration-200"
                     >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id} className="px-4 py-3 text-left border-b border-white/5">

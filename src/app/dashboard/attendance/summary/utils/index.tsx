@@ -7,48 +7,51 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toCapitalized } from "@/utils";
 import { defaultColumnsInformation } from "@/utils/tables";
 import { IconCircleCheckFilled, IconDotsVertical, IconXboxX } from "@tabler/icons-react";
 import { createColumnHelper } from "@tanstack/react-table";
 
 const columnHelper = createColumnHelper<any>();
 
-export const columnsMasterCompany = ({ onClickDetail, onClickEdit, onClickData }) => {
+export const columnsSummaryAttendance = ({ onClickDetail, onClickEdit, onClickData }) => {
   return [
-    columnHelper.accessor("status", {
-      header: "Status",
-      cell: ({ row }) => (
-        <Badge variant="outline" className="text-muted-foreground px-1.5 gap-1 inline-flex items-center">
-          {row.original.status === "active" ? (
-            <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-          ) : (
-            <IconXboxX className="fill-red-500 dark:fill-red-400" />
-          )}
-          {row.original.status === "active" ? "Active" : "Inactive"}
-        </Badge>
-      ),
-      //@ts-ignore
-      filterConfig: {
-        id: "status",
-        label: "Status",
-        type: "select",
-        options: [
-          { label: "Active", value: "active" },
-          { label: "Inactive", value: "inactive" },
-        ],
-      },
-    }),
-    columnHelper.accessor("name_company", {
-      header: "Company Name",
+    // columnHelper.accessor("status", {
+    //   header: "Status",
+    //   cell: ({ row }) => (
+    //     <Badge variant="outline" className="text-muted-foreground px-1.5 gap-1 inline-flex items-center">
+    //       {row.original.status === "open" ? (
+    //         <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+    //       ) : (
+    //         <IconXboxX className="fill-red-500 dark:fill-red-400" />
+    //       )}
+    //       {toCapitalized(row.original.status)}
+    //     </Badge>
+    //   ),
+    // }),
+    columnHelper.accessor("user.name", {
+      header: "Name",
       cell: (info) => <p>{info.getValue()}</p>,
     }),
-    columnHelper.accessor("phone_company", {
-      header: "Company Phone",
+    columnHelper.accessor("user.company.name_company", {
+      header: "Company",
       cell: (info) => <p>{info.getValue()}</p>,
     }),
-    columnHelper.accessor("address_company", {
-      header: "Address",
-      cell: (info) => <p className="text-wrap w-96">{info.getValue() ?? "-"}</p>,
+    columnHelper.accessor("present", {
+      header: "Present",
+      cell: (info) => <p>{info.getValue()}</p>,
+    }),
+    columnHelper.accessor("total_working_days", {
+      header: "Total Working Days",
+      cell: (info) => <p>{info.getValue()}</p>,
+    }),
+    columnHelper.accessor("excused_absences", {
+      header: "Excused Absences",
+      cell: (info) => <p>{info.getValue()}</p>,
+    }),
+    columnHelper.accessor("unexcused_absences", {
+      header: "Unexcused Absences",
+      cell: (info) => <p>{info.getValue()}</p>,
     }),
     ...defaultColumnsInformation,
     columnHelper.display({
