@@ -56,7 +56,7 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
     mutationFn: updateLeaveRequest,
   });
 
-  const mutation = isEmpty(fForm.getValues("id_company")) ? mutationCreate : mutationUpdate;
+  const mutation = isEmpty(fForm.getValues("id_leaverequest")) ? mutationCreate : mutationUpdate;
 
   const onSubmit = async (data) => {
     try {
@@ -70,6 +70,7 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
       );
 
       const payload = {
+        id_leaverequest: data?.id_leaverequest,
         id_typeleave: data?.id_typeleave?.value,
         start_date: toISOStringFormat(data?.start_date),
         end_date: toISOStringFormat(data?.end_date),
@@ -241,7 +242,7 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
               </Button>
             </DialogClose>
             <Button type="submit" variant={"success"} loading={mutationCreate.isPending || mutationUpdate.isPending}>
-              {fForm.getValues("id_company") ? "Update" : "Create"}
+              {fForm.getValues("id_leaverequest") ? "Update" : "Create"}
             </Button>
           </DialogFooter>
         </form>

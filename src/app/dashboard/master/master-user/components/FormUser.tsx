@@ -96,7 +96,7 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
       <DialogContent glass={true} size="xxl">
         <DialogHeader>
-          <DialogTitle>Form Role</DialogTitle>
+          <DialogTitle>Form User</DialogTitle>
           <DialogDescription>Make change to input and save</DialogDescription>
         </DialogHeader>
 

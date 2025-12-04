@@ -14,6 +14,7 @@ import { ConfirmationDialog } from "@/components/confirmation-dialog";
 import { toastAlert } from "@/lib/toast";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import CardMaster from "@/components/CardMaster";
+import DetailRole from "./components/DetailRole";
 
 const MasterUser = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -55,6 +56,7 @@ const MasterUser = () => {
       fForm.setValue(key, value);
     });
     fForm.setValue("status", createInputOptions(toCapitalized(row.status), row.status));
+    fForm.setValue("id_company", createInputOptions(row?.company?.name_company, row?.company?.id_company));
     dDetail.handleOpen();
   };
 
@@ -167,7 +169,7 @@ const MasterUser = () => {
       />
 
       <FormUser dialogHandler={dDialog} />
-      {/* <DetailRole dialogHandler={dDetail} /> */}
+      <DetailRole dialogHandler={dDetail} />
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}

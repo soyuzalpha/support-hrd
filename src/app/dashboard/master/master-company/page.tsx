@@ -99,7 +99,6 @@ const MasterCompany = () => {
       <DataTable
         isLoading={isLoading}
         data={company?.data?.data || []}
-        withFilter={true}
         columns={columnsMasterCompany({
           onClickData: (row) => {
             Object.entries(row.original).forEach(([key, value]) => {
@@ -107,16 +106,12 @@ const MasterCompany = () => {
               fForm.setValue(key, value);
             });
             dConfirm.handleOpen();
-
-            console.log({ row });
           },
           onClickDetail: (row) => {
             handleClickDetail(row.original);
-            // console.log({ row });
           },
           onClickEdit: (row) => {
             handleClickEdit(row.original);
-            // console.log({ row });
           },
         })}
         count={company?.data?.total || 0}

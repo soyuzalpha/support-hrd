@@ -14,6 +14,7 @@ import { ConfirmationDialog } from "@/components/confirmation-dialog";
 import CardMaster from "@/components/CardMaster";
 import { columnsMasterEmployements } from "./utils";
 import FormEmployements from "./components/FormEmployments";
+import DetailEmployements from "./components/DetailEmployements";
 
 const MasterEmployements = () => {
   const fForm = useForm();
@@ -59,6 +60,12 @@ const MasterEmployements = () => {
       fForm.setValue(key, value);
     });
     fForm.setValue("status", createInputOptions(toCapitalized(row.status), row.status));
+    fForm.setValue("id_user", createInputOptions(row.user.name, row.user.id_user));
+    fForm.setValue("id_manager", createInputOptions(row.manager.name, row.manager.id));
+    fForm.setValue(
+      "employment_status",
+      createInputOptions(toCapitalized(row.employment_status), row.employment_status)
+    );
     dDialog.handleOpen();
   };
 
@@ -105,16 +112,12 @@ const MasterEmployements = () => {
               fForm.setValue(key, value);
             });
             dConfirm.handleOpen();
-
-            console.log({ row });
           },
           onClickDetail: (row) => {
             handleClickDetail(row.original);
-            // console.log({ row });
           },
           onClickEdit: (row) => {
             handleClickEdit(row.original);
-            // console.log({ row });
           },
         })}
         count={company?.data?.total || 0}
@@ -127,8 +130,8 @@ const MasterEmployements = () => {
             {company?.data?.data?.map((item, index) => (
               <CardMaster
                 key={index}
-                title={item.name_company}
-                description={""}
+                title={item.user.name}
+                description={item.user.email}
                 item={item}
                 onClickDetail={() => {
                   handleClickDetail(item);
@@ -151,7 +154,7 @@ const MasterEmployements = () => {
       />
 
       <FormEmployements dialogHandler={dDialog} />
-      {/* <DetailCompany dialogHandler={dDetail} /> */}
+      <DetailEmployements dialogHandler={dDetail} />
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}

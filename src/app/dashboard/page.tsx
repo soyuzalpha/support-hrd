@@ -117,9 +117,9 @@ const Dashboard = () => {
           </div>
 
           {/* Activity Logs Section */}
-          <div className="mt-8">
+          {/* <div className="mt-8">
             <ActivityLogsSection logs={fForm.getValues("employee_data")?.logs} />
-          </div>
+          </div> */}
 
           {/* <div className="flex flex-col gap-4  md:gap-6">
             <SectionCards />

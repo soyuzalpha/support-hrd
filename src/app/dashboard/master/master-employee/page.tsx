@@ -77,7 +77,22 @@ const MasterEmployee = () => {
       //@ts-ignore
       fForm.setValue(key, value);
     });
-    fForm.setValue("status", createInputOptions(toCapitalized(row.status), row.status));
+    fForm.setValue("id_user", createInputOptions(row?.user?.name, row.user.id));
+    fForm.setValue("gender", createInputOptions(toCapitalized(row?.gender), row.gender));
+    fForm.setValue("religion", createInputOptions(toCapitalized(row?.religion), row.religion));
+    fForm.setValue("marital_status", createInputOptions(toCapitalized(row?.marital_status), row.marital_status));
+    fForm.setValue("blood_type", createInputOptions(row?.blood_type, row.blood_type));
+
+    fForm.setValue(
+      "family",
+      row.family?.map((item) => ({
+        ...item,
+        relationship: createInputOptions(toCapitalized(item.relationship), item.relationship),
+      }))
+    );
+
+    fForm.setValue("list_documents", row.documents);
+
     dDialog.handleOpen();
   };
 
@@ -131,7 +146,6 @@ const MasterEmployee = () => {
           },
           onClickEdit: (row) => {
             handleClickEdit(row.original);
-            console.log({ row });
           },
         })}
         count={company?.data?.total || 0}

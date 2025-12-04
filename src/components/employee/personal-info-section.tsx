@@ -17,12 +17,12 @@ export default function PersonalInfoSection({ employee }: PersonalInfoSectionPro
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="text-sm font-medium text-muted-foreground">Full Name</label>
-            <p className="font-semibold mt-1">{employee?.full_name}</p>
+            <p className="font-semibold mt-1">{employee?.full_name ?? employee?.name}</p>
           </div>
 
           <div>
             <label className="text-sm font-medium text-muted-foreground">Nickname</label>
-            <p className="font-semibold mt-1">{employee?.nick_name}</p>
+            <p className="font-semibold mt-1">{employee?.nick_name ?? employee?.username}</p>
           </div>
 
           <div>

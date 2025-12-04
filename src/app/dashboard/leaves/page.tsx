@@ -15,6 +15,7 @@ import { activateLeaveRequest, deleteLeaveRequest, getLeaveRequests } from "./ap
 import { columnsLeaves } from "./utils";
 import FormLeaves from "./components/FormLeaves";
 import { toastAlert } from "@/lib/toast";
+import LeaveRequestDetailCard from "./components/DetailLeave";
 
 const Page = () => {
   const fForm = useForm();
@@ -127,8 +128,8 @@ const Page = () => {
               {company?.data?.data?.map((item, index) => (
                 <CardMaster
                   key={index}
-                  title={item.name_company}
-                  description={""}
+                  title={item?.user?.name}
+                  description={item?.useer?.email}
                   item={item}
                   onClickDetail={() => {
                     handleClickDetail(item);
@@ -151,7 +152,7 @@ const Page = () => {
         />
 
         <FormLeaves dialogHandler={dDialog} />
-        {/* <DetailCompany dialogHandler={dDetail} /> */}
+        <LeaveRequestDetailCard dialogHandler={dDetail} />
 
         <ConfirmationDialog
           onConfirm={() => handleClickChangeStatus()}

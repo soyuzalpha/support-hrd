@@ -49,6 +49,7 @@ const FormCompany = ({ dialogForm }: { dialogForm: any }) => {
         name_company: fForm.getValues("name_company"),
         address_company: fForm.getValues("address_company"),
         phone_company: fForm.getValues("phone_company"),
+        status: fForm.getValues("status")?.value ?? "inactive",
       };
 
       const payloads = isEmpty(fForm.getValues("id_company")) ? { data: [payload] } : payload;

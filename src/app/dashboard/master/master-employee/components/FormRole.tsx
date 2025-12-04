@@ -26,17 +26,18 @@ import { useScreenHeight } from "@/hooks/use-screen-height";
 import { SelectOptions } from "@/components/select-options";
 import { useSelectFetcher } from "@/hooks/use-select-fetcher";
 import { DatePicker } from "@/components/ui/datepicker";
-import { fileToBase64 } from "@/utils/file";
+import { fileToBase64, normalizeFile } from "@/utils/file";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChevronDownIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { formatDate } from "@/utils/dates";
+import Show from "@/components/show";
+import { AttachmentViewer } from "@/components/AttachmentViewer";
 
 const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
   const { invalidate } = useAppRefreshQuery();
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(undefined);
 
   const { loadOptions: loadOptionsUser } = useSelectFetcher({
     endpoint: "/getUsers",
@@ -52,17 +53,22 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
     mutationFn: updateEmployee,
   });
 
-  const mutations = isEmpty(fForm.getValues("id_position")) ? mutation : updateMutation;
+  const mutations = isEmpty(fForm.getValues("id_employee")) ? mutation : updateMutation;
 
   const onSubmit = async (data) => {
     try {
-      const documents = await Promise.all(
-        data?.attachments?.map(async (item) => ({
-          image: await fileToBase64(item.image),
-        })) || []
+      const attachments = await Promise.all(
+        data?.documents?.map(async (item) => {
+          const file = normalizeFile(item.file);
+          return {
+            file: file ? await fileToBase64(file) : null,
+            document_type: item.document_type?.value ?? null,
+          };
+        }) || []
       );
 
       const payload = {
+        id_employee: data?.id_employee ?? null,
         id_user: data?.id_user?.value ?? null,
         nik: data?.nik || null,
         npwp: data?.npwp || null,
@@ -88,11 +94,11 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
 
         family: (data?.family || []).map((f) => ({
           name_family: f.name_family,
-          relationship: f.relationship,
+          relationship: f.relationship?.value ?? null,
           phone_number: f.phone_number,
         })),
 
-        documents,
+        documents: attachments,
       };
 
       console.log({ data, payload });
@@ -118,7 +124,7 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
       <DialogContent glass={true} size="ultra">
         <DialogHeader>
-          <DialogTitle>Form Role</DialogTitle>
+          <DialogTitle>Form Employee</DialogTitle>
           <DialogDescription>Make change to input and save</DialogDescription>
         </DialogHeader>
 
@@ -218,17 +224,17 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                   <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
                       <Button variant="outline" id="date" className="w-48 justify-between font-normal">
-                        {date ? date.toLocaleDateString() : "Select date"}
+                        {fForm.getValues("birth_date") ? fForm.getValues("birth_date") : "Select date"}
                         <ChevronDownIcon />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto overflow-hidden p-0" align="start">
                       <Calendar
                         mode="single"
-                        selected={date}
+                        selected={fForm.getValues("birth_date")}
                         captionLayout="dropdown"
                         onSelect={(date) => {
-                          setDate(date);
+                          // setDate(date);
                           fForm.setValue("birth_date", date);
                           setOpen(false);
                         }}
@@ -412,48 +418,66 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                 titleAdd="Add"
                 fields={[
                   { name: "name_family", placeholder: "Name", inputType: "text", label: "Name" },
-                  { name: "relationship", placeholder: "Mother", inputType: "text", label: "Relationship" },
+                  {
+                    name: "relationship",
+                    placeholder: "Mother",
+                    inputType: "select",
+                    dataOptions: [
+                      createInputOptions("Orang Tua", "ORANG_TUA"),
+                      createInputOptions("Anak", "ANAK"),
+                      createInputOptions("Saudara", "SAUDARA"),
+                      createInputOptions("Pasangan", "PASANGAN"),
+                      createInputOptions("Lainnya", "LAINNYA"),
+                    ],
+                    label: "Relationship",
+                  },
                   { name: "phone_number", placeholder: "Phone Number", inputType: "text", label: "Phone Number" },
                 ]}
               />
 
-              {/* DOCUMENTS UPLOAD (REPEATABLE) */}
-              <DynamicFormFields
-                control={fForm.control}
-                name="documents"
-                repeatable
-                direction={useIsMobile() ? "vertical" : "horizontal"}
-                directionContent="vertical"
-                title="Documents"
-                titleAdd="Add Documents"
-                fields={[
-                  {
-                    name: "document_type",
-                    placeholder: "KTP",
-                    inputType: "select",
-                    label: "Document Type",
-                    dataOptions: [
-                      createInputOptions("KTP", "KTP"),
-                      createInputOptions("NPWP", "NPWP"),
-                      createInputOptions("IJAZAH", "IJAZAH"),
-                      createInputOptions("SERTIFIKAT", "SERTIFIKAT"),
-                      createInputOptions("CV", "CV"),
-                      createInputOptions("PAKLARING", "PAKLARING"),
-                      createInputOptions("SKCK", "SKCK"),
-                      createInputOptions("BPJS_KESEHATAN", "BPJS_KESEHATAN"),
-                      createInputOptions("TRANSKRIP_NILAI", "TRANSKRIP_NILAI"),
-                      createInputOptions("BPJS_KETENAGAKERJAAN", "BPJS_KETENAGAKERJAAN"),
-                      createInputOptions("OTHER", "OTHER"),
-                    ],
-                  },
-                  {
-                    name: "file",
-                    placeholder: "File",
-                    inputType: "file",
-                    label: "File",
-                  },
-                ]}
-              />
+              <div>
+                <Show.When isTrue={!isEmpty(fForm.getValues("list_documents"))}>
+                  <AttachmentViewer attachments={fForm.getValues("list_documents")} />
+                </Show.When>
+
+                {/* DOCUMENTS UPLOAD (REPEATABLE) */}
+                <DynamicFormFields
+                  control={fForm.control}
+                  name="documents"
+                  repeatable
+                  direction={useIsMobile() ? "vertical" : "horizontal"}
+                  directionContent="vertical"
+                  title="Documents"
+                  titleAdd="Add Documents"
+                  fields={[
+                    {
+                      name: "document_type",
+                      placeholder: "KTP",
+                      inputType: "select",
+                      label: "Document Type",
+                      dataOptions: [
+                        createInputOptions("KTP", "KTP"),
+                        createInputOptions("NPWP", "NPWP"),
+                        createInputOptions("IJAZAH", "IJAZAH"),
+                        createInputOptions("SERTIFIKAT", "SERTIFIKAT"),
+                        createInputOptions("CV", "CV"),
+                        createInputOptions("PAKLARING", "PAKLARING"),
+                        createInputOptions("SKCK", "SKCK"),
+                        createInputOptions("BPJS_KESEHATAN", "BPJS_KESEHATAN"),
+                        createInputOptions("TRANSKRIP_NILAI", "TRANSKRIP_NILAI"),
+                        createInputOptions("BPJS_KETENAGAKERJAAN", "BPJS_KETENAGAKERJAAN"),
+                        createInputOptions("OTHER", "OTHER"),
+                      ],
+                    },
+                    {
+                      name: "file",
+                      placeholder: "File",
+                      inputType: "file",
+                      label: "File",
+                    },
+                  ]}
+                />
+              </div>
             </FieldGroup>
           </AppGridContainer>
 
