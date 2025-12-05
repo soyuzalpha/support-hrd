@@ -21,6 +21,7 @@ import { getUserById } from "./master/master-user/api/master-position-service";
 import { Spinner } from "@/components/ui/spinner";
 import FormEmployee from "./master/master-employee/components/FormRole";
 import { useDialogModal } from "@/hooks/use-dialog-modal";
+import { LeaveQuotaList } from "@/components/LeaveQuotaDisplay";
 
 const Dashboard = () => {
   const fForm = useForm();
@@ -132,6 +133,8 @@ const Dashboard = () => {
                     </div>
                   </CardContent>
                 </Card>
+
+                <LeaveQuotaList data={user?.userDatas?.leave_quotas} />
               </div>
             </div>
 
@@ -154,3 +157,12 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+function formatDate(dateString: string | null) {
+  if (!dateString) return "-";
+  return new Date(dateString).toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}

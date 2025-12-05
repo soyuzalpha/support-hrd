@@ -50,7 +50,7 @@ const FormAttendancePeriod = ({ dialogHandler }: { dialogHandler: UseDialogModal
     mutationFn: createAttendanceSummary,
   });
 
-  const mutations = isEmpty(fForm.getValues("id_periodattendance")) ? mutationCreate : mutationUpdate;
+  const mutations = isEmpty(fForm.getValues("id_attendancesummary")) ? mutationCreate : mutationUpdate;
 
   const onSubmit = async (data) => {
     try {

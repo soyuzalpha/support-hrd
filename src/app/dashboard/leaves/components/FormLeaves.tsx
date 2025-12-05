@@ -34,8 +34,10 @@ import { toISOStringFormat } from "@/utils/dates";
 import { fileToBase64, normalizeFile } from "@/utils/file";
 import { AttachmentViewer } from "@/components/AttachmentViewer";
 import Show from "@/components/show";
+import { useUser } from "@/context/app-context";
 
 const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
+  const { user } = useUser();
   const fForm = useFormContext();
   const { invalidate } = useAppRefreshQuery();
   const dDateStart = useDialogModal();
@@ -47,6 +49,8 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
     endpoint: "/getTypeleaves",
     labelKey: "name_typeleave",
     valueKey: "id_typeleave",
+    //@ts-ignore
+    extraParams: { gender_specific: user?.employees?.gender ?? null },
   });
 
   const mutationCreate = useMutation({
