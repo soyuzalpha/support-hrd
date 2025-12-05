@@ -50,7 +50,7 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
     labelKey: "name_typeleave",
     valueKey: "id_typeleave",
     //@ts-ignore
-    extraParams: { gender_specific: user?.employees?.gender ?? null },
+    extraParams: { gender_specific: user?.userDatas?.employees?.gender ?? null },
   });
 
   const mutationCreate = useMutation({
@@ -102,6 +102,8 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
       toastAlert.error("Something went wrong!");
     }
   };
+
+  console.log({ gender: user?.userDatas?.employees?.gender });
 
   return (
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
