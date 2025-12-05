@@ -70,7 +70,7 @@ export default function PersonalInfoSection({ employee }: PersonalInfoSectionPro
 
             <div>
               <label className="text-sm text-muted-foreground">City</label>
-              <p className="font-semibold mt-1">{employee?.city_address}</p>
+              <p className="font-semibold mt-1">{employee?.city?.city_name}</p>
             </div>
 
             <div>
