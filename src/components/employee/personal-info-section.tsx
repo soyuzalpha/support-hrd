@@ -1,13 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useUser } from "@/context/app-context";
 import { dateDisplay } from "@/utils/dates";
 
 import { format } from "date-fns";
+import { useFormContext } from "react-hook-form";
 
 interface PersonalInfoSectionProps {
   employee: any;
 }
 
 export default function PersonalInfoSection({ employee }: PersonalInfoSectionProps) {
+  const fForm = useFormContext();
+  console.log({ values: fForm.getValues() });
   return (
     <Card>
       <CardHeader>
@@ -60,8 +64,8 @@ export default function PersonalInfoSection({ employee }: PersonalInfoSectionPro
           <h3 className="font-semibold mb-4">Address</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm text-muted-foreground">Street Address</label>
-              <p className="font-semibold mt-1">{employee?.address}</p>
+              <label className="text-sm text-muted-foreground">Province</label>
+              <p className="font-semibold mt-1">{employee?.province.province_name}</p>
             </div>
 
             <div>
@@ -70,8 +74,8 @@ export default function PersonalInfoSection({ employee }: PersonalInfoSectionPro
             </div>
 
             <div>
-              <label className="text-sm text-muted-foreground">Province</label>
-              <p className="font-semibold mt-1">{employee?.province_address}</p>
+              <label className="text-sm text-muted-foreground">Street Address</label>
+              <p className="font-semibold mt-1">{employee?.address}</p>
             </div>
 
             <div>

@@ -83,7 +83,7 @@ const Dashboard = () => {
               <div className="space-y-6">
                 <Card className="border-l-4 border-l-red-500">
                   <CardHeader>
-                    <CardTitle className="text-lg">Employment Info</CardTitle>
+                    <CardTitle className="text-lg">User Info</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div>
@@ -95,16 +95,16 @@ const Dashboard = () => {
                       <p className="font-semibold">{fForm.getValues("employee_data")?.user?.username}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Company ID</p>
-                      <p className="font-semibold">{fForm.getValues("employee_data")?.user?.id_company}</p>
+                      <p className="text-sm text-muted-foreground">Company</p>
+                      <p className="font-semibold">{fForm.getValues("employee_data")?.user?.company?.name_company}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Position ID</p>
-                      <p className="font-semibold">{fForm.getValues("employee_data")?.user?.id_position}</p>
+                      <p className="text-sm text-muted-foreground">Position</p>
+                      <p className="font-semibold">{fForm.getValues("employee_data")?.user?.position?.name_position}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Division ID</p>
-                      <p className="font-semibold">{fForm.getValues("employee_data")?.user?.id_division}</p>
+                      <p className="text-sm text-muted-foreground">Division</p>
+                      <p className="font-semibold">{fForm.getValues("employee_data")?.user?.division?.name_division}</p>
                     </div>
                   </CardContent>
                 </Card>
