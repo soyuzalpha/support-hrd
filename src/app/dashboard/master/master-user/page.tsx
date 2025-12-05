@@ -167,6 +167,12 @@ const MasterUser = () => {
     },
     {
       type: "number",
+      name: "min_work",
+      label: "Min Work",
+      placeholder: "Min work",
+    },
+    {
+      type: "number",
       name: "max_work",
       label: "Max Work",
       placeholder: "Max work",
