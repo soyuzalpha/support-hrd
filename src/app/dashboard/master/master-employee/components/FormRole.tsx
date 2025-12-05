@@ -46,6 +46,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
     endpoint: "/getUsers",
     labelKey: "name",
     valueKey: "id",
+    extraParams: { is_employee: 0 },
   });
   const { loadOptions: loadOptionsProvince } = useSelectFetcher({
     endpoint: "/getProvinces",

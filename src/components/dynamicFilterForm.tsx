@@ -41,7 +41,14 @@ export type FilterField =
     };
 
 export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[]; onSubmit: (v: any) => void }) {
-  const { register, handleSubmit, control, reset } = useForm();
+  const defaultValues = fields.reduce((acc, f) => {
+    acc[f.name] = null;
+    return acc;
+  }, {} as Record<string, any>);
+
+  const { register, handleSubmit, control, reset } = useForm({
+    defaultValues,
+  });
 
   const submitHandler = (values: any) => {
     onSubmit(values);
@@ -125,9 +132,10 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
           })}
 
           <div className="flex gap-2 justify-end">
-            <Button variant="ghost" type="button" onClick={() => reset()}>
+            <Button variant="ghost" type="button" onClick={() => reset(defaultValues)}>
               Reset
             </Button>
+
             <Button type="submit">Apply</Button>
           </div>
         </form>

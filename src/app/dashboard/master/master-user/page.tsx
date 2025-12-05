@@ -15,6 +15,8 @@ import { toastAlert } from "@/lib/toast";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import CardMaster from "@/components/CardMaster";
 import DetailRole from "./components/DetailRole";
+import { FilterField } from "@/components/dynamicFilterForm";
+import { useSelectFetcher } from "@/hooks/use-select-fetcher";
 
 const MasterUser = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -24,11 +26,18 @@ const MasterUser = () => {
   const dDetail = useDialogModal();
   const dConfirm = useDialogModal();
 
+  const { loadOptions: loadOptionsCompany } = useSelectFetcher({
+    endpoint: "/getCompany",
+    labelKey: "name_company",
+    valueKey: "id_company",
+  });
+
   const {
     data: company,
     isLoading,
     currentState,
     setCurrentState,
+    refetch,
   } = useDatatable({
     queryKey: "users",
     queryFn: getUsers,
@@ -112,6 +121,58 @@ const MasterUser = () => {
     );
   };
 
+  const handleFilterSubmit = (filters: Record<string, any>) => {
+    const mappedFilters = Object.entries(filters).reduce((acc: any, [key, value]) => {
+      if (value && typeof value === "object" && "value" in value) {
+        acc[key] = value.value;
+      } else {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+
+    // build new query params
+    const newParams = {
+      ...currentState,
+      page: 1, // reset pagination
+      ...mappedFilters,
+    };
+
+    // update datatable state
+    setCurrentState(newParams);
+
+    // refetch data using updated params
+    refetch(newParams);
+  };
+
+  const filters: FilterField[] = [
+    {
+      type: "async-select",
+      name: "id_company",
+      label: "Company",
+      placeholder: "Search Company...",
+      loadOptions: loadOptionsCompany,
+    },
+    {
+      type: "number",
+      name: "min_age",
+      label: "Minimum Age",
+      placeholder: "Minimum age",
+    },
+    {
+      type: "number",
+      name: "max_age",
+      label: "Maximum Age",
+      placeholder: "Maximum age",
+    },
+    {
+      type: "number",
+      name: "max_work",
+      label: "Max Work",
+      placeholder: "Max work",
+    },
+  ];
+
   return (
     <FormProvider {...fForm}>
       <DataTable
@@ -135,6 +196,9 @@ const MasterUser = () => {
             console.log({ row });
           },
         })}
+        withFilter={true}
+        filters={filters}
+        onSubmitFilter={handleFilterSubmit}
         count={company?.data?.total || 0}
         currentState={currentState}
         setCurrentState={handleStateChange}

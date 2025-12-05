@@ -39,6 +39,7 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
     endpoint: "/getUsers",
     labelKey: "name",
     valueKey: "id",
+    extraParams: { is_employment: 0, is_employee: 1 },
   });
 
   const mutation = useMutation({
