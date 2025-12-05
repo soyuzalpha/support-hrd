@@ -187,7 +187,7 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                 )}
               />
 
-              <FormItem>
+              {/* <FormItem>
                 <FormLabel>Status</FormLabel>
                 <FormControl>
                   <Controller
@@ -207,7 +207,7 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                     )}
                   />
                 </FormControl>
-              </FormItem>
+              </FormItem> */}
 
               <div className="space-y-3">
                 <Show.When isTrue={!isEmpty(fForm.getValues("list_attachments"))}>
