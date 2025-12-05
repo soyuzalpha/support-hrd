@@ -37,7 +37,7 @@ import { AttachmentViewer } from "@/components/AttachmentViewer";
 import { Textarea } from "@/components/ui/textarea";
 import { getCityByProvince } from "../../master-zones/api/master-zones-service";
 
-const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
+const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
   const { invalidate } = useAppRefreshQuery();
   const [open, setOpen] = React.useState(false);
@@ -65,7 +65,7 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
     mutationFn: updateEmployee,
   });
 
-  const mutations = isEmpty(fForm.getValues("id_employee")) ? mutation : updateMutation;
+  const mutations = isEmpty(fForm?.getValues("id_employee")) ? mutation : updateMutation;
 
   const onSubmit = async (data) => {
     try {
@@ -96,8 +96,8 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
         marital_status: data?.marital_status?.value || null,
         blood_type: data?.blood_type?.value || null,
         address: data?.address || null,
-        city_address: data?.city_address?.value || null,
-        province_address: data?.province_address?.value || null,
+        id_city: data?.id_city?.value || null,
+        id_province: data?.id_province?.value || null,
         postal_code: data?.postal_code || null,
 
         contacts: (data?.contacts || []).map((c) => ({
@@ -142,7 +142,7 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
           <DialogDescription>Make change to input and save</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={fForm.handleSubmit(onSubmit)}>
+        <form onSubmit={fForm?.handleSubmit(onSubmit)}>
           <AppGridContainer maxHeight={useScreenHeight() - 300}>
             <FieldGroup>
               <div className="grid grid-cols-2 gap-3">
@@ -353,7 +353,7 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                   <FormControl>
                     <Controller
                       control={fForm.control}
-                      name="province_address"
+                      name="id_province"
                       render={({ field }) => (
                         <SelectOptions
                           isAsync
@@ -384,7 +384,7 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                   <FormControl>
                     <Controller
                       control={fForm.control}
-                      name="city_address"
+                      name="id_city"
                       render={({ field }) => (
                         <SelectOptions
                           options={
@@ -535,4 +535,4 @@ const FormRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
   );
 };
 
-export default FormRole;
+export default FormEmployee;

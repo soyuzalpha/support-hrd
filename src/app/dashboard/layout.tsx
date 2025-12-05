@@ -1,11 +1,10 @@
 "use client";
 
 import "../globals.css";
-import Head from "../head";
 import { geist, inter, jetbrainsMono, literata, poppins } from "@/lib/fonts";
 import React from "react";
 import { DockMenu } from "@/components/DockMenu";
-import { useAppContext } from "@/context/app-context";
+import { useAppContext, useUser } from "@/context/app-context";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 

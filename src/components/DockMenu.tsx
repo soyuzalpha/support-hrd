@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { menuItems } from "@/utils/menu";
+import { menuItems, roleAccess } from "@/utils/menu";
 import { LogOut, Plus } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useUser } from "@/context/app-context";
@@ -22,7 +22,12 @@ export function DockMenu({ onItemClick }: DockMenuProps) {
   const path = usePathname();
 
   const session = useSession();
-  const { updateUser } = useUser();
+  const { updateUser, user } = useUser();
+
+  const role = user?.userDatas?.position.name_position ?? "staff"; // fallback biar aman
+
+  const allowedMenu =
+    roleAccess[role] === "all" ? menuItems : menuItems.filter((menu) => roleAccess[role]?.includes(menu.id));
 
   // Set up the logout callback for 401 auto-logout
   React.useEffect(() => {
@@ -42,6 +47,7 @@ export function DockMenu({ onItemClick }: DockMenuProps) {
           timezone: "UTC",
           dateFormat: "YYYY/MM/DD",
         },
+        userDatas: null,
       });
     };
 
@@ -81,6 +87,8 @@ export function DockMenu({ onItemClick }: DockMenuProps) {
     });
   };
 
+  console.log({ user: user.userDatas, role: role });
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 flex justify-center items-end pb-4 md:pb-5 pointer-events-none">
       <div
@@ -90,7 +98,7 @@ export function DockMenu({ onItemClick }: DockMenuProps) {
         )}
       >
         <div className="flex items-center gap-3 md:gap-4">
-          {menuItems.map((item) => {
+          {allowedMenu.map((item) => {
             const Icon = item.icon;
             const isActive = path === item.path;
             const isHovered = hoveredItem === item.id;

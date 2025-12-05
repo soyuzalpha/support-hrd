@@ -22,6 +22,7 @@ export interface AppState {
       timezone: string;
       dateFormat: string;
     };
+    userDatas?: any;
   };
   ui?: {
     sidebarCollapsed?: boolean; // 👈 kasih tanda tanya semua

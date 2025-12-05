@@ -21,3 +21,10 @@ export const menuItems = [
   // { id: "notifications", label: "Notifications", icon: Bell },
   // { id: "settings", label: "Settings", icon: Settings },
 ];
+
+export const roleAccess = {
+  Superadmin: "all",
+  Admin: "all",
+  Manager: "all",
+  Staff: ["dashboard", "leave"],
+} as const;
