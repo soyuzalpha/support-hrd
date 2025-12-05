@@ -6,12 +6,15 @@ import Image from "next/image";
 import { FontSwitcher } from "./font-switcher";
 import { ColorSchemaToggle } from "./color-schema-toggle";
 import Link from "next/link";
+import { useUser } from "@/context/app-context";
+import { toCapitalized } from "@/utils";
 
 interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
   transparent?: boolean;
 }
 
 export function Navbar({ transparent = true, className, ...props }: NavbarProps) {
+  const { user } = useUser();
   return (
     <header className={cn("sticky top-0 z-5 transition-all w-full mt-4", className)} {...props}>
       <div
@@ -27,8 +30,12 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
           <h1 className="text-xl font-medium">Transtama</h1>
         </Link>
 
-        <div className="flex flex-col lg:flex-row">
+        <div className="flex flex-col lg:flex-row items-center gap-3">
           <FontSwitcher />
+          <div>
+            <h1>{toCapitalized(user.userDatas?.name)}</h1>
+          </div>
+
           {/* <ColorSchemaToggle /> */}
         </div>
       </div>

@@ -193,9 +193,7 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
 
                 <FormItem>
                   <div className="flex-1 grid gap-3">
-                    <Label htmlFor="end_date" isRequired>
-                      Contract End Date
-                    </Label>
+                    <Label htmlFor="end_date">End Date</Label>
                     <Controller
                       name="end_date"
                       render={({ field }) => (
@@ -213,9 +211,7 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
               <div className="grid grid-cols-2 gap-3">
                 <FormItem>
                   <div className="flex-1 grid gap-3">
-                    <Label htmlFor="contract_start_date" isRequired>
-                      Contract Start Date
-                    </Label>
+                    <Label htmlFor="contract_start_date">Contract Start Date</Label>
                     <Controller
                       name="contract_start_date"
                       render={({ field }) => (
@@ -231,15 +227,13 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
 
                 <FormItem>
                   <div className="flex-1 grid gap-3">
-                    <Label htmlFor="contract_end_date" isRequired>
-                      Contract End Date
-                    </Label>
+                    <Label htmlFor="end_date">Contract End Date</Label>
                     <Controller
-                      name="contract_end_date"
+                      name="end_date"
                       render={({ field }) => (
                         <DatePicker
                           {...field}
-                          date={fForm.getValues("contract_end_date")}
+                          date={fForm.getValues("end_date")}
                           onChange={(value) => field.onChange(value)}
                         />
                       )}
