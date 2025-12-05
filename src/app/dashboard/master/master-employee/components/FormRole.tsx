@@ -293,7 +293,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                             label: i,
                             value: i,
                           }))}
-                          placeholder="Select Gender"
+                          placeholder="Select Religion"
                           value={field.value}
                           onChange={(value) => {
                             field.onChange(value);
