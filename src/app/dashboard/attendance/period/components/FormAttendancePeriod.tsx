@@ -48,8 +48,6 @@ const FormAttendancePeriod = ({ dialogHandler }: { dialogHandler: UseDialogModal
         status: data?.status?.value ?? null, //open,closed
       };
 
-      console.log({ data });
-
       mutations.mutate(payload, {
         onSuccess: (res) => {
           const message = generateSuccessMessage(res);

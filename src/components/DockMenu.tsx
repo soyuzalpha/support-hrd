@@ -87,8 +87,6 @@ export function DockMenu({ onItemClick }: DockMenuProps) {
     });
   };
 
-  console.log({ user: user.userDatas, role: role });
-
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 flex justify-center items-end pb-4 md:pb-5 pointer-events-none">
       <div

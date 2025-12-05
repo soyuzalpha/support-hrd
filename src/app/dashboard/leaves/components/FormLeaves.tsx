@@ -84,8 +84,6 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
         // attachments: detail,
       };
 
-      console.log({ payload, data });
-
       mutation.mutate(payload, {
         onSuccess: (res) => {
           dialogHandler.handleClose();
@@ -102,8 +100,6 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
       toastAlert.error("Something went wrong!");
     }
   };
-
-  console.log({ gender: user?.userDatas?.employees?.gender });
 
   return (
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>

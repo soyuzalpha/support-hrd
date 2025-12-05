@@ -55,7 +55,6 @@ const MasterPosition = () => {
   );
 
   const handleClickDetail = (row: any) => {
-    console.log({ row });
     if (!row) return;
 
     mutationGetDetailTypeLeave.mutate(row.id_typeleave, {
@@ -124,15 +123,12 @@ const MasterPosition = () => {
               fForm.setValue(key, value);
             });
             dConfirm.handleOpen();
-
-            console.log({ row });
           },
           onClickDetail: (row) => {
             handleClickDetail(row.original);
           },
           onClickEdit: (row) => {
             handleClickEdit(row.original);
-            console.log({ row });
           },
         })}
         count={company?.data?.total || 0}

@@ -89,8 +89,6 @@ const MasterPosition = () => {
     //@ts-ignore
     const mutation = isEmpty(row.deleted_at) ? mutationDeactive : mutationActive;
 
-    console.log({ row });
-
     mutation.mutate(
       { id_position: row.id_position },
       {
@@ -118,15 +116,12 @@ const MasterPosition = () => {
               fForm.setValue(key, value);
             });
             dConfirm.handleOpen();
-
-            console.log({ row });
           },
           onClickDetail: (row) => {
             handleClickDetail(row.original);
           },
           onClickEdit: (row) => {
             handleClickEdit(row.original);
-            console.log({ row });
           },
         })}
         count={company?.data?.total || 0}

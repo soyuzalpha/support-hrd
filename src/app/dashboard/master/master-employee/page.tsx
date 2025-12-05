@@ -62,7 +62,6 @@ const MasterEmployee = () => {
           fForm.setValue(key, value);
         });
 
-        console.log({ res });
         dDetail.handleOpen();
       },
       onError: (err) => {
@@ -109,8 +108,6 @@ const MasterEmployee = () => {
     //@ts-ignore
     const mutation = isEmpty(row.deleted_at) ? mutationDeactive : mutationActive;
 
-    console.log({ row });
-
     mutation.mutate(
       { id_employee: row.id_employee },
       {
@@ -138,8 +135,6 @@ const MasterEmployee = () => {
               fForm.setValue(key, value);
             });
             dConfirm.handleOpen();
-
-            console.log({ row });
           },
           onClickDetail: (row) => {
             handleClickDetail(row.original);

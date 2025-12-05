@@ -13,7 +13,6 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
   const fForm = useFormContext();
   const details = fForm.getValues();
 
-  console.log({ details });
   return (
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
       <DialogContent size="xxl" glass={true}>

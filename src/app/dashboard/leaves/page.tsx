@@ -77,8 +77,6 @@ const Page = () => {
     const row = fForm.getValues();
     const mutation = isEmpty(row?.deleted_at) ? mutationDeactive : mutationActive;
 
-    console.log({ row });
-
     mutation.mutate(
       { id_leaverequest: row.id_leaverequest },
       {
@@ -106,16 +104,12 @@ const Page = () => {
                 fForm.setValue(key, value);
               });
               dConfirm.handleOpen();
-
-              console.log({ row });
             },
             onClickDetail: (row) => {
               handleClickDetail(row.original);
-              // console.log({ row });
             },
             onClickEdit: (row) => {
               handleClickEdit(row.original);
-              // console.log({ row });
             },
           })}
           count={company?.data?.total || 0}

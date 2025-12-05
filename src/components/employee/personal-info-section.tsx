@@ -11,7 +11,7 @@ interface PersonalInfoSectionProps {
 
 export default function PersonalInfoSection({ employee }: PersonalInfoSectionProps) {
   const fForm = useFormContext();
-  console.log({ values: fForm.getValues() });
+
   return (
     <Card>
       <CardHeader>

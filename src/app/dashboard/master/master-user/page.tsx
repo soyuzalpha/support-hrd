@@ -104,8 +104,6 @@ const MasterUser = () => {
     //@ts-ignore
     // const mutation = isEmpty(row.deleted_at) ? mutationDeactive : mutationActive;
 
-    console.log({ row });
-
     mutationDeactive.mutate(
       { id: row.id },
       {
@@ -191,15 +189,12 @@ const MasterUser = () => {
               fForm.setValue(key, value);
             });
             dConfirm.handleOpen();
-
-            console.log({ row });
           },
           onClickDetail: (row) => {
             handleClickDetail(row.original);
           },
           onClickEdit: (row) => {
             handleClickEdit(row.original);
-            console.log({ row });
           },
         })}
         withFilter={true}

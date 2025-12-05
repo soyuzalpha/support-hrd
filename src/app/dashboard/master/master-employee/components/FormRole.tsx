@@ -114,8 +114,6 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
         documents: attachments,
       };
 
-      console.log({ data, payload });
-
       mutations.mutate(payload, {
         onSuccess: (res) => {
           const message = generateSuccessMessage(res);
@@ -132,8 +130,6 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
       toastAlert.error("Something went wrong!");
     }
   };
-
-  console.log({ cityL: mutationGetCityByProvince?.data?.data?.data });
 
   return (
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>

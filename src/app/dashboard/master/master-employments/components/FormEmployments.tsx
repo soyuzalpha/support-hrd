@@ -88,8 +88,6 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
         attachments: detail,
       };
 
-      console.log({ data, payload });
-
       mutations.mutate(payload, {
         onSuccess: (res) => {
           const message = generateSuccessMessage(res);

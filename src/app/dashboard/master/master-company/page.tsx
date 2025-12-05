@@ -75,8 +75,6 @@ const MasterCompany = () => {
     const row = fForm.getValues();
     const mutation = isEmpty(row?.deleted_at) ? mutationDeactive : mutationActive;
 
-    console.log({ row });
-
     mutation.mutate(
       { id_company: row.id_company },
       {
@@ -91,8 +89,6 @@ const MasterCompany = () => {
       }
     );
   };
-
-  console.log({ company });
 
   return (
     <FormProvider {...fForm}>

@@ -47,7 +47,6 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
         toastAlert.error(res?.meta_data?.message || "Email atau password salah!");
       } else {
         const decoded = jwtDecode<any>(res?.data?.token);
-        console.log({ decoded });
 
         updateUser({
           email: decoded.email,
