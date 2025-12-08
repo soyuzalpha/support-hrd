@@ -1,37 +1,43 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { dateDisplay } from "./dates";
+import { toCapitalized } from ".";
 
 const columnHelper = createColumnHelper<any>();
 
 export const defaultColumnsInformation = [
   columnHelper.accessor("created_at", {
-    id: "created_at_col", // 🔑 kasih id unik
-    header: "Created At",
-    cell: ({ row }) => <p>{dateDisplay(row?.original?.created_at)}</p>,
+    id: "created_col",
+    header: "Created",
+    cell: ({ row }) => (
+      <div className="flex flex-col text-xs">
+        <span className="font-medium">{dateDisplay(row.original.created_at)}</span>
+        <span className="text-muted-foreground">{toCapitalized(row.original.creator?.name) || "-"}</span>
+      </div>
+    ),
   }),
-  columnHelper.accessor("creator.name", {
-    id: "created_by_col",
-    header: "Created By",
-    cell: ({ row }) => <p>{row?.original?.creator?.name}</p>,
-  }),
+
   columnHelper.accessor("updated_at", {
-    id: "updated_at_col",
-    header: "Updated At",
-    cell: ({ row }) => <p>{dateDisplay(row?.original?.updated_at)}</p>,
+    id: "updated_col",
+    header: "Updated",
+    cell: ({ row }) => (
+      <div className="flex flex-col text-xs">
+        <span className="font-medium">{dateDisplay(row.original.updated_at)}</span>
+        <span className="text-muted-foreground">{toCapitalized(row.original.updater?.name) || "-"}</span>
+      </div>
+    ),
   }),
-  columnHelper.accessor("update_by_name", {
-    id: "updated_by_col",
-    header: "Updated By",
-    cell: ({ row }) => <p>{row?.original?.updater?.name}</p>,
-  }),
+
   columnHelper.accessor("deleted_at", {
-    id: "deleted_at_col",
-    header: "Deleted At",
-    cell: ({ row }) => <p>{dateDisplay(row?.original?.deleted_at)}</p>,
-  }),
-  columnHelper.accessor("delete_by_name", {
-    id: "deleted_by_col",
-    header: "Deleted By",
-    cell: ({ row }) => <p>{row?.original?.deleter?.name}</p>,
+    id: "deleted_col",
+    header: "Deleted",
+    cell: ({ row }) => {
+      if (!row.original.deleted_at) return "-";
+      return (
+        <div className="flex flex-col text-xs text-red-500">
+          <span className="font-medium">{dateDisplay(row.original.deleted_at)}</span>
+          <span className="text-muted-foreground">{toCapitalized(row.original.deleter?.name) || "-"}</span>
+        </div>
+      );
+    },
   }),
 ];

@@ -1,4 +1,5 @@
 import Show from "@/components/show";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { isEmpty } from "@/utils";
+import { isEmpty, toCapitalized } from "@/utils";
 import { defaultColumnsInformation } from "@/utils/tables";
 import { IconCircleCheckFilled, IconDotsVertical, IconXboxX } from "@tabler/icons-react";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -31,30 +32,66 @@ export const formSchemaPosition = z.object({
 const columnHelper = createColumnHelper<any>();
 export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onCLickPreview }) => {
   return [
-    // columnHelper.accessor("status", {
-    //   header: "Status",
-    //   cell: ({ row }) => (
-    //     <Badge variant="outline" className="text-muted-foreground px-1.5 gap-1 inline-flex items-center">
-    //       {row.original.status === "active" ? (
-    //         <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-    //       ) : (
-    //         <IconXboxX className="fill-red-500 dark:fill-red-400" />
-    //       )}
-    //       {row.original.status === "active" ? "Active" : "Inactive"}
-    //     </Badge>
-    //   ),
-    // }),
+    columnHelper.accessor("status", {
+      header: "Status",
+      cell: ({ row }) => (
+        <Badge variant="outline" className="text-muted-foreground px-1.5 gap-1 inline-flex items-center">
+          <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
+          {toCapitalized(row?.original?.employments?.employment_status ?? "-") || "-"}
+        </Badge>
+      ),
+    }),
     columnHelper.accessor("id", {
-      header: "User ID",
+      header: "#ID",
       cell: (info) => <p>{info.getValue() ?? "-"}</p>,
     }),
-    columnHelper.accessor("username", {
-      header: "Username",
-      cell: (info) => <p>{info.getValue() ?? "-"}</p>,
+    columnHelper.accessor("name", {
+      header: "Name",
+      cell: ({ row }) => (
+        <div className="flex items-center gap-3">
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+
+          <p>
+            <span>{row.original?.employee_number ?? "-"}</span> <br />
+            <span>{row.original?.name ?? "-"}</span>
+            <br />
+            <span> {row.original?.username ?? "-"}</span>
+          </p>
+        </div>
+      ),
     }),
-    columnHelper.accessor("email", {
-      header: "Email",
-      cell: (info) => <p>{info.getValue() ?? "-"}</p>,
+    columnHelper.accessor("name", {
+      header: "Contacts",
+      cell: ({ row }) => (
+        <p>
+          <span>{row.original?.email ?? "-"}</span>
+          <br />
+          <span> {row.original?.employees?.contacts?.[0]?.phone_number ?? "-"}</span>
+        </p>
+      ),
+    }),
+    columnHelper.accessor("name", {
+      header: "Position/Division",
+      cell: ({ row }) => (
+        <p>
+          <span>{row.original?.position?.name_position ?? "-"}</span>
+          <br />
+          <span> {row.original?.division?.name_division ?? "-"}</span>
+        </p>
+      ),
+    }),
+    columnHelper.accessor("name", {
+      header: "Company",
+      cell: ({ row }) => (
+        <p>
+          <span>{row.original?.company?.name_company ?? "-"}</span>
+          <br />
+          <span> {row.original?.company?.address_company ?? "-"}</span>
+        </p>
+      ),
     }),
     // columnHelper.accessor("description_position", {
     //   header: "Description",
