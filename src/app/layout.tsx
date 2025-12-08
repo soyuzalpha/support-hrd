@@ -34,32 +34,6 @@ export default function RootLayout({
       ----------------------------------------------*/}
       <body className={`${poppins.variable} antialiased relative min-h-screen`}>
         {/* Background ReactBits */}
-        <div className="absolute inset-0 -z-10">
-          <Beams
-            beamWidth={3}
-            beamHeight={30}
-            beamNumber={20}
-            lightColor="#F93827"
-            // lightColor="#ffffff"
-            speed={5}
-            noiseIntensity={1.75}
-            scale={0.2}
-            rotation={30}
-          />
-          {/* <ColorBends
-            colors={["#ff5c7a", "#43ff88", "#023e8a"]}
-            rotation={0}
-            autoRotate={0}
-            speed={0.2}
-            scale={1}
-            frequency={1}
-            warpStrength={1}
-            mouseInfluence={1}
-            parallax={0.5}
-            noise={0.08}
-            transparent
-          /> */}
-        </div>
 
         {/* Main Content */}
         <main className="relative">

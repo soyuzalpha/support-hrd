@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { isEmpty } from "@/utils";
 import { useUser } from "@/context/app-context";
 import { GlassContainer } from "./GlassContainer";
+import Image from "next/image";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const fForm = useForm();
@@ -68,8 +69,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   });
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6 max-w-sm", className)} {...props}>
       <GlassContainer>
+        <div className="flex justify-center mb-6">
+          <Image src="/TRANSTAMA.png" alt="logo" width={200} height={200} className="w-52 h-auto object-contain" />
+        </div>
+
         <div className="text-center mb-8">
           <CardTitle className="text-xl text-white">Welcome back</CardTitle>
           <CardDescription className="text-white">Login your account to continue</CardDescription>

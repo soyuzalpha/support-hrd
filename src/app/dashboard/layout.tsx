@@ -7,6 +7,7 @@ import { DockMenu } from "@/components/DockMenu";
 import { useAppContext, useUser } from "@/context/app-context";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import Beams from "@/components/Beams";
 
 export default function DashboardLayout({
   children,
@@ -38,6 +39,33 @@ export default function DashboardLayout({
   return (
     <>
       <div className={`antialiased ${poppins.variable}`}>
+        <div className="absolute inset-0 -z-10">
+          <Beams
+            beamWidth={3}
+            beamHeight={30}
+            beamNumber={20}
+            lightColor="#F93827"
+            // lightColor="#ffffff"
+            speed={5}
+            noiseIntensity={1.75}
+            scale={0.2}
+            rotation={30}
+          />
+          {/* <ColorBends
+            colors={["#ff5c7a", "#43ff88", "#023e8a"]}
+            rotation={0}
+            autoRotate={0}
+            speed={0.2}
+            scale={1}
+            frequency={1}
+            warpStrength={1}
+            mouseInfluence={1}
+            parallax={0.5}
+            noise={0.08}
+            transparent
+          /> */}
+        </div>
+
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <div className="relative z-10 flex flex-col min-h-screen">
             <Navbar />

@@ -33,7 +33,7 @@ export const CVContent = ({ userData }: { userData: any }) => (
 
     <div className="bg-white print-content" style={{ fontFamily: "'Poppins', sans-serif" }}>
       {/* Header Section */}
-      <div className="bg-[#991A4D] text-white p-8">
+      <div className="bg-[#7B091F] text-white p-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-2">{userData?.employees?.full_name}</h1>
           <p className="text-xl text-slate-200 mb-4">
