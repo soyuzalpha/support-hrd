@@ -69,6 +69,7 @@ const MasterUser = () => {
     endpoint: "/getStudyprograms",
     labelKey: "program_name",
     valueKey: "id_studyprogram",
+    extraParams: { onEmployeeEducation: 1 },
   });
 
   const mutationGetCityByProvince = useMutation({
