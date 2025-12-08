@@ -51,6 +51,23 @@ const MasterUser = () => {
     valueKey: "id_province",
   });
 
+  const { loadOptions: loadOptionsDegree } = useSelectFetcher({
+    endpoint: "/getDegrees",
+    labelKey: "name_degree",
+    valueKey: "id_degree",
+    extraParams: { onEmployeeEducation: 1 },
+  });
+  const { loadOptions: loadOptionsSchool } = useSelectFetcher({
+    endpoint: "/getSchools",
+    labelKey: "school_name",
+    valueKey: "id_school",
+  });
+  const { loadOptions: loadOptionsProgramStudy } = useSelectFetcher({
+    endpoint: "/getStudyprograms",
+    labelKey: "program_name",
+    valueKey: "id_studyprogram",
+  });
+
   const mutationGetCityByProvince = useMutation({
     mutationFn: getCityByProvince,
   });
@@ -236,6 +253,27 @@ const MasterUser = () => {
       name: "max_work",
       label: "Max Work",
       placeholder: "Max work",
+    },
+    {
+      type: "async-select",
+      name: "id_school",
+      label: "School",
+      placeholder: "Search School...",
+      loadOptions: loadOptionsSchool,
+    },
+    {
+      type: "async-select",
+      name: "id_degree",
+      label: "Degree",
+      placeholder: "Search Degree...",
+      loadOptions: loadOptionsDegree,
+    },
+    {
+      type: "async-select",
+      name: "id_studyprogram",
+      label: "Study Program",
+      placeholder: "Search Study Program...",
+      loadOptions: loadOptionsProgramStudy,
     },
   ];
 

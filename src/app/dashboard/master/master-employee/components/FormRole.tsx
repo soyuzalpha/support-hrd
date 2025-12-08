@@ -34,6 +34,7 @@ import { formatDate } from "@/utils/dates";
 import Show from "@/components/show";
 import { AttachmentViewer } from "@/components/AttachmentViewer";
 import { getCityByProvince } from "../../master-zones/api/master-zones-service";
+import { apiPost } from "@/service/service";
 
 const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
@@ -160,6 +161,22 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
     } catch (error) {
       toastAlert.error("Something went wrong!");
     }
+  };
+
+  const handleCreateSchool = async (value: string) => {
+    console.log({ value });
+    // const res = await createSchoolService({ name: value });
+
+    // if (res?.data) {
+    //   // refresh options
+    //   await loadOptionsSchool("");
+
+    //   // set form value (auto select newly created item)
+    //   fForm.setValue("education_histories.id_school", {
+    //     label: res.data.name,
+    //     value: res.data.id,
+    //   });
+    // }
   };
 
   return (
@@ -548,11 +565,16 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                 fields={[
                   {
                     isAsync: true,
+                    create: true,
                     name: "id_school",
                     placeholder: "School Name",
                     inputType: "select",
                     label: "School Name",
                     loadOptions: loadOptionsSchool,
+                    onCreate: async (value) => {
+                      const res = await apiPost("/createSchool", { school_name: value });
+                      return { label: res.data?.school_name, value: res.data.id_school };
+                    },
                   },
                   {
                     isAsync: true,
