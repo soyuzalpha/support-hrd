@@ -69,7 +69,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   });
 
   return (
-    <div className={cn("flex flex-col gap-6 max-w-sm", className)} {...props}>
+    <div className={cn("flex flex-col gap-6 w-full max-w-sm", className)} {...props}>
       <GlassContainer>
         <div className="flex justify-center mb-6">
           <Image src="/TRANSTAMA.png" alt="logo" width={200} height={200} className="w-52 h-auto object-contain" />
@@ -134,7 +134,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           </form>
         </div>
       </GlassContainer>
-      <FieldDescription className="px-6 text-center text-white">
+      {/* <FieldDescription className="px-6 text-center text-white">
         By clicking continue, you agree to our{" "}
         <a href="#" className="hover:text-white!">
           Terms of Service
@@ -144,7 +144,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           Privacy Policy
         </a>
         .
-      </FieldDescription>
+      </FieldDescription> */}
     </div>
   );
 }

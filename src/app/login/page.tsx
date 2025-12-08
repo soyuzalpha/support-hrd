@@ -12,7 +12,7 @@ export default function LoginPage() {
     <div className="relative min-h-svh overflow-hidden">
       {/* FULL BACKGROUND */}
       <div className="absolute inset-0 -z-10">
-        <Silk speed={10} scale={1} color="#ffffff" noiseIntensity={1.7} rotation={0} />
+        <Silk speed={10} scale={1} color="#838384" noiseIntensity={1.7} rotation={0} />
       </div>
 
       {/* CENTER LOGIN CARD */}

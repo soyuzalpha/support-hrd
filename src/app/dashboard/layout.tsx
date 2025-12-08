@@ -8,6 +8,7 @@ import { useAppContext, useUser } from "@/context/app-context";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Beams from "@/components/Beams";
+import Silk from "@/components/Silk";
 
 export default function DashboardLayout({
   children,
@@ -40,6 +41,7 @@ export default function DashboardLayout({
     <>
       <div className={`antialiased ${poppins.variable}`}>
         <div className="absolute inset-0 -z-10">
+          {/* <Silk speed={10} scale={1} color="#F93827" noiseIntensity={1.7} rotation={0} /> */}
           <Beams
             beamWidth={3}
             beamHeight={30}
