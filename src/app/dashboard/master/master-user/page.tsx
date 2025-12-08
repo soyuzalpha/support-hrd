@@ -19,6 +19,7 @@ import { FilterField } from "@/components/dynamicFilterForm";
 import { useSelectFetcher } from "@/hooks/use-select-fetcher";
 import { getCityByProvince } from "../master-zones/api/master-zones-service";
 import { exportToCSV } from "@/utils/export-csv";
+import DialogPreviewCv from "@/components/DialogPreviewCv";
 
 const MasterUser = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -27,6 +28,7 @@ const MasterUser = () => {
   const dDialog = useDialogModal();
   const dDetail = useDialogModal();
   const dConfirm = useDialogModal();
+  const dPreview = useDialogModal();
 
   const { loadOptions: loadOptionsCompany } = useSelectFetcher({
     endpoint: "/getCompany",
@@ -307,14 +309,20 @@ const MasterUser = () => {
     }
   };
 
-  console.log({ city: mutationGetCityByProvince?.data?.data?.data });
-
   return (
     <FormProvider {...fForm}>
       <DataTable
         isLoading={isLoading}
         data={company?.data?.data || []}
         columns={columnsMasterUser({
+          onCLickPreview: (row) => {
+            Object.entries(row.original).forEach(([key, value]) => {
+              //@ts-ignore
+              fForm.setValue(key, value);
+            });
+
+            dPreview.handleOpen();
+          },
           onClickData: (row) => {
             Object.entries(row.original).forEach(([key, value]) => {
               //@ts-ignore
@@ -371,6 +379,7 @@ const MasterUser = () => {
 
       <FormUser dialogHandler={dDialog} />
       <DetailRole dialogHandler={dDetail} />
+      <DialogPreviewCv dialogHandler={dPreview} />
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}
