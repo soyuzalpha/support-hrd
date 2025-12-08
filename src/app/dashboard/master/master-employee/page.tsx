@@ -81,6 +81,8 @@ const MasterEmployee = () => {
     fForm.setValue("religion", createInputOptions(toCapitalized(row?.religion), row.religion));
     fForm.setValue("marital_status", createInputOptions(toCapitalized(row?.marital_status), row.marital_status));
     fForm.setValue("blood_type", createInputOptions(row?.blood_type, row.blood_type));
+    fForm.setValue("id_province", createInputOptions(row.province?.province_name, row?.province?.id_province));
+    fForm.setValue("id_city", createInputOptions(row?.city?.city_name, row?.city?.id_city));
 
     fForm.setValue(
       "family",
@@ -90,7 +92,29 @@ const MasterEmployee = () => {
       }))
     );
 
+    fForm.setValue(
+      "work_histories",
+      row.workhistory?.map((item) => ({
+        ...item,
+        // relationship: createInputOptions(toCapitalized(item.relationship), item.relationship),
+      }))
+    );
+
+    fForm.setValue(
+      "education_histories",
+      row.educationhistory?.map((item) => ({
+        ...item,
+        id_school: createInputOptions(toCapitalized(item?.school?.school_name), item.school?.id_school),
+        id_degree: createInputOptions(toCapitalized(item?.degree?.name_degree), item.degree?.id_degree),
+        id_studyprogram: createInputOptions(
+          toCapitalized(item?.studyprogram?.program_name),
+          item.studyprogram?.id_studyprogram
+        ),
+      }))
+    );
+
     fForm.setValue("list_documents", row.documents);
+    fForm.setValue("documents", []);
 
     dDialog.handleOpen();
   };
@@ -122,6 +146,8 @@ const MasterEmployee = () => {
       }
     );
   };
+
+  console.log({ values: fForm.getValues() });
 
   return (
     <FormProvider {...fForm}>

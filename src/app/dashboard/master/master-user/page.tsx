@@ -17,6 +17,7 @@ import CardMaster from "@/components/CardMaster";
 import DetailRole from "./components/DetailRole";
 import { FilterField } from "@/components/dynamicFilterForm";
 import { useSelectFetcher } from "@/hooks/use-select-fetcher";
+import { getCityByProvince } from "../master-zones/api/master-zones-service";
 
 const MasterUser = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -30,6 +31,28 @@ const MasterUser = () => {
     endpoint: "/getCompany",
     labelKey: "name_company",
     valueKey: "id_company",
+  });
+
+  const { loadOptions: loadOptionsPosition } = useSelectFetcher({
+    endpoint: "/getPositions",
+    labelKey: "name_position",
+    valueKey: "id_position",
+  });
+
+  const { loadOptions: loadOptionsDivision } = useSelectFetcher({
+    endpoint: "/getDivisions",
+    labelKey: "name_division",
+    valueKey: "id_division",
+  });
+
+  const { loadOptions: loadOptionsProvince } = useSelectFetcher({
+    endpoint: "/getProvinces",
+    labelKey: "province_name",
+    valueKey: "id_province",
+  });
+
+  const mutationGetCityByProvince = useMutation({
+    mutationFn: getCityByProvince,
   });
 
   const {
@@ -152,6 +175,45 @@ const MasterUser = () => {
       loadOptions: loadOptionsCompany,
     },
     {
+      type: "async-select",
+      name: "id_position",
+      label: "Positions",
+      placeholder: "Search Position...",
+      loadOptions: loadOptionsPosition,
+    },
+    {
+      type: "async-select",
+      name: "id_devision",
+      label: "Divisions",
+      placeholder: "Search Division...",
+      loadOptions: loadOptionsDivision,
+    },
+    {
+      type: "async-select",
+      name: "id_province",
+      label: "Province",
+      placeholder: "Search Province...",
+      loadOptions: loadOptionsProvince,
+      onValueChange: (value) => {
+        fForm.setValue("id_city", null);
+        mutationGetCityByProvince.reset();
+        mutationGetCityByProvince.mutate({ id_province: value?.value });
+      },
+    },
+    {
+      type: "select",
+      name: "id_city",
+      label: "City",
+      // options: [],
+      options: mutationGetCityByProvince.data
+        ? mutationGetCityByProvince?.data?.data?.data?.map((city: any) => ({
+            label: city.city_name,
+            value: city.id_city,
+          }))
+        : [],
+      placeholder: "Search City...",
+    },
+    {
       type: "number",
       name: "min_age",
       label: "Minimum Age",
@@ -176,6 +238,8 @@ const MasterUser = () => {
       placeholder: "Max work",
     },
   ];
+
+  console.log({ city: mutationGetCityByProvince?.data?.data?.data });
 
   return (
     <FormProvider {...fForm}>

@@ -8,6 +8,7 @@ import { ColorSchemaToggle } from "./color-schema-toggle";
 import Link from "next/link";
 import { useUser } from "@/context/app-context";
 import { toCapitalized } from "@/utils";
+import { useSession } from "next-auth/react";
 
 interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
   transparent?: boolean;
@@ -15,11 +16,13 @@ interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Navbar({ transparent = true, className, ...props }: NavbarProps) {
   const { user } = useUser();
+  const session = useSession();
+
   return (
     <header className={cn("sticky top-0 z-5 transition-all w-full mt-4", className)} {...props}>
       <div
         className={cn(
-          "max-w-5xl mx-auto flex items-center justify-between px-4 py-1 backdrop-blur-2xl border-white/10 duration-300 rounded-full",
+          "container mx-auto flex items-center justify-between px-4 py-1 backdrop-blur-2xl border-white/10 duration-300 rounded-full",
           transparent
             ? "bg-white/5 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
             : "bg-white/10 shadow-[0_0_20px_rgba(255,255,255,0.08)]"
@@ -33,7 +36,7 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
         <div className="flex flex-col lg:flex-row items-center gap-3">
           <FontSwitcher />
           <div>
-            <h1>{toCapitalized(user.userDatas?.name)}</h1>
+            <h1 className="">{toCapitalized(session?.data?.user?.name) ?? "-"}</h1>
           </div>
 
           {/* <ColorSchemaToggle /> */}

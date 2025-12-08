@@ -23,7 +23,7 @@ export function AppContainer({
   className,
   navbarHeight = 60,
   dockOffset = 80,
-  fullWidth = false,
+  fullWidth = true,
   variant = "default",
 }: AppContainerProps) {
   // GLASS STYLE

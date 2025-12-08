@@ -43,7 +43,7 @@ export default function DashboardLayout({
             <Navbar />
 
             <div className="flex-1 overflow-hidden">
-              <div className="h-[calc(100vh-5rem)] overflow-y-auto px-2 pt-2 pb-4">{children}</div>
+              <div className="container mx-auto h-[calc(100vh-5rem)] overflow-y-auto px-2 pt-2 pb-4">{children}</div>
             </div>
 
             <DockMenu />

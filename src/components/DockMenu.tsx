@@ -10,6 +10,7 @@ import { logoutService, setLogoutCallback } from "@/service/service";
 import { useMutation } from "@tanstack/react-query";
 import { signOut, useSession } from "next-auth/react";
 import { toastAlert } from "@/lib/toast";
+import { isEmpty } from "@/utils";
 
 interface DockMenuProps {
   // activeItem?: string;
@@ -96,53 +97,59 @@ export function DockMenu({ onItemClick }: DockMenuProps) {
         )}
       >
         <div className="flex items-center gap-3 md:gap-4">
-          {allowedMenu.map((item) => {
-            const Icon = item.icon;
-            const isActive = path === item.path;
-            const isHovered = hoveredItem === item.id;
+          {isEmpty(allowedMenu) ? null : (
+            <>
+              {allowedMenu?.map((item, index) => {
+                const Icon = item.icon;
+                const isActive = path === item.path;
+                const isHovered = hoveredItem === item.id;
 
-            return (
-              <button
-                key={item.id}
-                onClick={() => {
-                  onItemClick?.(item.id);
-                  navigate.push(item.path);
-                }}
-                onMouseEnter={() => setHoveredItem(item.id)}
-                onMouseLeave={() => setHoveredItem(null)}
-                className={cn(
-                  "relative flex flex-col items-center justify-center transition-all duration-200 group p-2 md:p-2.5",
-                  "bg-transparent"
-                )}
-                aria-label={item.label}
-                title={item.label}
-              >
-                <Icon
-                  size={22}
-                  strokeWidth={1.5}
-                  className={cn(
-                    "text-white transition-all duration-200",
-                    isActive ? "opacity-100 scale-110" : isHovered ? "opacity-90 scale-105" : "opacity-70"
-                  )}
-                />
+                return (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      onItemClick?.(item?.id);
+                      navigate.push(item.path);
+                    }}
+                    onMouseEnter={() => setHoveredItem(item.id)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    className={cn(
+                      "relative flex flex-col items-center justify-center transition-all duration-200 group p-2 md:p-2.5",
+                      "bg-transparent"
+                    )}
+                    aria-label={item.label}
+                    title={item.label}
+                  >
+                    <Icon
+                      size={22}
+                      strokeWidth={1.5}
+                      className={cn(
+                        "text-white transition-all duration-200",
+                        isActive ? "opacity-100 scale-110" : isHovered ? "opacity-90 scale-105" : "opacity-70"
+                      )}
+                    />
 
-                {/* Active indicator dot */}
-                {isActive && <span className="absolute bottom-0 translate-y-[5px] w-1.5 h-1.5 rounded-full bg-white" />}
+                    {/* Active indicator dot */}
+                    {isActive && (
+                      <span className="absolute bottom-0 translate-y-[5px] w-1.5 h-1.5 rounded-full bg-white" />
+                    )}
 
-                {/* Tooltip */}
-                <span
-                  className={cn(
-                    "absolute bottom-full mb-2 px-2 py-1 rounded-md text-xs font-medium",
-                    "whitespace-nowrap opacity-0 pointer-events-none transition-opacity duration-200",
-                    "bg-white/20 text-white backdrop-blur-md border border-white/10",
-                    "group-hover:opacity-100 hidden md:block"
-                  )}
-                >
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
+                    {/* Tooltip */}
+                    <span
+                      className={cn(
+                        "absolute bottom-full mb-2 px-2 py-1 rounded-md text-xs font-medium",
+                        "whitespace-nowrap opacity-0 pointer-events-none transition-opacity duration-200",
+                        "bg-white/20 text-white backdrop-blur-md border border-white/10",
+                        "group-hover:opacity-100 hidden md:block"
+                      )}
+                    >
+                      {item.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </>
+          )}
         </div>
 
         {/* Divider */}

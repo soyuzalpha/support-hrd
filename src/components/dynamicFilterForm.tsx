@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "./ui/datepicker";
 import { SelectOptions } from "./select-options";
+import { AppGridContainer } from "./app-grid-container";
 
 export type FilterField =
   | {
@@ -26,6 +27,7 @@ export type FilterField =
       label: string;
       placeholder?: string;
       options: { label: string; value: string | number }[];
+      onValueChange?: (value: any) => void;
     }
   | {
       type: "async-select";
@@ -33,6 +35,7 @@ export type FilterField =
       label: string;
       placeholder?: string;
       loadOptions: (input: string) => Promise<{ label: string; value: string | number }[]>;
+      onValueChange?: (value: any) => void;
     }
   | {
       type: "date";
@@ -60,77 +63,84 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
         <Button variant="outline">Filter</Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-80 p-4 space-y-4">
+      <PopoverContent className="w-96">
         <form className="space-y-4" onSubmit={handleSubmit(submitHandler)}>
-          {fields?.map((field) => {
-            switch (field.type) {
-              case "text":
-              case "number":
-                return (
-                  <div key={field.name} className="space-y-1">
-                    <label className="text-sm font-medium">{field.label}</label>
-                    <Input type={field.type} placeholder={field.placeholder} {...register(field.name)} />
-                  </div>
-                );
+          <AppGridContainer maxHeight={300} className="w-full p-4 space-y-4">
+            {fields?.map((field) => {
+              switch (field.type) {
+                case "text":
+                case "number":
+                  return (
+                    <div key={field.name} className="space-y-1">
+                      <label className="text-sm font-medium">{field.label}</label>
+                      <Input type={field.type} placeholder={field.placeholder} {...register(field.name)} />
+                    </div>
+                  );
 
-              case "select":
-                return (
-                  <div key={field.name} className="space-y-1">
-                    <label className="text-sm font-medium">{field.label}</label>
-                    <Controller
-                      control={control}
-                      name={field.name}
-                      render={({ field: f }) => (
-                        <SelectOptions
-                          options={field.options}
-                          placeholder={field.placeholder}
-                          value={f.value}
-                          onChange={f.onChange}
-                        />
-                      )}
-                    />
-                  </div>
-                );
+                case "select":
+                  return (
+                    <div key={field.name} className="space-y-1">
+                      <label className="text-sm font-medium">{field.label}</label>
+                      <Controller
+                        control={control}
+                        name={field.name}
+                        render={({ field: f }) => (
+                          <SelectOptions
+                            options={field.options}
+                            placeholder={field.placeholder}
+                            value={f.value}
+                            onChange={(value) => {
+                              f.onChange(value);
+                              field.onValueChange?.(value);
+                            }}
+                          />
+                        )}
+                      />
+                    </div>
+                  );
 
-              case "async-select":
-                return (
-                  <div key={field.name} className="space-y-1">
-                    <label className="text-sm font-medium">{field.label}</label>
+                case "async-select":
+                  return (
+                    <div key={field.name} className="space-y-1">
+                      <label className="text-sm font-medium">{field.label}</label>
 
-                    <Controller
-                      control={control}
-                      name={field.name}
-                      render={({ field: f }) => (
-                        <SelectOptions
-                          isAsync
-                          loadOptions={field.loadOptions} // <-- fixed
-                          placeholder={field.placeholder}
-                          value={f.value}
-                          onChange={f.onChange}
-                        />
-                      )}
-                    />
-                  </div>
-                );
+                      <Controller
+                        control={control}
+                        name={field.name}
+                        render={({ field: f }) => (
+                          <SelectOptions
+                            isAsync
+                            loadOptions={field.loadOptions}
+                            placeholder={field.placeholder}
+                            value={f.value}
+                            onChange={(value) => {
+                              f.onChange(value);
+                              field.onValueChange?.(value);
+                            }}
+                          />
+                        )}
+                      />
+                    </div>
+                  );
 
-              case "date":
-                return (
-                  <div key={field.name} className="space-y-1">
-                    <label className="text-sm font-medium">{field.label}</label>
+                case "date":
+                  return (
+                    <div key={field.name} className="space-y-1">
+                      <label className="text-sm font-medium">{field.label}</label>
 
-                    <Controller
-                      control={control}
-                      name={field.name}
-                      render={({ field: f }) => <DatePicker date={f.value} onChange={f.onChange} />}
-                    />
-                  </div>
-                );
+                      <Controller
+                        control={control}
+                        name={field.name}
+                        render={({ field: f }) => <DatePicker date={f.value} onChange={f.onChange} />}
+                      />
+                    </div>
+                  );
 
-              default:
-                return null;
-            }
-          })}
-
+                default:
+                  return null;
+              }
+            })}
+          </AppGridContainer>
           <div className="flex gap-2 justify-end">
             <Button variant="ghost" type="button" onClick={() => reset(defaultValues)}>
               Reset

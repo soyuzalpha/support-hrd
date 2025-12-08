@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { format } from "date-fns";
 import { FieldError, FieldGroup } from "@/components/ui/field";
-import { FormControl, FormDescription, FormItem, FormLabel } from "@/components/ui/form";
+import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UseDialogModalReturn } from "@/hooks/use-dialog-modal";
 import { useMutation } from "@tanstack/react-query";
@@ -26,7 +26,6 @@ import { AppGridContainer } from "@/components/app-grid-container";
 import { useScreenHeight } from "@/hooks/use-screen-height";
 import { SelectOptions } from "@/components/select-options";
 import { useSelectFetcher } from "@/hooks/use-select-fetcher";
-import { DatePicker } from "@/components/ui/datepicker";
 import { fileToBase64, normalizeFile } from "@/utils/file";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChevronDownIcon } from "lucide-react";
@@ -34,7 +33,6 @@ import { Calendar } from "@/components/ui/calendar";
 import { formatDate } from "@/utils/dates";
 import Show from "@/components/show";
 import { AttachmentViewer } from "@/components/AttachmentViewer";
-import { Textarea } from "@/components/ui/textarea";
 import { getCityByProvince } from "../../master-zones/api/master-zones-service";
 
 const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
@@ -52,6 +50,21 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
     endpoint: "/getProvinces",
     labelKey: "province_name",
     valueKey: "id_province",
+  });
+  const { loadOptions: loadOptionsDegree } = useSelectFetcher({
+    endpoint: "/getDegrees",
+    labelKey: "name_degree",
+    valueKey: "id_degree",
+  });
+  const { loadOptions: loadOptionsSchool } = useSelectFetcher({
+    endpoint: "/getSchools",
+    labelKey: "school_name",
+    valueKey: "id_school",
+  });
+  const { loadOptions: loadOptionsProgramStudy } = useSelectFetcher({
+    endpoint: "/getStudyprograms",
+    labelKey: "program_name",
+    valueKey: "id_studyprogram",
   });
 
   const mutationGetCityByProvince = useMutation({
@@ -112,6 +125,24 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
         })),
 
         documents: attachments,
+
+        work_histories: (data?.work_histories || []).map((w) => ({
+          company_name: w.company_name,
+          position: w.position,
+          division: w.division,
+          start_date: formatDate(w.start_date) || null,
+          end_date: formatDate(w.end_date) || null,
+          responsibilities: w.responsibilities || null,
+        })),
+
+        education_histories: (data?.education_histories || []).map((e) => ({
+          id_school: e.id_school?.value || null,
+          id_degree: e.id_degree?.value || null,
+          id_studyprogram: e.id_studyprogram?.value || null,
+          start_date: formatDate(e.start_date) || null,
+          end_date: formatDate(e.end_date) || null,
+          responsibilities: e.responsibilities || null,
+        })),
       };
 
       mutations.mutate(payload, {
@@ -467,6 +498,99 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                     label: "Relationship",
                   },
                   { name: "phone_number", placeholder: "Phone Number", inputType: "text", label: "Phone Number" },
+                ]}
+              />
+
+              <DynamicFormFields
+                control={fForm.control}
+                name="work_histories"
+                repeatable
+                direction={"vertical"}
+                directionContent="vertical"
+                title="Work Histories"
+                titleAdd="Add"
+                fields={[
+                  { name: "company_name", placeholder: "Company Name", inputType: "text", label: "Company Name" },
+                  { name: "position", placeholder: "Position", inputType: "text", label: "Position" },
+                  { name: "division", placeholder: "Division", inputType: "text", label: "Division" },
+                  { name: "start_date", placeholder: "Start Date", inputType: "date", label: "Start Date" },
+                  { name: "end_date", placeholder: "End Date", inputType: "date", label: "End Date" },
+                  {
+                    name: "responsibilities",
+                    placeholder: "Responsibilities",
+                    inputType: "textarea",
+                    label: "Responsibilities",
+                  },
+                  // {
+                  //   name: "relationship",
+                  //   placeholder: "Mother",
+                  //   inputType: "select",
+                  //   dataOptions: [
+                  //     createInputOptions("Orang Tua", "ORANG_TUA"),
+                  //     createInputOptions("Anak", "ANAK"),
+                  //     createInputOptions("Saudara", "SAUDARA"),
+                  //     createInputOptions("Pasangan", "PASANGAN"),
+                  //     createInputOptions("Lainnya", "LAINNYA"),
+                  //   ],
+                  //   label: "Relationship",
+                  // },
+                ]}
+              />
+
+              <DynamicFormFields
+                control={fForm.control}
+                name="education_histories"
+                repeatable
+                direction={"vertical"}
+                directionContent="vertical"
+                title="Education Histories"
+                titleAdd="Add"
+                fields={[
+                  {
+                    isAsync: true,
+                    name: "id_school",
+                    placeholder: "School Name",
+                    inputType: "select",
+                    label: "School Name",
+                    loadOptions: loadOptionsSchool,
+                  },
+                  {
+                    isAsync: true,
+                    name: "id_degree",
+                    placeholder: "Degree",
+                    inputType: "select",
+                    label: "Degree",
+                    loadOptions: loadOptionsDegree,
+                  },
+                  {
+                    isAsync: true,
+                    name: "id_studyprogram",
+                    placeholder: "Study Program",
+                    inputType: "select",
+                    label: "Study Program",
+                    loadOptions: loadOptionsProgramStudy,
+                  },
+                  { name: "start_date", placeholder: "Start Date", inputType: "date", label: "Start Date" },
+                  { name: "end_date", placeholder: "End Date", inputType: "date", label: "End Date" },
+                  {
+                    name: "responsibilities",
+                    placeholder: "Responsibilities",
+                    inputType: "textarea",
+                    label: "Responsibilities",
+                  },
+                  // {
+                  //   name: "relationship",
+                  //   placeholder: "Mother",
+                  //   inputType: "select",
+                  //   dataOptions: [
+                  //     createInputOptions("Orang Tua", "ORANG_TUA"),
+                  //     createInputOptions("Anak", "ANAK"),
+                  //     createInputOptions("Saudara", "SAUDARA"),
+                  //     createInputOptions("Pasangan", "PASANGAN"),
+                  //     createInputOptions("Lainnya", "LAINNYA"),
+                  //   ],
+                  //   label: "Relationship",
+                  // },
                 ]}
               />
 

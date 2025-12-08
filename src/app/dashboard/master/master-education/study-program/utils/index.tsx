@@ -13,7 +13,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 
 const columnHelper = createColumnHelper<any>();
 
-export const columnsMasterCompany = ({ onClickDetail, onClickEdit, onClickData }) => {
+export const columnsMasterEducation = ({ onClickDetail, onClickEdit, onClickData }) => {
   return [
     columnHelper.accessor("status", {
       header: "Status",
@@ -28,17 +28,13 @@ export const columnsMasterCompany = ({ onClickDetail, onClickEdit, onClickData }
         </Badge>
       ),
     }),
-    columnHelper.accessor("name_company", {
-      header: "Company Name",
+    columnHelper.accessor("program_name", {
+      header: "Name",
       cell: (info) => <p>{info.getValue()}</p>,
     }),
-    columnHelper.accessor("phone_company", {
-      header: "Company Phone",
+    columnHelper.accessor("description", {
+      header: "Description",
       cell: (info) => <p>{info.getValue()}</p>,
-    }),
-    columnHelper.accessor("address_company", {
-      header: "Address",
-      cell: (info) => <p className="text-wrap w-96">{info.getValue() ?? "-"}</p>,
     }),
     ...defaultColumnsInformation,
     columnHelper.display({
