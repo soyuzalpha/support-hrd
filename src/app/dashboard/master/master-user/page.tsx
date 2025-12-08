@@ -18,6 +18,7 @@ import DetailRole from "./components/DetailRole";
 import { FilterField } from "@/components/dynamicFilterForm";
 import { useSelectFetcher } from "@/hooks/use-select-fetcher";
 import { getCityByProvince } from "../master-zones/api/master-zones-service";
+import { exportToCSV } from "@/utils/export-csv";
 
 const MasterUser = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -214,7 +215,7 @@ const MasterUser = () => {
       onValueChange: (value) => {
         fForm.setValue("id_city", null);
         mutationGetCityByProvince.reset();
-        mutationGetCityByProvince.mutate({ id_province: value?.value });
+        mutationGetCityByProvince.mutate({ id_province: value?.value, onEmployeeAddress: 1 });
       },
     },
     {
@@ -277,6 +278,35 @@ const MasterUser = () => {
     },
   ];
 
+  const handleExport = async (isAll = false) => {
+    try {
+      let exportedData = [];
+
+      if (isAll) {
+        const res = await getUsers({
+          ...currentState,
+          page: 1,
+          limit: 999999,
+          is_all_data: 1,
+        });
+
+        exportedData = res?.data || res;
+      } else {
+        // export yang tampil di datatable
+        exportedData = company || [];
+      }
+
+      if (!exportedData.length) {
+        alert("No data available for export.");
+        return;
+      }
+
+      exportToCSV("users", exportedData);
+    } catch (err) {
+      console.error("Export failed:", err);
+    }
+  };
+
   console.log({ city: mutationGetCityByProvince?.data?.data?.data });
 
   return (
@@ -307,6 +337,10 @@ const MasterUser = () => {
         setCurrentState={handleStateChange}
         withSearch={true}
         dialogHandler={dDialog}
+        useExport={true}
+        onExport={() => {
+          handleExport(true);
+        }}
         listCard={
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {company?.data?.data?.map((item, index) => (

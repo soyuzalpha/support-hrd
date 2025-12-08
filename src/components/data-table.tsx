@@ -54,6 +54,10 @@ export function DataTable({
   withFilter = false,
   filters,
   onSubmitFilter,
+
+  // ===== NEW PROPS =====
+  useExport = false,
+  onExport,
 }: {
   data: any[];
   columns: DataTableColumn[];
@@ -68,6 +72,10 @@ export function DataTable({
   withFilter?: boolean;
   filters?: FilterField[];
   onSubmitFilter?: any;
+
+  // props baru
+  useExport?: boolean;
+  onExport?: () => void;
 }) {
   const fForm = useFormContext();
   const [data, setData] = React.useState(() => initialData);
@@ -168,26 +176,6 @@ export function DataTable({
     fForm.setValue("searchKey", searchKey);
   }, [searchKey, fForm]);
 
-  const handleFiltersChange = (filters: Record<string, any>) => {
-    setAppliedFilters(filters);
-    // Apply filters to table
-    const newFilters = Object.entries(filters)
-      .filter(([, value]) => value !== "" && value !== null)
-      .map(([id, value]) => ({
-        id,
-        value,
-      }));
-    setColumnFilters(newFilters);
-
-    // Sync with currentState if needed
-    setCurrentState({
-      ...currentState,
-      filters,
-      page: 1,
-    });
-    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-  };
-
   return (
     <div className="w-full flex flex-col gap-4">
       <div className="flex items-end lg:items-center justify-between gap-2 pr-2 mt-4">
@@ -263,7 +251,8 @@ export function DataTable({
 
           {/* Search Input */}
           <Show.When isTrue={withSearch}>
-            <div className="px-0 lg:px-0">
+            <div className="flex items-center gap-2">
+              {/* Search Input */}
               <div className="relative w-full md:max-w-xs">
                 <IconSearch className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
@@ -273,6 +262,23 @@ export function DataTable({
                   className="pl-9"
                 />
               </div>
+
+              {/* EXPORT BUTTON */}
+              {useExport && (
+                <Button
+                  variant="glassInfo"
+                  size="default"
+                  onClick={() => {
+                    if (typeof onExport === "function") {
+                      onExport();
+                    } else {
+                      console.warn("onExport not provided");
+                    }
+                  }}
+                >
+                  Export
+                </Button>
+              )}
             </div>
           </Show.When>
         </div>

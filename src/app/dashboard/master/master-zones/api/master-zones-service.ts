@@ -11,7 +11,7 @@ export const getProvinces = async (params) => {
 
 export const getCityByProvince = async (params) => {
   const res = await apiGet("/getCities", {
-    params: { ...params, id_province: params.id_province },
+    params: { ...params, id_province: params.id_province, onEmployeeAddress: params.onEmployeeAddress },
   });
 
   return res;
