@@ -21,6 +21,7 @@ import { getCityByProvince } from "../master-zones/api/master-zones-service";
 import { exportToCSV } from "@/utils/export-csv";
 import DialogPreviewCv from "@/components/DialogPreviewCv";
 import FormEmployee from "../master-employee/components/FormRole";
+import FormEmployements from "../master-employments/components/FormEmployments";
 
 const MasterUser = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -31,6 +32,7 @@ const MasterUser = () => {
   const dConfirm = useDialogModal();
   const dPreview = useDialogModal();
   const dEmployee = useDialogModal();
+  const dEmployements = useDialogModal();
 
   const { loadOptions: loadOptionsCompany } = useSelectFetcher({
     endpoint: "/getCompany",
@@ -389,6 +391,197 @@ const MasterUser = () => {
     });
   };
 
+  const handleClickEmployements = (row: any) => {
+    if (!row) return;
+
+    mutationGetUserById.mutate(row.id, {
+      onSuccess: (res) => {
+        const normalized = normalizeUserToForm(res.data);
+
+        Object.entries(normalized).forEach(([key, value]) => {
+          fForm.setValue(key, value ?? "");
+        });
+
+        dEmployements.handleOpen();
+      },
+
+      onError: (err) => {
+        toastAlert.error(err.message || "Gagal mengambil data user");
+      },
+    });
+  };
+
+  const safe = (val: any, fallback: any = "") => val ?? fallback;
+  const opt = (label?: string, value?: any) => (label && value ? createInputOptions(label, value) : null);
+
+  const normalizeUserToForm = (user: any) => {
+    if (!user) return {};
+
+    const emp = user?.employees ?? {};
+    const employment = user?.employments ?? {};
+
+    return {
+      // User
+      id_user: opt(user?.name, user?.id),
+      ...user,
+
+      // Employee base fields
+      id_employee: safe(emp?.id_employee),
+      nik: safe(emp?.nik),
+      npwp: safe(emp?.npwp),
+      bpjs_kesehatan: safe(emp?.bpjs_kesehatan),
+      bpjs_ketenagakerjaan: safe(emp?.bpjs_ketenagakerjaan),
+      full_name: safe(emp?.full_name),
+      nick_name: safe(emp?.nick_name),
+      personal_email: safe(emp?.personal_email),
+      postal_code: safe(emp?.postal_code),
+      address: safe(emp?.address),
+      birth_place: safe(emp?.birth_place),
+
+      gender: opt(toCapitalized(emp?.gender), emp?.gender),
+      religion: opt(toCapitalized(emp?.religion), emp?.religion),
+      marital_status: opt(toCapitalized(emp?.marital_status), emp?.marital_status),
+      blood_type: safe(emp?.blood_type),
+
+      id_province: opt(emp?.province?.province_name, emp?.province?.id_province),
+      id_city: opt(emp?.city?.city_name, emp?.city?.id_city),
+
+      // Contacts
+      contacts: safe(emp?.contacts, []),
+
+      // Family
+      family: (emp?.family ?? []).map((item: any) => ({
+        ...item,
+        relationship: opt(toCapitalized(item?.relationship), item?.relationship),
+      })),
+
+      // Work history
+      work_histories: safe(emp?.workhistory, []),
+
+      // Education
+      education_histories: (emp?.educationhistory ?? []).map((item: any) => ({
+        ...item,
+        id_school: opt(item?.school?.school_name, item?.school?.id_school),
+        id_degree: opt(item?.degree?.name_degree, item?.degree?.id_degree),
+        id_studyprogram: opt(item?.studyprogram?.program_name, item?.studyprogram?.id_studyprogram),
+      })),
+
+      // Documents
+      list_documents: safe(emp?.documents, []),
+      documents: [],
+
+      // Employment
+      id_emplyoements: safe(employment?.id_employment),
+      id_manager: opt(employment?.manager?.name, employment?.manager?.id),
+      work_location: safe(employment?.work_location),
+      join_date: safe(employment?.join_date),
+      end_date: safe(employment?.end_date),
+      employment_status: opt(toCapitalized(employment?.employment_status), employment?.employment_status),
+      contract_start_date: safe(employment?.contract_start_date),
+      contract_end_date: safe(employment?.contract_end_date),
+      status: opt(toCapitalized(employment?.status), employment?.status),
+      notes: safe(employment?.notes),
+    };
+  };
+
+  // const handleClickEmployements = (row: any) => {
+  //   if (!row) return;
+
+  //   mutationGetUserById.mutate(row.id, {
+  //     onSuccess: (res) => {
+  //       const user = res.data;
+  //       const emp = user.employees;
+
+  //       // Set base fields
+  //       Object.entries(user).forEach(([key, value]) => {
+  //         //@ts-ignore
+  //         fForm.setValue(key, value);
+  //       });
+
+  //       // Select-based fields and set employee data to form
+  //       fForm.setValue("id_employee", user?.employees?.id_employee);
+  //       fForm.setValue("id_user", createInputOptions(user?.name, user.id));
+  //       fForm.setValue("nik", user?.employees?.nik || "");
+  //       fForm.setValue("npwp", user?.employees?.npwp || "");
+  //       fForm.setValue("bpjs_kesehatan", user?.employees?.bpjs_kesehatan || "");
+  //       fForm.setValue("bpjs_ketenagakerjaan", user?.employees?.bpjs_ketenagakerjaan || "");
+  //       fForm.setValue("full_name", user?.employees?.full_name || "");
+  //       fForm.setValue("nick_name", user?.employees?.nick_name || "");
+  //       fForm.setValue("personal_email", user?.employees?.personal_email || "");
+  //       fForm.setValue("postal_code", user?.employees?.postal_code || "");
+  //       fForm.setValue("address", user?.employees?.address || "");
+  //       fForm.setValue("birth_place", user?.employees?.birth_place || "");
+  //       fForm.setValue("gender", createInputOptions(toCapitalized(emp?.gender), emp?.gender));
+  //       fForm.setValue("religion", createInputOptions(toCapitalized(emp?.religion), emp?.religion));
+  //       fForm.setValue("marital_status", createInputOptions(toCapitalized(emp?.marital_status), emp?.marital_status));
+  //       fForm.setValue("blood_type", createInputOptions(emp?.blood_type, emp?.blood_type));
+  //       fForm.setValue("id_province", createInputOptions(emp?.province?.province_name, emp?.province?.id_province));
+  //       fForm.setValue("id_city", createInputOptions(emp?.city?.city_name, emp?.city?.id_city));
+
+  //       // Contacts
+  //       fForm.setValue("contacts", emp.contacts || []);
+
+  //       // Family (select format)
+  //       fForm.setValue(
+  //         "family",
+  //         emp.family?.map((item) => ({
+  //           ...item,
+  //           relationship: createInputOptions(toCapitalized(item.relationship), item.relationship),
+  //         })) || []
+  //       );
+
+  //       // Work History (simple list)
+  //       fForm.setValue(
+  //         "work_histories",
+  //         emp.workhistory?.map((item) => ({
+  //           ...item,
+  //         })) || []
+  //       );
+
+  //       // Education History (needs select formatting)
+  //       fForm.setValue(
+  //         "education_histories",
+  //         emp.educationhistory?.map((item) => ({
+  //           ...item,
+  //           id_school: createInputOptions(item.school?.school_name, item.school?.id_school),
+  //           id_degree: createInputOptions(item.degree?.name_degree, item.degree?.id_degree),
+  //           id_studyprogram: createInputOptions(item.studyprogram?.program_name, item.studyprogram?.id_studyprogram),
+  //         })) || []
+  //       );
+
+  //       // Documents
+  //       fForm.setValue("list_documents", emp.documents || []);
+  //       fForm.setValue("documents", []);
+
+  //       // SET EMPLOYEMENT DATA TO FORM
+  //       fForm.setValue("id_emplyoements", user?.employments?.id_employment);
+  //       fForm.setValue(
+  //         "id_manager",
+  //         createInputOptions(user?.employments?.manager?.name, user?.employments?.manager?.id)
+  //       );
+  //       fForm.setValue("work_location", user?.employments?.work_location);
+  //       fForm.setValue("join_date", user?.employments?.join_date);
+  //       fForm.setValue("end_date", user?.employments?.end_date);
+  //       fForm.setValue(
+  //         "employment_status",
+  //         createInputOptions(toCapitalized(user?.employments?.employment_status), user?.employments?.employment_status)
+  //       );
+  //       fForm.setValue("contract_start_date", user?.employments?.contract_start_date);
+  //       fForm.setValue("contract_end_date", user?.employments?.contract_end_date);
+  //       fForm.setValue(
+  //         "status",
+  //         createInputOptions(toCapitalized(user?.employments?.status), user?.employments?.status)
+  //       );
+  //       fForm.setValue("notes", user?.employments?.notes);
+
+  //       dEmployements.handleOpen();
+  //     },
+  //     onError: (err) => {
+  //       toastAlert.error(err.message || "Gagal mengambil data user");
+  //     },
+  //   });
+  // };
+
   console.log({ values: fForm.getValues() });
 
   return (
@@ -420,6 +613,9 @@ const MasterUser = () => {
           },
           onClickEmployee: (row) => {
             handleClickEmployee(row.original);
+          },
+          onCLickEmployments: (row) => {
+            handleClickEmployements(row.original);
           },
         })}
         withFilter={true}
@@ -466,6 +662,7 @@ const MasterUser = () => {
       <DetailRole dialogHandler={dDetail} />
       <DialogPreviewCv dialogHandler={dPreview} />
       <FormEmployee dialogHandler={dEmployee} />
+      <FormEmployements dialogHandler={dEmployements} />
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}

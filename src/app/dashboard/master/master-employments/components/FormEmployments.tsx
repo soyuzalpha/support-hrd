@@ -42,6 +42,12 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
     extraParams: { is_employment: 0, is_employee: 1 },
   });
 
+  const { loadOptions: loadOptionsManager } = useSelectFetcher({
+    endpoint: "/getUsers",
+    labelKey: "name",
+    valueKey: "id",
+  });
+
   const mutation = useMutation({
     mutationFn: createEmployment,
   });
@@ -75,6 +81,7 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
       );
 
       const payload = {
+        id_emplyoements: data?.id_emplyoements ?? null,
         id_user: data?.id_user?.value ?? null,
         id_manager: data?.id_manager?.value ?? null,
         join_date: toISOStringFormat(data?.join_date) ?? null,
@@ -149,7 +156,7 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
                     render={({ field }) => (
                       <SelectOptions
                         isAsync
-                        loadOptions={loadOptionsUser}
+                        loadOptions={loadOptionsManager}
                         placeholder="Search User"
                         value={field.value}
                         aria-invalid={!!fForm.formState.errors.id_manager}

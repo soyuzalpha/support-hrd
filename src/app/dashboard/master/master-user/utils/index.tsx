@@ -30,7 +30,14 @@ export const formSchemaPosition = z.object({
 });
 
 const columnHelper = createColumnHelper<any>();
-export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onCLickPreview, onClickEmployee }) => {
+export const columnsMasterUser = ({
+  onClickDetail,
+  onClickEdit,
+  onClickData,
+  onCLickPreview,
+  onClickEmployee,
+  onCLickEmployments,
+}) => {
   return [
     columnHelper.accessor("status", {
       header: "Status",
@@ -117,7 +124,7 @@ export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onC
               </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="w-32">
+            <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={(e) => {
                   onClickDetail(row);
@@ -141,6 +148,14 @@ export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onC
                 }}
               >
                 Employee
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  onCLickEmployments(row);
+                  e.stopPropagation();
+                }}
+              >
+                Employments
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={(e) => {
