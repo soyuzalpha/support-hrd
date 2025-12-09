@@ -471,7 +471,7 @@ const MasterUser = () => {
       documents: [],
 
       // Employment
-      id_emplyoements: safe(employment?.id_employment),
+      id_employment: safe(employment?.id_employment),
       id_manager: opt(employment?.manager?.name, employment?.manager?.id),
       work_location: safe(employment?.work_location),
       join_date: safe(employment?.join_date),
@@ -481,6 +481,7 @@ const MasterUser = () => {
       contract_end_date: safe(employment?.contract_end_date),
       status: opt(toCapitalized(employment?.status), employment?.status),
       notes: safe(employment?.notes),
+      attachments_list: safe(employment?.attachments, []),
     };
   };
 

@@ -30,6 +30,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
 import { toISOStringFormat } from "@/utils/dates";
+import Show from "@/components/show";
+import { AttachmentViewer } from "@/components/AttachmentViewer";
 
 const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
@@ -56,7 +58,7 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
     mutationFn: updateEmployment,
   });
 
-  const mutations = isEmpty(fForm.getValues("id_emplyoements")) ? mutation : updateMutation;
+  const mutations = isEmpty(fForm.getValues("id_employment")) ? mutation : updateMutation;
 
   const onSubmit = async (data) => {
     try {
@@ -81,7 +83,7 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
       );
 
       const payload = {
-        id_emplyoements: data?.id_emplyoements ?? null,
+        id_employment: data?.id_employment ?? null,
         id_user: data?.id_user?.value ?? null,
         id_manager: data?.id_manager?.value ?? null,
         join_date: toISOStringFormat(data?.join_date) ?? null,
@@ -95,12 +97,15 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
         attachments: detail,
       };
 
+      console.log({ data, payload });
+
       mutations.mutate(payload, {
         onSuccess: (res) => {
           const message = generateSuccessMessage(res);
           toastAlert.success(message);
           dialogHandler.handleClose();
           invalidate([["employements"]]);
+          invalidate([["users"]]);
         },
         onError: (err) => {
           const message = generateErrorMessage(err);
@@ -312,30 +317,36 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
                 )}
               />
 
-              {/* DOCUMENTS UPLOAD (REPEATABLE) */}
-              <DynamicFormFields
-                control={fForm.control}
-                name="attachments"
-                repeatable
-                direction={useIsMobile() ? "vertical" : "horizontal"}
-                directionContent="vertical"
-                title="Attachments"
-                titleAdd="Add Attachments"
-                fields={[
-                  {
-                    name: "type_attachment",
-                    placeholder: "ID Card",
-                    inputType: "text",
-                    label: "Document Type",
-                  },
-                  {
-                    name: "image",
-                    placeholder: "File",
-                    inputType: "file",
-                    label: "File",
-                  },
-                ]}
-              />
+              <div>
+                <Show.When isTrue={!isEmpty(fForm.getValues("attachments_list"))}>
+                  <AttachmentViewer title="Attachment List" attachments={fForm.getValues("attachments_list")} />
+                </Show.When>
+
+                {/* DOCUMENTS UPLOAD (REPEATABLE) */}
+                <DynamicFormFields
+                  control={fForm.control}
+                  name="attachments"
+                  repeatable
+                  direction={useIsMobile() ? "vertical" : "horizontal"}
+                  directionContent="vertical"
+                  title="Attachments"
+                  titleAdd="Add Attachments"
+                  fields={[
+                    {
+                      name: "type_attachment",
+                      placeholder: "ID Card",
+                      inputType: "text",
+                      label: "Document Type",
+                    },
+                    {
+                      name: "image",
+                      placeholder: "File",
+                      inputType: "file",
+                      label: "File",
+                    },
+                  ]}
+                />
+              </div>
             </FieldGroup>
           </AppGridContainer>
 
