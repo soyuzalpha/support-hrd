@@ -58,14 +58,14 @@ export const columnsPeriodAttendance = ({ onClickDetail, onClickEdit, onClickDat
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-32">
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={(e) => {
                   onClickDetail(row);
                   e.stopPropagation();
                 }}
               >
                 Detail
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem
                 onClick={(e) => {
                   onClickEdit(row);

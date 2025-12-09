@@ -30,7 +30,7 @@ export interface AppState {
     recentItems?: string[];
     layout?: "grid" | "list";
     density?: "compact" | "comfortable" | "spacious";
-    font?: "literata" | "poppins" | "jetbrains-mono" | "inter";
+    font?: "literata" | "poppins" | "jetbrains-mono" | "inter" | "geist-mono";
   };
   settings?: {
     autoSave: boolean;

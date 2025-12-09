@@ -152,6 +152,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
           toastAlert.success(message);
           dialogHandler.handleClose();
           invalidate([["employees"]]);
+          invalidate([["users"]]);
         },
         onError: (err) => {
           const message = generateErrorMessage(err);

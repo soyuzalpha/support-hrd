@@ -57,14 +57,14 @@ export const columnsMasterEducation = ({ onClickDetail, onClickEdit, onClickData
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-32">
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={(e) => {
                   onClickDetail(row);
                   e.stopPropagation();
                 }}
               >
                 Detail
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem
                 onClick={(e) => {
                   onClickEdit(row);

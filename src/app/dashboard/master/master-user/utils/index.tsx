@@ -30,7 +30,7 @@ export const formSchemaPosition = z.object({
 });
 
 const columnHelper = createColumnHelper<any>();
-export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onCLickPreview }) => {
+export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onCLickPreview, onClickEmployee }) => {
   return [
     columnHelper.accessor("status", {
       header: "Status",
@@ -50,20 +50,20 @@ export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onC
       cell: ({ row }) => (
         <div className="flex items-center gap-3">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={row.original?.photo_url || undefined} alt={row.original?.name || "User"} />
+
+            <AvatarFallback>{row.original?.name ? row.original.name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
           </Avatar>
 
-          <p>
-            <span>{row.original?.employee_number ?? "-"}</span> <br />
-            <span>{row.original?.name ?? "-"}</span>
-            <br />
-            <span> {row.original?.username ?? "-"}</span>
-          </p>
+          <div className="text-sm leading-tight">
+            <p className="font-medium">{row.original?.employee_number ?? "-"}</p>
+            <p className="text-muted-foreground">{row.original?.name ?? "-"}</p>
+            <p className="text-muted-foreground">{row.original?.username ?? "-"}</p>
+          </div>
         </div>
       ),
     }),
-    columnHelper.accessor("name", {
+    columnHelper.accessor("contact", {
       header: "Contacts",
       cell: ({ row }) => (
         <p>
@@ -73,7 +73,7 @@ export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onC
         </p>
       ),
     }),
-    columnHelper.accessor("name", {
+    columnHelper.accessor("position", {
       header: "Position/Division",
       cell: ({ row }) => (
         <p>
@@ -83,7 +83,7 @@ export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onC
         </p>
       ),
     }),
-    columnHelper.accessor("name", {
+    columnHelper.accessor("company", {
       header: "Company",
       cell: ({ row }) => (
         <p>
@@ -134,14 +134,21 @@ export const columnsMasterUser = ({ onClickDetail, onClickEdit, onClickData, onC
               >
                 Edit
               </DropdownMenuItem>
-
+              <DropdownMenuItem
+                onClick={(e) => {
+                  onClickEmployee(row);
+                  e.stopPropagation();
+                }}
+              >
+                Employee
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={(e) => {
                   onCLickPreview(row);
                   e.stopPropagation();
                 }}
               >
-                Preview User
+                Preview
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />

@@ -68,74 +68,90 @@ export function SelectOptions<
             e.preventDefault();
             handleCreate();
           }}
-          className="cursor-pointer px-3 py-2 hover:bg-accent text-primary text-sm border-t border-border/40"
+          className="cursor-pointer px-3 py-2 text-white/80 text-sm 
+       hover:bg-white/15 rounded-lg mt-1 transition backdrop-blur-md"
         >
-          ➕ Create "{inputValue}"
+          ➕ Create “{inputValue}”
         </div>
       )}
     </div>
   );
 
-  // === 🔥 KEEP YOUR ORIGINAL STYLING ===
   const customStyles = {
     control: (base: any, state: any) => ({
       ...base,
-      minHeight: "40px",
-      borderColor: state.isFocused ? "hsl(var(--primary))" : "hsl(var(--border))",
-      boxShadow: state.isFocused ? "0 0 0 2px hsl(var(--ring)/0.4)" : "none",
+      backdropFilter: "blur(10px)",
+      background: "rgba(255,255,255,0.06)",
+      borderRadius: "12px",
+      padding: "4px 6px",
+      border: state.isFocused ? "1px solid rgba(255,255,255,0.35)" : "1px solid rgba(255,255,255,0.15)",
+      boxShadow: state.isFocused ? "0 0 20px rgba(255,255,255,0.08)" : "none",
+      transition: "0.25s ease",
       "&:hover": {
-        borderColor: "hsl(var(--primary)/0.5)",
-        backgroundColor: "hsl(var(--card))",
+        border: "1px solid rgba(255,255,255,0.25)",
+        background: "rgba(255,255,255,0.10)",
       },
-      backgroundColor: "hsl(var(--background))",
-      borderRadius: "var(--radius)",
-      color: "hsl(var(--foreground))",
-      transition: "all 0.2s ease",
     }),
+
+    menu: (base) => ({
+      ...base,
+      backdropFilter: "blur(24px)",
+      background: "#1d1d1d",
+      border: "1px solid rgba(255,255,255,0.18)",
+      borderRadius: "14px",
+      padding: "6px",
+      marginTop: "6px",
+      boxShadow: "0 0 24px rgba(0,0,0,0.25)",
+    }),
+
+    menuList: (base: any) => ({
+      ...base,
+      padding: "4px",
+      // background: "rgba(255,255,255,0.06)",
+      // backdropFilter: "blur(25px)",
+    }),
+
     option: (base: any, state: any) => ({
       ...base,
-      transition: "background-color 0.15s ease",
+      padding: "10px 12px",
+      borderRadius: "8px",
+      fontSize: "14px",
+      transition: "0.15s",
       cursor: "pointer",
+      background: state.isSelected
+        ? "rgba(255,255,255,0.20)"
+        : state.isFocused
+        ? "rgba(255,255,255,0.12)"
+        : "transparent",
+      color: state.isSelected ? "#fff" : "rgba(255,255,255,0.85)",
+      "&:active": {
+        background: "rgba(255,255,255,0.25)",
+      },
     }),
-    menu: (base: any) => ({
-      ...base,
-      backgroundColor: "hsl(var(--popover))",
-      border: "1px solid hsl(var(--border))",
-      borderRadius: "var(--radius)",
-      boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
-      overflow: "hidden",
-    }),
-    singleValue: (base: any) => ({
-      ...base,
-      color: "hsl(var(--foreground))",
-    }),
-    input: (base: any) => ({
-      ...base,
-      color: "hsl(var(--foreground))",
-    }),
+
     placeholder: (base: any) => ({
       ...base,
-      color: "hsl(var(--muted-foreground))",
+      color: "rgba(255,255,255,0.45)",
+      fontSize: "14px",
+    }),
+
+    singleValue: (base: any) => ({
+      ...base,
+      color: "rgba(255,255,255,0.9)",
+      fontSize: "14px",
+    }),
+
+    input: (base: any) => ({
+      ...base,
+      color: "rgba(255,255,255,0.9) !important",
     }),
   };
 
   const classNames = {
-    control: (state: { isFocused: boolean }) =>
-      `!min-h-[40px] !rounded-[var(--radius)] !border !border-border !bg-background transition-all duration-200 ${
-        state.isFocused ? "!border-primary !ring-2 !ring-ring/40" : ""
-      } hover:!border-primary/50 hover:!bg-card`,
-    option: (state: { isFocused: boolean; isSelected: boolean }) =>
-      `!text-popover-foreground transition-colors duration-150 ${
-        state.isSelected ? "!bg-primary !text-primary-foreground" : state.isFocused ? "!bg-accent/30" : "!bg-popover"
-      }`,
-    menu: () =>
-      "!bg-popover !border !border-border !rounded-[var(--radius)] !shadow-lg text-sm overflow-hidden !backdrop-blur-xl",
-    singleValue: () => "!text-foreground",
-    input: () => "!text-foreground",
-    placeholder: () => "!text-muted-foreground text-sm",
-    indicatorSeparator: () => "!bg-border/50",
-    dropdownIndicator: () => "!text-muted-foreground hover:!text-foreground transition-colors duration-150",
-    clearIndicator: () => "!text-muted-foreground hover:!text-foreground transition-colors duration-150",
+    control: () => "!rounded-xl !border-transparent text-sm",
+    menu: () => "!rounded-xl backdrop-blur-xl",
+    option: () => "transition text-sm",
+    placeholder: () => "!text-white/40",
   };
 
   const baseProps = {

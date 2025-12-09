@@ -20,6 +20,7 @@ import { useSelectFetcher } from "@/hooks/use-select-fetcher";
 import { getCityByProvince } from "../master-zones/api/master-zones-service";
 import { exportToCSV } from "@/utils/export-csv";
 import DialogPreviewCv from "@/components/DialogPreviewCv";
+import FormEmployee from "../master-employee/components/FormRole";
 
 const MasterUser = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -29,6 +30,7 @@ const MasterUser = () => {
   const dDetail = useDialogModal();
   const dConfirm = useDialogModal();
   const dPreview = useDialogModal();
+  const dEmployee = useDialogModal();
 
   const { loadOptions: loadOptionsCompany } = useSelectFetcher({
     endpoint: "/getCompany",
@@ -98,10 +100,6 @@ const MasterUser = () => {
     },
     [setCurrentState]
   );
-
-  const mutationDetail = useMutation({
-    mutationFn: getUserById,
-  });
 
   const handleClickDetail = (row: any) => {
     Object.entries(row).forEach(([key, value]) => {
@@ -310,6 +308,89 @@ const MasterUser = () => {
     }
   };
 
+  const mutationGetUserById = useMutation({
+    mutationFn: getUserById,
+  });
+
+  const handleClickEmployee = (row: any) => {
+    if (!row) return;
+
+    mutationGetUserById.mutate(row.id, {
+      onSuccess: (res) => {
+        const user = res.data;
+        const emp = user.employees;
+
+        // Set base fields
+        Object.entries(user).forEach(([key, value]) => {
+          //@ts-ignore
+          fForm.setValue(key, value);
+        });
+
+        // Select-based fields
+        fForm.setValue("id_employee", user?.employees?.id_employee);
+        fForm.setValue("id_user", createInputOptions(user?.name, user.id));
+        fForm.setValue("nik", user?.employees?.nik || "");
+        fForm.setValue("npwp", user?.employees?.npwp || "");
+        fForm.setValue("bpjs_kesehatan", user?.employees?.bpjs_kesehatan || "");
+        fForm.setValue("bpjs_ketenagakerjaan", user?.employees?.bpjs_ketenagakerjaan || "");
+        fForm.setValue("full_name", user?.employees?.full_name || "");
+        fForm.setValue("nick_name", user?.employees?.nick_name || "");
+        fForm.setValue("personal_email", user?.employees?.personal_email || "");
+        fForm.setValue("postal_code", user?.employees?.postal_code || "");
+        fForm.setValue("address", user?.employees?.address || "");
+        fForm.setValue("birth_place", user?.employees?.birth_place || "");
+        fForm.setValue("gender", createInputOptions(toCapitalized(emp?.gender), emp?.gender));
+        fForm.setValue("religion", createInputOptions(toCapitalized(emp?.religion), emp?.religion));
+        fForm.setValue("marital_status", createInputOptions(toCapitalized(emp?.marital_status), emp?.marital_status));
+        fForm.setValue("blood_type", createInputOptions(emp?.blood_type, emp?.blood_type));
+        fForm.setValue("id_province", createInputOptions(emp?.province?.province_name, emp?.province?.id_province));
+        fForm.setValue("id_city", createInputOptions(emp?.city?.city_name, emp?.city?.id_city));
+
+        // Contacts
+        fForm.setValue("contacts", emp.contacts || []);
+
+        // Family (select format)
+        fForm.setValue(
+          "family",
+          emp.family?.map((item) => ({
+            ...item,
+            relationship: createInputOptions(toCapitalized(item.relationship), item.relationship),
+          })) || []
+        );
+
+        // Work History (simple list)
+        fForm.setValue(
+          "work_histories",
+          emp.workhistory?.map((item) => ({
+            ...item,
+          })) || []
+        );
+
+        // Education History (needs select formatting)
+        fForm.setValue(
+          "education_histories",
+          emp.educationhistory?.map((item) => ({
+            ...item,
+            id_school: createInputOptions(item.school?.school_name, item.school?.id_school),
+            id_degree: createInputOptions(item.degree?.name_degree, item.degree?.id_degree),
+            id_studyprogram: createInputOptions(item.studyprogram?.program_name, item.studyprogram?.id_studyprogram),
+          })) || []
+        );
+
+        // Documents
+        fForm.setValue("list_documents", emp.documents || []);
+        fForm.setValue("documents", []);
+
+        dEmployee.handleOpen();
+      },
+      onError: (err) => {
+        toastAlert.error(err.message || "Gagal mengambil data user");
+      },
+    });
+  };
+
+  console.log({ values: fForm.getValues() });
+
   return (
     <FormProvider {...fForm}>
       <DataTable
@@ -336,6 +417,9 @@ const MasterUser = () => {
           },
           onClickEdit: (row) => {
             handleClickEdit(row.original);
+          },
+          onClickEmployee: (row) => {
+            handleClickEmployee(row.original);
           },
         })}
         withFilter={true}
@@ -381,6 +465,7 @@ const MasterUser = () => {
       <FormUser dialogHandler={dDialog} />
       <DetailRole dialogHandler={dDetail} />
       <DialogPreviewCv dialogHandler={dPreview} />
+      <FormEmployee dialogHandler={dEmployee} />
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}

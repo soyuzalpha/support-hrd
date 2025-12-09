@@ -20,7 +20,17 @@ import { SelectOptions } from "./select-options";
 import { CurrencyInput } from "./ui/currency-input";
 import { GlassContainer } from "./GlassContainer";
 
-type InputType = "text" | "number" | "textarea" | "email" | "date" | "select" | "file" | "currency" | "time";
+type InputType =
+  | "text"
+  | "number"
+  | "textarea"
+  | "email"
+  | "date"
+  | "select"
+  | "file"
+  | "currency"
+  | "time"
+  | "date-time";
 type DirectionType = "vertical" | "horizontal";
 
 interface FieldConfig {
@@ -441,6 +451,20 @@ export const DynamicFormFields = ({
 
                       // DATE
                       if (fieldCfg.inputType === "date") {
+                        return (
+                          <DateTimePicker
+                            {...field}
+                            date={field.value}
+                            placeholder={fieldCfg.placeholder}
+                            onChange={(value) => {
+                              field.onChange(toISOStringFormat(value as Date));
+                            }}
+                            disabled={fieldCfg.isDisabled}
+                          />
+                        );
+                      }
+
+                      if (fieldCfg.inputType === "date-time") {
                         return (
                           <DateTimePicker
                             {...field}

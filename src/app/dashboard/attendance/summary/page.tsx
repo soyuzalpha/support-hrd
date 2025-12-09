@@ -14,6 +14,7 @@ import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import { ConfirmationDialog } from "@/components/confirmation-dialog";
 import CardMaster from "@/components/CardMaster";
 import FormAttendancePeriod from "./components/FormAttendanceSummary";
+import DetailAttendanceSummary from "./components/detailSummary";
 
 const Period = () => {
   const fForm = useForm();
@@ -144,7 +145,7 @@ const Period = () => {
       />
 
       <FormAttendancePeriod dialogHandler={dDialog} />
-      {/* <DetailCompany dialogHandler={dDetail} /> */}
+      <DetailAttendanceSummary dialogHandler={dDetail} />
 
       <ConfirmationDialog
         onConfirm={() => handleClickChangeStatus()}

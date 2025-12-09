@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { literata, poppins, jetbrainsMono, inter } from "@/lib/fonts";
+import { literata, poppins, jetbrainsMono, inter, geist } from "@/lib/fonts";
 
 const fonts = [
   {
@@ -35,6 +35,12 @@ const fonts = [
     name: "JetBrains Mono",
     value: "jetbrains-mono",
     className: jetbrainsMono.className,
+    description: "Monospace - Code friendly",
+  },
+  {
+    name: "Geist Mono",
+    value: "geist-mono",
+    className: geist.className,
     description: "Monospace - Code friendly",
   },
 ] as const;
@@ -62,7 +68,7 @@ export function FontSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="w-fit p-2 text-xs">
+        <Button variant="ghost" size="sm" className="w-fit p-2 text-x bg-transparent! hover:bg-transparent">
           <Type className="h-2 w-2" />
           {/* <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-4" /> */}
           {selectedFont?.name}

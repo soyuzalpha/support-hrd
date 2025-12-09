@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { DatePicker } from "./ui/datepicker";
 import { SelectOptions } from "./select-options";
 import { AppGridContainer } from "./app-grid-container";
+import { ScrollArea } from "./ui/scroll-area";
 
 export type FilterField =
   | {
@@ -63,9 +64,9 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
         <Button variant="outline">Filter</Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-96">
+      <PopoverContent>
         <form className="space-y-4" onSubmit={handleSubmit(submitHandler)}>
-          <AppGridContainer maxHeight={300} className="w-full p-4 space-y-4">
+          <ScrollArea className="h-96 spacey-4">
             {fields?.map((field) => {
               switch (field.type) {
                 case "text":
@@ -140,7 +141,8 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
                   return null;
               }
             })}
-          </AppGridContainer>
+          </ScrollArea>
+
           <div className="flex gap-2 justify-end">
             <Button variant="ghost" type="button" onClick={() => reset(defaultValues)}>
               Reset
