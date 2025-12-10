@@ -31,6 +31,7 @@ export interface AppState {
     layout?: "grid" | "list";
     density?: "compact" | "comfortable" | "spacious";
     font?: "literata" | "poppins" | "jetbrains-mono" | "inter" | "geist-mono";
+    background: string;
   };
   settings?: {
     autoSave: boolean;
@@ -65,6 +66,7 @@ const defaultAppState: AppState = {
     layout: "grid",
     density: "comfortable",
     font: "poppins", // 👈 kasih default font
+    background: "silk",
   },
   settings: {
     autoSave: true,
@@ -131,6 +133,7 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
       ui: {
         ...prev.ui,
         ...updates,
+        background: updates?.background ?? "silk",
       },
     }));
   };

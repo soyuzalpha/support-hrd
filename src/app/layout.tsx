@@ -33,8 +33,6 @@ export default function RootLayout({
           BODY — fix: remove overflow-hidden
       ----------------------------------------------*/}
       <body className={`${poppins.variable} antialiased relative min-h-screen`}>
-        {/* Background ReactBits */}
-
         {/* Main Content */}
         <main className="relative">
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>

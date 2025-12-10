@@ -20,6 +20,7 @@ import { logoutService, setLogoutCallback } from "@/service/service";
 import { signOut } from "next-auth/react";
 import { toastAlert } from "@/lib/toast";
 import { FontSwitcher } from "./font-switcher";
+import { ColorSchemaToggle } from "./color-schema-toggle";
 
 interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
   transparent?: boolean;
@@ -63,10 +64,7 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
     <header className={cn("sticky top-0 z-5 transition-all w-full mt-4", className)} {...props}>
       <div
         className={cn(
-          "container mx-auto flex items-center justify-between px-4 py-3 backdrop-blur-2xl border-white/10 duration-300 rounded-full",
-          transparent
-            ? "bg-white/5 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
-            : "bg-white/10 shadow-[0_0_20px_rgba(255,255,255,0.08)]"
+          "container mx-auto flex items-center justify-between px-4 py-3 rounded-full border border-white/40 duration-300 backdrop-filter backdrop-blur-lg bg-opacity-30 bg-white/10"
         )}
       >
         <Link href={"/dashboard"} className="flex items-center gap-2">
@@ -76,6 +74,7 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
 
         <div className="flex items-center gap-3">
           <FontSwitcher />
+          {/* <ColorSchemaToggle /> */}
 
           <div className="flex items-center gap-3">
             <DropdownMenu>

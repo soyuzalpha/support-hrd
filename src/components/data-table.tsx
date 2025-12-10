@@ -294,7 +294,7 @@ export function DataTable({
       </Show.When>
 
       <Show.When isTrue={tabValue === "table"}>
-        <div className="overflow-hidden rounded-xl bg-white/10 dark:bg-white/5 border border-white/10 backdrop-blur-2xl shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+        <div className="overflow-hidden rounded-xl border-white/40 duration-300 backdrop-blur-lg bg-opacity-30 bg-white/10 border ">
           <Table>
             <TableHeader className="sticky top-0 z-10 bg-white/20 dark:bg-white/10 backdrop-blur-xl border-b border-white/10">
               {table.getHeaderGroups().map((headerGroup) => (
