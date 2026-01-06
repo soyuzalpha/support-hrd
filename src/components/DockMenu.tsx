@@ -19,9 +19,11 @@ export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void
     setIsReady(true);
   }, []);
 
-  const role = user?.userDatas?.position.name_position ?? "staff";
+  const role = user?.userDatas?.position?.name_position ?? "staff";
   const allowedMenu =
     roleAccess[role] === "all" ? menuItems : menuItems.filter((menu) => roleAccess[role]?.includes(menu.id));
+
+  console.log({ role, user: user?.userDatas });
 
   // ⛔ FIX: Prevent SSR mismatch
   if (!isReady) return null;

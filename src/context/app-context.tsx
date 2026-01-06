@@ -23,6 +23,7 @@ export interface AppState {
       dateFormat: string;
     };
     userDatas?: any;
+    employee_datas?: any;
   };
   ui?: {
     sidebarCollapsed?: boolean; // 👈 kasih tanda tanya semua

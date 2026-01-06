@@ -10,8 +10,7 @@ const MasterDivision = lazy(() => import("./master-division/page"));
 const MasterUser = lazy(() => import("./master-user/page"));
 const MasterEmploye = lazy(() => import("./master-employee/page"));
 const MasterEmployements = lazy(() => import("./master-employments/page"));
-const MasterTypeLeaves = lazy(() => import("./master-type-leaves/page"));
-const MasterApprovalLeaves = lazy(() => import("./master-approval/page"));
+const MasterApproval = lazy(() => import("./master-approval/page"));
 
 export default function Master() {
   return (
@@ -31,10 +30,9 @@ export default function Master() {
             <TabsTrigger value="position">Position</TabsTrigger>
             <TabsTrigger value="division">Division</TabsTrigger>
             <TabsTrigger value="user">User</TabsTrigger>
-            <TabsTrigger value="employee">Employee</TabsTrigger>
-            <TabsTrigger value="employments">Employements</TabsTrigger>
-            <TabsTrigger value="approval_leave">Approval Leaves</TabsTrigger>
-            <TabsTrigger value="type_leaves">Type Leaves</TabsTrigger>
+            {/* <TabsTrigger value="employee">Employee</TabsTrigger> */}
+            {/* <TabsTrigger value="employments">Employements</TabsTrigger> */}
+            <TabsTrigger value="approval">Approval</TabsTrigger>
           </TabsList>
         </div>
 
@@ -80,15 +78,9 @@ export default function Master() {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="approval_leave">
-          <Suspense fallback={<div>Loading Approval Leaves...</div>}>
-            <MasterApprovalLeaves />
-          </Suspense>
-        </TabsContent>
-
-        <TabsContent value="type_leaves">
-          <Suspense fallback={<div>Loading Type Leaves...</div>}>
-            <MasterTypeLeaves />
+        <TabsContent value="approval">
+          <Suspense fallback={<div>Loading Approval...</div>}>
+            <MasterApproval />
           </Suspense>
         </TabsContent>
       </Tabs>

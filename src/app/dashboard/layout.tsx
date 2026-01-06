@@ -4,13 +4,34 @@ import "../globals.css";
 import { geist, inter, jetbrainsMono, literata, poppins } from "@/lib/fonts";
 import React from "react";
 import { DockMenu } from "@/components/DockMenu";
-import { useAppContext } from "@/context/app-context";
+import { useAppContext, useUser } from "@/context/app-context";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { useMutation } from "@tanstack/react-query";
+import { getUserById } from "./master/master-user/api/master-position-service";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { state } = useAppContext();
   const currentFont = state.ui?.font || "poppins";
+  const { user, updateUser } = useUser();
+
+  const mutationGetUser = useMutation({
+    mutationFn: getUserById,
+  });
+
+  React.useEffect(() => {
+    mutationGetUser.mutate(user.id_user, {
+      onSuccess: (res) => {
+        updateUser({
+          ...user,
+          userDatas: res?.data,
+        });
+      },
+      onError: (err) => {
+        console.log({ err });
+      },
+    });
+  }, []);
 
   React.useEffect(() => {
     const map = {

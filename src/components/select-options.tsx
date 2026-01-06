@@ -57,101 +57,74 @@ export function SelectOptions<
     setShowCreate(false);
   };
 
-  /** FIX: menu override clean, no access `components` */
-  const CustomMenuList = (menuProps: MenuListProps<Option, IsMulti, Group>) => (
-    <div>
-      {menuProps.children}
-
-      {showCreate && onCreateOption && (
-        <div
-          onMouseDown={(e) => {
-            e.preventDefault();
-            handleCreate();
-          }}
-          className="cursor-pointer px-3 py-2 /80 text-xs 
-       hover:bg-white/15 rounded-lg mt-1 transition backdrop-blur-md"
-        >
-          ➕ Create “{inputValue}”
-        </div>
-      )}
-    </div>
-  );
-
+  // === 🎨 Styling fully aligned with your color tokens ===
   const customStyles = {
     control: (base: any, state: any) => ({
       ...base,
-      backdropFilter: "blur(10px)",
-      background: "rgba(255,255,255,0.06)",
-      borderRadius: "12px",
-      padding: "4px 6px",
-      border: state.isFocused ? "1px solid rgba(255,255,255,0.35)" : "1px solid rgba(255,255,255,0.15)",
-      boxShadow: state.isFocused ? "0 0 20px rgba(255,255,255,0.08)" : "none",
-      transition: "0.25s ease",
+      minHeight: "40px",
+      borderColor: state.isFocused ? "hsl(var(--primary))" : "hsl(var(--border))",
+      boxShadow: state.isFocused ? "0 0 0 2px hsl(var(--ring)/0.4)" : "none",
       "&:hover": {
-        border: "1px solid rgba(255,255,255,0.25)",
-        background: "rgba(255,255,255,0.10)",
+        borderColor: "hsl(var(--primary)/0.5)",
+        backgroundColor: "hsl(var(--card))",
       },
+      backgroundColor: "hsl(var(--background))",
+      borderRadius: "var(--radius)",
+      color: "hsl(var(--foreground))",
+      transition: "all 0.2s ease",
     }),
-
-    menu: (base) => ({
-      ...base,
-      backdropFilter: "blur(24px)",
-      background: "#1d1d1d",
-      border: "1px solid rgba(255,255,255,0.18)",
-      borderRadius: "14px",
-      padding: "6px",
-      marginTop: "6px",
-      boxShadow: "0 0 24px rgba(0,0,0,0.25)",
-    }),
-
-    menuList: (base: any) => ({
-      ...base,
-      padding: "4px",
-      // background: "rgba(255,255,255,0.06)",
-      // backdropFilter: "blur(25px)",
-    }),
-
     option: (base: any, state: any) => ({
       ...base,
-      padding: "10px 12px",
-      borderRadius: "8px",
-      fontSize: "14px",
-      transition: "0.15s",
-      cursor: "pointer",
-      background: state.isSelected
-        ? "rgba(255,255,255,0.20)"
+      backgroundColor: state.isSelected
+        ? "hsl(var(--primary))"
         : state.isFocused
-        ? "rgba(255,255,255,0.12)"
-        : "transparent",
-      color: state.isSelected ? "#fff" : "rgba(255,255,255,0.85)",
-      "&:active": {
-        background: "rgba(255,255,255,0.25)",
+        ? "hsl(var(--accent)/0.2)"
+        : "hsl(var(--popover))",
+      color: state.isSelected ? "hsl(var(--primary-foreground))" : "hsl(var(--popover-foreground))",
+      "&:hover": {
+        backgroundColor: state.isSelected ? "hsl(var(--primary)/0.85)" : "hsl(var(--accent)/0.3)",
       },
+      transition: "background-color 0.15s ease",
+      cursor: "pointer",
     }),
-
-    placeholder: (base: any) => ({
+    menu: (base: any) => ({
       ...base,
-      color: "rgba(255,255,255,0.45)",
-      fontSize: "14px",
+      backgroundColor: "hsl(var(--popover))",
+      border: "1px solid hsl(var(--border))",
+      borderRadius: "var(--radius)",
+      boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
+      overflow: "hidden",
     }),
-
     singleValue: (base: any) => ({
       ...base,
-      color: "rgba(255,255,255,0.9)",
-      fontSize: "14px",
+      color: "hsl(var(--foreground))",
     }),
-
     input: (base: any) => ({
       ...base,
-      color: "rgba(255,255,255,0.9) !important",
+      color: "hsl(var(--foreground))",
+    }),
+    placeholder: (base: any) => ({
+      ...base,
+      color: "hsl(var(--muted-foreground))",
     }),
   };
 
   const classNames = {
-    control: () => "!rounded-xl !border-transparent text-xs",
-    menu: () => "!rounded-xl backdrop-blur-xl",
-    option: () => "transition text-xs",
-    placeholder: () => "!/40",
+    control: (state: { isFocused: boolean }) =>
+      `!min-h-[16px] !rounded-[var(--radius)] !border !border-border !bg-background transition-all duration-200 ${
+        state.isFocused ? "!border-primary !ring-2 !ring-ring/40" : ""
+      } hover:!border-primary/50 hover:!bg-card`,
+    option: (state: { isFocused: boolean; isSelected: boolean }) =>
+      `!text-popover-foreground transition-colors duration-150 ${
+        state.isSelected ? "!bg-primary !text-primary-foreground" : state.isFocused ? "!bg-accent/30" : "!bg-popover"
+      }`,
+    menu: () => "!bg-popover !border !border-border !rounded-[var(--radius)] !shadow-lg text-xs overflow-hidden",
+    singleValue: () => "!text-foreground text-xs",
+    input: () => "!text-foreground text-xs",
+    placeholder: () => "!text-muted-foreground text-xs",
+    indicatorSeparator: () => "!bg-border/50",
+    dropdownIndicator: () => "!text-muted-foreground hover:!text-foreground transition-colors duration-150",
+    clearIndicator: () => "!text-muted-foreground hover:!text-foreground transition-colors duration-150",
   };
 
   const baseProps = {
@@ -159,7 +132,7 @@ export function SelectOptions<
     styles: customStyles,
     classNames,
     components: {
-      MenuList: CustomMenuList,
+      // MenuList: CustomMenuList,
       ...(props.components || {}),
     },
     onInputChange: (val: string) => setInputValue(val),

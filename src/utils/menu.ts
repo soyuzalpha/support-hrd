@@ -9,13 +9,15 @@ import {
   LogOut,
   PartyPopper,
   BookUser,
+  PersonStanding,
 } from "lucide-react";
 
 export const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: Home, path: "/dashboard" },
   { id: "master", label: "Master", icon: BarChart3, path: "/dashboard/master" },
-  { id: "attendance", label: "Attendance", icon: BookUser, path: "/dashboard/attendance" },
+  // { id: "attendance", label: "Attendance", icon: BookUser, path: "/dashboard/attendance" },
   { id: "leave", label: "Leaves", icon: PartyPopper, path: "/dashboard/leaves" },
+  { id: "detail", label: "Details", icon: PersonStanding, path: "/dashboard/detail" },
   // { id: "team", label: "Team", icon: Users, },
   // { id: "messages", label: "Messages", icon: MessageSquare },
   // { id: "notifications", label: "Notifications", icon: Bell },
@@ -26,6 +28,6 @@ export const roleAccess = {
   Superadmin: "all",
   Admin: "all",
   Manager: "all",
-  Staff: ["dashboard", "leave"],
+  Staff: ["dashboard", "leave", "detail"],
   "Super Admin": "all",
 } as const;

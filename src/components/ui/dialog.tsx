@@ -54,9 +54,9 @@ function DialogContent({
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
-
       <DialogPrimitive.Content
         data-slot="dialog-content"
+        {...props}
         className={cn(
           // base animation & layout
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border p-6 shadow-xl duration-200 bg-background",
@@ -73,16 +73,6 @@ function DialogContent({
           size === "ultra" && "max-w-6xl",
           size === "mega" && "max-w-7xl",
           size === "full" && "max-w-full",
-
-          // Default background (non-glass)
-          // !glass && !glassDark && "bg-background",
-
-          // 🌟 GLASS WHITE (Vision Pro)
-          // glass &&
-          //   "backdrop-blur-2xl bg-white/70 dark:bg-white/5 border-white/20 shadow-[0_0_25px_rgba(255,255,255,0.15)]",
-
-          // 🌑 GLASS DARK (Frosted Black)
-          // glassDark && "backdrop-blur-xl bg-black/30 border-white/10 shadow-[0_0_25px_rgba(0,0,0,0.4)]",
 
           className
         )}

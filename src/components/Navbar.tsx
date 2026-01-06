@@ -61,10 +61,10 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
   };
 
   return (
-    <header className={cn("fixed top-0 z-50 w-full transition-all", className)} {...props}>
+    <header className={cn("fixed top-0 z-50 w-full transition-all px-1", className)} {...props}>
       <div
         className={cn(
-          "container mx-auto mt-4 flex items-center justify-between px-4 py-2 rounded-full border",
+          "container mx-auto mt-2 flex items-center justify-between px-4 py-2 rounded-full border",
           "backdrop-blur-sm bg-background/20 shadow"
         )}
       >
