@@ -281,12 +281,12 @@ export const DynamicFormFields = ({
             {isUploading ? (
               <>
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
-                <p className="text-sm text-muted-foreground">Compressing file...</p>
+                <p className="text-xs text-muted-foreground">Compressing file...</p>
               </>
             ) : (
               <>
                 <Upload className="h-8 w-8 text-muted-foreground mb-3" />
-                <p className="text-sm font-medium">
+                <p className="text-xs font-medium">
                   {isDragOver ? "Drop files here" : "Click to upload or drag and drop"}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
@@ -306,7 +306,7 @@ export const DynamicFormFields = ({
                   <div className="flex items-center gap-3">
                     <File className="h-4 w-4 text-muted-foreground" />
                     <div>
-                      <p className="text-sm font-medium">{file.name}</p>
+                      <p className="text-xs font-medium">{file.name}</p>
                       <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
                     </div>
                   </div>
@@ -330,11 +330,11 @@ export const DynamicFormFields = ({
                   <File className="h-4 w-4 text-muted-foreground" />
                   {files?.url ? (
                     <Link href={files.url} target="_blank">
-                      <p className="text-sm font-medium">{files?.name ?? files.file_name}</p>
+                      <p className="text-xs font-medium">{files?.name ?? files.file_name}</p>
                     </Link>
                   ) : (
                     <div>
-                      <p className="text-sm font-medium">{files?.name ?? files.file_name}</p>
+                      <p className="text-xs font-medium">{files?.name ?? files.file_name}</p>
                       <p className="text-xs text-muted-foreground">{files?.size && formatFileSize(files?.size)}</p>
                     </div>
                   )}
@@ -911,12 +911,12 @@ export const DynamicFormFields = ({
 //             {isUploading ? (
 //               <>
 //                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-3"></div>
-//                 <p className="text-sm text-muted-foreground">Compressing file...</p>
+//                 <p className="text-xs text-muted-foreground">Compressing file...</p>
 //               </>
 //             ) : (
 //               <>
 //                 <Upload className="h-8 w-8 text-muted-foreground mb-3" />
-//                 <p className="text-sm font-medium">
+//                 <p className="text-xs font-medium">
 //                   {isDragOver ? "Drop files here" : "Click to upload or drag and drop"}
 //                 </p>
 //                 <p className="text-xs text-muted-foreground mt-1">
@@ -936,7 +936,7 @@ export const DynamicFormFields = ({
 //                   <div className="flex items-center gap-3">
 //                     <File className="h-4 w-4 text-muted-foreground" />
 //                     <div>
-//                       <p className="text-sm font-medium">{file.name}</p>
+//                       <p className="text-xs font-medium">{file.name}</p>
 //                       <p className="text-xs text-muted-foreground">{formatFileSize(file.size)}</p>
 //                     </div>
 //                   </div>
@@ -960,11 +960,11 @@ export const DynamicFormFields = ({
 //                   <File className="h-4 w-4 text-muted-foreground" />
 //                   {files?.url ? (
 //                     <Link href={files.url} target="_blank">
-//                       <p className="text-sm font-medium">{files?.name ?? files.file_name}</p>
+//                       <p className="text-xs font-medium">{files?.name ?? files.file_name}</p>
 //                     </Link>
 //                   ) : (
 //                     <div>
-//                       <p className="text-sm font-medium">{files?.name ?? files.file_name}</p>
+//                       <p className="text-xs font-medium">{files?.name ?? files.file_name}</p>
 //                       <p className="text-xs text-muted-foreground">{files?.size && formatFileSize(files?.size)}</p>
 //                     </div>
 //                   )}

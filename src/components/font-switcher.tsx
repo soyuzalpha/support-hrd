@@ -11,6 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { literata, poppins, jetbrainsMono, inter, geist } from "@/lib/fonts";
+import Show from "./show";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Separator } from "./ui/separator";
 
 const fonts = [
   {
@@ -59,7 +62,7 @@ export function FontSwitcher() {
   if (!mounted) {
     // ✅ render tombol kosong biar gak mismatch
     return (
-      <Button variant="outline" size="sm" className="text-sm" disabled>
+      <Button variant="outline" size="sm" className="text-xs" disabled>
         <Type className="h-4 w-4" />
       </Button>
     );
@@ -68,10 +71,12 @@ export function FontSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="w-fit p-2 text-x bg-transparent! hover:bg-transparent">
+        <Button variant="outline" size="sm" className="w-fit p-2 text-xs bg-transparent! hover:bg-transparent">
           <Type className="h-2 w-2" />
-          {/* <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-4" /> */}
-          {selectedFont?.name}
+          <div className="hidden lg:flex">
+            <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-4" />
+            {selectedFont?.name}
+          </div>
           <span className="sr-only">Switch font</span>
         </Button>
       </DropdownMenuTrigger>

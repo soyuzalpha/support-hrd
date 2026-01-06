@@ -127,7 +127,7 @@ const FormAttendancePeriod = ({ dialogHandler }: { dialogHandler: UseDialogModal
                       onChange={(value) => field.onChange(value)}
                       formatOptionLabel={(option: any) => (
                         <div className="p-2">
-                          <div className="text-sm font-medium">
+                          <div className="text-xs font-medium">
                             Start: {option.start_date} <br /> End: {option.end_date}
                           </div>
                         </div>

@@ -30,9 +30,9 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <h1 className="text-4xl font-bold text-white">{details.name_position}</h1>
+                    <h1 className="text-4xl font-bold ">{details.name_position}</h1>
                     <span
-                      className={`px-4 py-1.5 rounded-full text-sm font-semibold ${
+                      className={`px-4 py-1.5 rounded-full text-xs font-semibold ${
                         details.status.value === "active"
                           ? "bg-emerald-100 text-emerald-700"
                           : "bg-slate-100 text-slate-700"
@@ -41,16 +41,16 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                       {details.status.label}
                     </span>
                   </div>
-                  <p className="text-white text-sm">Position ID: #{details.id_position}</p>
+                  <p className=" text-xs">Position ID: #{details.id_position}</p>
                 </div>
               </div>
 
               <GlassContainer>
                 <div className="flex items-start gap-3">
-                  <FileText className="text-white mt-1 shrink-0" size={20} />
+                  <FileText className=" mt-1 shrink-0" size={20} />
                   <div>
-                    <h3 className="font-semibold text-white mb-2">Description</h3>
-                    <p className="text-white leading-relaxed">{details.description_position}</p>
+                    <h3 className="font-semibold  mb-2">Description</h3>
+                    <p className=" leading-relaxed">{details.description_position}</p>
                   </div>
                 </div>
               </GlassContainer>
@@ -63,31 +63,31 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                   <div className="bg-blue-100 p-2 rounded-lg">
                     <User className="text-blue-600" size={20} />
                   </div>
-                  <h2 className="text-xl font-bold text-white">Created By</h2>
+                  <h2 className="text-xl font-bold ">Created By</h2>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center  font-bold">
                       {details?.creator?.name
                         .split(" ")
                         .map((n) => n[0])
                         .join("")}
                     </div>
                     <div>
-                      <p className="font-semibold text-white">{details?.creator?.name}</p>
-                      <p className="text-sm text-white">@{details?.creator?.username}</p>
+                      <p className="font-semibold ">{details?.creator?.name}</p>
+                      <p className="text-xs ">@{details?.creator?.username}</p>
                     </div>
                   </div>
 
-                  <div className=" rounded-lg p-2 space-y-2 text-sm">
+                  <div className=" rounded-lg p-2 space-y-2 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-white">Employee #:</span>
-                      <span className="font-medium text-white">{details?.creator?.employee_number}</span>
+                      <span className="">Employee #:</span>
+                      <span className="font-medium ">{details?.creator?.employee_number}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-white">Email:</span>
-                      <span className="font-medium text-white">{details?.creator?.email}</span>
+                      <span className="">Email:</span>
+                      <span className="font-medium ">{details?.creator?.email}</span>
                     </div>
                   </div>
                 </div>
@@ -99,23 +99,23 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                   <div className="bg-purple-100 p-2 rounded-lg">
                     <Calendar className="text-purple-600" size={20} />
                   </div>
-                  <h2 className="text-xl font-bold text-white">Timeline</h2>
+                  <h2 className="text-xl font-bold ">Timeline</h2>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-white">Created</p>
-                      <p className="text-sm text-white">{dateDisplay(details?.created_at)}</p>
+                      <p className="text-xs font-semibold ">Created</p>
+                      <p className="text-xs ">{dateDisplay(details?.created_at)}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-white">Last Updated</p>
-                      <p className="text-sm text-white">{dateDisplay(details?.updated_at)}</p>
+                      <p className="text-xs font-semibold ">Last Updated</p>
+                      <p className="text-xs ">{dateDisplay(details?.updated_at)}</p>
                     </div>
                   </div>
 
@@ -123,8 +123,8 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                     <div className="flex items-start gap-3">
                       <div className="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
                       <div className="flex-1">
-                        <p className="text-sm font-semibold text-white">Deleted</p>
-                        <p className="text-sm text-white">{dateDisplay(details.deleted_at)}</p>
+                        <p className="text-xs font-semibold ">Deleted</p>
+                        <p className="text-xs ">{dateDisplay(details.deleted_at)}</p>
                       </div>
                     </div>
                   )}
@@ -138,7 +138,7 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                 <div className="bg-amber-100 p-2 rounded-lg">
                   <Activity className="text-amber-600" size={20} />
                 </div>
-                <h2 className="text-xl font-bold text-white">Activity Logs</h2>
+                <h2 className="text-xl font-bold ">Activity Logs</h2>
               </div>
 
               <div className="space-y-4">
@@ -149,27 +149,26 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                         <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold">
                           {log.action.from ? "UPDATE" : "CREATE"}
                         </span>
-                        <span className="text-sm text-white">Log #{log.id_positionlog}</span>
+                        <span className="text-xs ">Log #{log.id_positionlog}</span>
                       </div>
-                      <p className="text-sm text-white">{dateDisplay(log.created_at)}</p>
+                      <p className="text-xs ">{dateDisplay(log.created_at)}</p>
                     </div>
 
                     {log?.action?.to && (
                       <div className="bg-white/40 rounded-lg p-4 space-y-2">
-                        <p className="text-xs font-semibold text-white uppercase">Changes Made</p>
-                        <div className="text-sm space-y-1">
+                        <p className="text-xs font-semibold  uppercase">Changes Made</p>
+                        <div className="text-xs space-y-1">
                           <p>
-                            <span className="font-medium text-white">Position:</span> {log.action.to.name_position}
+                            <span className="font-medium ">Position:</span> {log.action.to.name_position}
                           </p>
                           <p>
-                            <span className="font-medium text-white">Description:</span>{" "}
-                            {log.action.to.description_position}
+                            <span className="font-medium ">Description:</span> {log.action.to.description_position}
                           </p>
                         </div>
                       </div>
                     )}
 
-                    <p className="text-xs text-white mt-3">By User ID: {log.created_by}</p>
+                    <p className="text-xs  mt-3">By User ID: {log.created_by}</p>
                   </GlassContainer>
                 ))}
               </div>

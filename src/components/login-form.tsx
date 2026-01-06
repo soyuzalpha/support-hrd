@@ -76,8 +76,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
         </div>
 
         <div className="text-center mb-8">
-          <CardTitle className="text-xl text-white">Welcome back</CardTitle>
-          <CardDescription className="text-white">Login your account to continue</CardDescription>
+          <CardTitle className="text-xl ">Welcome back</CardTitle>
+          <CardDescription className="">Login your account to continue</CardDescription>
         </div>
         <div>
           <form
@@ -92,24 +92,17 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   <Label htmlFor="login">Username</Label>
                   <Input id="login" type="text" placeholder="admin" required {...fForm.register("login")} />
                 </div> */}
-                <FieldLabel htmlFor="login" className="text-white">
+                <FieldLabel htmlFor="login" className="">
                   Username
                 </FieldLabel>
-                <Input
-                  id="login"
-                  type="text"
-                  placeholder="admin"
-                  required
-                  className="text-white"
-                  {...fForm.register("login")}
-                />
+                <Input id="login" type="text" placeholder="admin" required className="" {...fForm.register("login")} />
               </Field>
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password" className="text-white">
+                  <FieldLabel htmlFor="password" className="">
                     Password
                   </FieldLabel>
-                  {/* <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
+                  {/* <a href="#" className="ml-auto text-xs underline-offset-4 hover:underline">
                     Forgot your password?
                   </a> */}
                 </div>
@@ -117,7 +110,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   id="password"
                   type="password"
                   required
-                  className="text-white"
+                  className=""
                   placeholder="Password"
                   {...fForm.register("password")}
                 />
@@ -134,17 +127,6 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           </form>
         </div>
       </GlassContainer>
-      {/* <FieldDescription className="px-6 text-center text-white">
-        By clicking continue, you agree to our{" "}
-        <a href="#" className="hover:text-white!">
-          Terms of Service
-        </a>{" "}
-        and{" "}
-        <a href="#" className="hover:text-white!">
-          Privacy Policy
-        </a>
-        .
-      </FieldDescription> */}
     </div>
   );
 }

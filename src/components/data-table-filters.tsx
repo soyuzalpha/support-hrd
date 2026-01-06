@@ -130,7 +130,7 @@ export function DataTableFilters({ columns, filterConfigs, onFilterChange }: Dat
           <IconFilter className="h-4 w-4" />
           <span className="hidden lg:inline">Filters</span>
           {activeFiltersCount > 0 && (
-            <span className={cn("ml-2 px-2 py-0.5 text-xs font-semibold rounded-full", "bg-blue-500 text-white")}>
+            <span className={cn("ml-2 px-2 py-0.5 text-xs font-semibold rounded-full", "bg-blue-500 ")}>
               {activeFiltersCount}
             </span>
           )}
@@ -139,7 +139,7 @@ export function DataTableFilters({ columns, filterConfigs, onFilterChange }: Dat
       <PopoverContent className="w-72" align="start">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="font-semibold text-sm">Filters</h4>
+            <h4 className="font-semibold text-xs">Filters</h4>
             {activeFiltersCount > 0 && (
               <Button variant="ghost" size="sm" onClick={handleResetFilters} className="h-6 px-2 text-xs">
                 <IconX className="h-3 w-3 mr-1" />
@@ -162,7 +162,7 @@ export function DataTableFilters({ columns, filterConfigs, onFilterChange }: Dat
           </div>
 
           {filterConfigs.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">No filters available</p>
+            <p className="text-xs text-muted-foreground text-center py-4">No filters available</p>
           )}
         </div>
       </PopoverContent>

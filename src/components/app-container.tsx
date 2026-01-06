@@ -27,7 +27,7 @@ export function AppContainer({
   variant = "default",
 }: AppContainerProps) {
   // GLASS STYLE
-  const glassStyles = "backdrop-blur-2xl border border-white/10 bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]";
+  const glassStyles = "backdrop-blur-2xl border border-white/10 bg-white/70 shadow-[0_0_15px_rgba(255,255,255,0.05)]";
 
   return (
     <div
@@ -50,7 +50,7 @@ export function AppContainer({
       }}
     >
       {/* Title */}
-      {title && <h1 className="text-lg lg:text-2xl font-semibold mb-4">{title}</h1>}
+      {title && <h1 className="text-lg lg:text-2xl font-bold mb-2">{title}</h1>}
 
       {children}
     </div>

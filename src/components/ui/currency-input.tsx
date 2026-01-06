@@ -128,7 +128,7 @@ const CurrencyField: React.FC<CurrencyFieldProps> = ({
         aria-invalid={!!error}
         aria-describedby={error ? `${name}-error` : undefined}
       />
-      <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-medium pointer-events-none">
+      <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-medium pointer-events-none">
         {currency}
       </div>
     </div>
@@ -175,7 +175,7 @@ export function CurrencyInput<T extends FieldValues>({
         )}
       />
       {error && (
-        <p id={`${name}-error`} className="text-sm text-destructive">
+        <p id={`${name}-error`} className="text-xs text-destructive">
           {error}
         </p>
       )}
@@ -328,7 +328,7 @@ export function CurrencyInput<T extends FieldValues>({
 //         aria-invalid={!!error}
 //         aria-describedby={error ? `${name}-error` : undefined}
 //       />
-//       <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-medium pointer-events-none">
+//       <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs font-medium pointer-events-none">
 //         {currency}
 //       </div>
 //     </div>
@@ -373,7 +373,7 @@ export function CurrencyInput<T extends FieldValues>({
 //         )}
 //       />
 //       {error && (
-//         <p id={`${name}-error`} className="text-sm text-destructive">
+//         <p id={`${name}-error`} className="text-xs text-destructive">
 //           {error}
 //         </p>
 //       )}

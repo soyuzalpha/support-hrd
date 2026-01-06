@@ -3,13 +3,8 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { menuItems, roleAccess } from "@/utils/menu";
-import { LogOut } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useUser } from "@/context/app-context";
-import { logoutService, setLogoutCallback } from "@/service/service";
-import { useMutation } from "@tanstack/react-query";
-import { signOut } from "next-auth/react";
-import { toastAlert } from "@/lib/toast";
 import { isEmpty } from "@/utils";
 
 export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void }) {
@@ -36,7 +31,7 @@ export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void
       <div
         className={cn(
           "flex items-center gap-4 px-5 py-3 rounded-full pointer-events-auto",
-          "backdrop-blur-2xl border border-white/10 bg-white/10 shadow-lg"
+          "backdrop-blur-sm bg-background/20 shadow"
         )}
       >
         {/* Menu */}
@@ -62,7 +57,7 @@ export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void
                     size={22}
                     strokeWidth={1.5}
                     className={cn(
-                      "text-white transition-all",
+                      " transition-all",
                       isActive
                         ? "opacity-100 scale-110"
                         : hoveredItem === item.id
@@ -72,7 +67,7 @@ export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void
                   />
 
                   {isActive && (
-                    <span className="absolute bottom-0 translate-y-[5px] w-1.5 h-1.5 rounded-full bg-white" />
+                    <span className="absolute bottom-0 translate-y-[5px] w-1.5 h-1.5 rounded-full bg-black" />
                   )}
                 </button>
               );
@@ -95,7 +90,7 @@ export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void
             size={22}
             strokeWidth={1.5}
             className={cn(
-              "text-white transition-all",
+              " transition-all",
               hoveredItem === "logout" ? "opacity-90 scale-105" : "opacity-70"
             )}
           />

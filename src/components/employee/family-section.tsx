@@ -25,13 +25,13 @@ export default function FamilySection({ family }: FamilySectionProps) {
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <p className="font-semibold">{member.name_family}</p>
-                  <p className="text-sm text-muted-foreground capitalize">
+                  <p className="text-xs text-muted-foreground capitalize">
                     {member?.relationship.toLowerCase().replace("_", " ")}
                   </p>
                 </div>
                 <span className="text-xs bg-muted px-2 py-1 rounded">{member?.relationship}</span>
               </div>
-              <p className="text-sm font-mono text-muted-foreground">📞 {member?.phone_number}</p>
+              <p className="text-xs font-mono text-muted-foreground">📞 {member?.phone_number}</p>
             </div>
           ))}
         </div>

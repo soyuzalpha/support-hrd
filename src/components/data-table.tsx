@@ -184,15 +184,29 @@ export function DataTable({
             <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
               <SelectValue placeholder="Select a view" />
             </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem value="card" className="text-xs">
+                Card
+              </SelectItem>
+              <SelectItem value="table" className="text-xs">
+                Table
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          {/* <Select value={tabValue} onValueChange={setTabValue}>
+            <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
+              <SelectValue placeholder="Select a view" />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="card">Card</SelectItem>
               <SelectItem value="table">Table</SelectItem>
             </SelectContent>
-          </Select>
+          </Select> */}
           <Show.When isTrue={tabValue === "table"}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="xs">
                   <IconLayoutColumns />
                   <span className="hidden lg:inline">Customize Columns</span>
                   <span className="lg:hidden">Columns</span>
@@ -259,7 +273,7 @@ export function DataTable({
                   placeholder="Search..."
                   value={searchKey}
                   onChange={(e) => setSearchKey(e.target.value)}
-                  className="pl-9"
+                  className="pl-9 bg-background/70"
                 />
               </div>
 
@@ -294,9 +308,9 @@ export function DataTable({
       </Show.When>
 
       <Show.When isTrue={tabValue === "table"}>
-        <div className="overflow-hidden rounded-xl border-white/40 duration-300 backdrop-blur-lg bg-opacity-30 bg-white/10 border ">
+        <div className="overflow-hidden rounded-xl duration-300 backdrop-blur-sm border bg-background/20 shadow-md">
           <Table>
-            <TableHeader className="sticky top-0 z-10 bg-white/20 dark:bg-white/10 backdrop-blur-xl border-b border-white/10">
+            <TableHeader className="sticky top-0 z-10 backdrop-blur-xl border-b text-xs">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -311,7 +325,7 @@ export function DataTable({
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody className="**:data-[slot=table-cell]:first:w-8">
+            <TableBody className="**:data-[slot=table-cell]:first:w-8 text-xs">
               {isLoading ? (
                 Array.from({ length: 10 }).map((_, rowIdx) => (
                   <TableRow key={`skeleton-${rowIdx}`}>
@@ -328,7 +342,7 @@ export function DataTable({
                     <TableRow
                       key={row.id}
                       onClick={() => handleClickRow && handleClickRow(row)}
-                      className="cursor-pointer hover:bg-white/10 dark:hover:bg-white/5 transition-colors duration-200"
+                      className="cursor-pointer transition-colors duration-200"
                     >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id} className="px-4 py-3 text-left border-b border-white/5">

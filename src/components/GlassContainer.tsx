@@ -25,8 +25,8 @@ export function GlassContainer({
   return (
     <div
       className={cn(
-        "backdrop-blur-2xl border border-white/10 bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]",
-        "rounded-2xl p-4 md:p-6 text-white transition-all duration-300",
+        "backdrop-blur-2xl border border-white/10 shadow-md",
+        "rounded-2xl p-4 md:p-6  transition-all duration-300",
         className
       )}
       {...props}
@@ -35,7 +35,7 @@ export function GlassContainer({
         <div className="flex items-center justify-between mb-4 md:mb-5">
           <div>
             {title && <h2 className="text-xl md:text-2xl font-semibold tracking-tight">{title}</h2>}
-            {description && <p className="text-sm opacity-70 mt-1">{description}</p>}
+            {description && <p className="text-xs opacity-70 mt-1">{description}</p>}
           </div>
           {actions && <div className="flex items-center gap-2">{actions}</div>}
         </div>
@@ -83,8 +83,8 @@ export function GlassContainer({
 //   return (
 //     <div
 //       className={cn(
-//         "backdrop-blur-2xl border border-white/10 bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]",
-//         "rounded-2xl p-4 md:p-6 text-white transition-all duration-300",
+//         "backdrop-blur-2xl border border-white/10 bg-white/70 shadow-[0_0_15px_rgba(255,255,255,0.05)]",
+//         "rounded-2xl p-4 md:p-6  transition-all duration-300",
 //         fullWidth ? "w-full" : "container mx-auto",
 //         className
 //       )}
@@ -94,7 +94,7 @@ export function GlassContainer({
 //         <div className="flex items-center justify-between mb-4 md:mb-5">
 //           <div>
 //             {title && <h2 className="text-xl md:text-2xl font-semibold tracking-tight">{title}</h2>}
-//             {description && <p className="text-sm opacity-70 mt-1">{description}</p>}
+//             {description && <p className="text-xs opacity-70 mt-1">{description}</p>}
 //           </div>
 //           {actions && <div className="flex items-center gap-2">{actions}</div>}
 //         </div>

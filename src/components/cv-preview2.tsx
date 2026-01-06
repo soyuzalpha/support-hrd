@@ -33,13 +33,13 @@ export const CVContent = ({ userData }: { userData: any }) => (
 
     <div className="bg-white print-content" style={{ fontFamily: "'Poppins', sans-serif" }}>
       {/* Header Section */}
-      <div className="bg-[#7B091F] text-white p-8">
+      <div className="bg-[#7B091F]  p-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-2">{userData?.employees?.full_name}</h1>
           <p className="text-xl text-slate-200 mb-4">
             {userData?.position?.name_position} - {userData?.division?.name_division}
           </p>
-          <div className="flex flex-wrap gap-4 text-sm text-slate-300">
+          <div className="flex flex-wrap gap-4 text-xs text-slate-300">
             <div className="flex items-center gap-2">
               <Mail size={16} />
               <span>{userData?.email}</span>
@@ -63,7 +63,7 @@ export const CVContent = ({ userData }: { userData: any }) => (
           <h2 className="text-2xl font-semibold text-slate-800 mb-4 pb-2 border-b-2 border-slate-300">
             Personal Information
           </h2>
-          <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-2 gap-4 text-xs">
             <div>
               <p className="text-slate-500 font-medium">Full Name</p>
               <p className="text-slate-800">{userData?.employees?.full_name}</p>
@@ -113,7 +113,7 @@ export const CVContent = ({ userData }: { userData: any }) => (
           <h2 className="text-2xl font-semibold text-slate-800 mb-4 pb-2 border-b-2 border-slate-300">
             Employment Details
           </h2>
-          <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-2 gap-4 text-xs">
             <div>
               <p className="text-slate-500 font-medium">Company</p>
               <p className="text-slate-800">{userData?.company?.name_company}</p>
@@ -151,7 +151,7 @@ export const CVContent = ({ userData }: { userData: any }) => (
             Emergency Contact
           </h2>
           {userData?.employees?.family.map((member, index) => (
-            <div key={index} className="grid grid-cols-2 gap-4 text-sm">
+            <div key={index} className="grid grid-cols-2 gap-4 text-xs">
               <div>
                 <p className="text-slate-500 font-medium">Name</p>
                 <p className="text-slate-800">{member?.name_family}</p>
@@ -180,11 +180,11 @@ export const CVContent = ({ userData }: { userData: any }) => (
                   <h3 className="font-semibold text-slate-800">
                     {edu?.degree?.name_degree} - {edu?.studyprogram?.program_name}
                   </h3>
-                  <p className="text-slate-600 text-sm mb-2">{edu?.school?.school_name}</p>
-                  <p className="text-slate-500 text-sm">
+                  <p className="text-slate-600 text-xs mb-2">{edu?.school?.school_name}</p>
+                  <p className="text-slate-500 text-xs">
                     {formatDate(edu?.start_date)} - {formatDate(edu?.end_date)}
                   </p>
-                  {edu?.responsibilities && <p className="text-slate-600 text-sm mt-2">{edu?.responsibilities}</p>}
+                  {edu?.responsibilities && <p className="text-slate-600 text-xs mt-2">{edu?.responsibilities}</p>}
                 </div>
               ))}
             </div>
@@ -201,13 +201,13 @@ export const CVContent = ({ userData }: { userData: any }) => (
               {userData?.employees?.workhistory?.map((work, index) => (
                 <div key={index} className="border-l-4 border-slate-300 pl-4">
                   <h3 className="font-semibold text-slate-800">{work?.position}</h3>
-                  <p className="text-slate-600 text-sm mb-1">
+                  <p className="text-slate-600 text-xs mb-1">
                     {work?.company_name} - {work?.division}
                   </p>
-                  <p className="text-slate-500 text-sm">
+                  <p className="text-slate-500 text-xs">
                     {formatDate(work?.start_date)} - {formatDate(work?.end_date)}
                   </p>
-                  {work?.responsibilities && <p className="text-slate-600 text-sm mt-2">{work?.responsibilities}</p>}
+                  {work?.responsibilities && <p className="text-slate-600 text-xs mt-2">{work?.responsibilities}</p>}
                 </div>
               ))}
             </div>
@@ -221,7 +221,7 @@ export const CVContent = ({ userData }: { userData: any }) => (
           </h2>
           <div className="space-y-2">
             {userData?.leave_quotas?.map((quota, index) => (
-              <div key={index} className="flex justify-between items-center text-sm bg-slate-50 p-3 rounded">
+              <div key={index} className="flex justify-between items-center text-xs bg-slate-50 p-3 rounded">
                 <span className="font-medium text-slate-800">{quota?.typeleave?.name_typeleave}</span>
                 <span className="text-slate-600">
                   {quota?.remaining_days} / {quota?.total_days} days remaining

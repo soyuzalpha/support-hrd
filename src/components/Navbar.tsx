@@ -61,10 +61,11 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
   };
 
   return (
-    <header className={cn("sticky top-0 z-5 transition-all w-full mt-4", className)} {...props}>
+    <header className={cn("fixed top-0 z-50 w-full transition-all", className)} {...props}>
       <div
         className={cn(
-          "container mx-auto flex items-center justify-between px-4 py-3 rounded-full border border-white/40 duration-300 backdrop-filter backdrop-blur-lg bg-opacity-30 bg-white/10"
+          "container mx-auto mt-4 flex items-center justify-between px-4 py-2 rounded-full border",
+          "backdrop-blur-sm bg-background/20 shadow"
         )}
       >
         <Link href={"/dashboard"} className="flex items-center gap-2">
@@ -78,7 +79,7 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
 
           <div className="flex items-center gap-3">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild className="bg-transparent! cursor-pointer">
+              <DropdownMenuTrigger asChild className="cursor-pointer">
                 <Avatar className="h-10 w-10 cursor-pointer">
                   <AvatarImage src={session?.data?.user?.image || undefined} alt={userName} />
                   <AvatarFallback className="text-xs">{userInitials}</AvatarFallback>
@@ -92,7 +93,7 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
                     <AvatarFallback>{userInitials}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col gap-1">
-                    <p className="text-sm font-medium">{userName}</p>
+                    <p className="text-xs font-medium">{userName}</p>
                     <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
                   </div>
                 </DropdownMenuLabel>

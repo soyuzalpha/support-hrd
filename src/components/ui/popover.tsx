@@ -10,7 +10,7 @@ function Popover({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Root
 }
 
 function PopoverTrigger({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
-  return <PopoverPrimitive.Trigger data-slot="popover-trigger" className="bg-white/10 backdrop-blur-2xl" {...props} />;
+  return <PopoverPrimitive.Trigger data-slot="popover-trigger" className="bg-white/70 backdrop-blur-2xl" {...props} />;
 }
 
 function PopoverContent({
@@ -27,7 +27,7 @@ function PopoverContent({
         sideOffset={sideOffset}
         className={cn(
           // 👇✨ Glassmorphism Upgrade
-          "backdrop-blur-xl bg-white/10 dark:bg-white/5 border border-white/20 " +
+          "backdrop-blur-xl bg-white/70 dark:bg-white/5 border border-white/20 " +
             "shadow-[0_8px_32px_rgba(0,0,0,0.15)] rounded-2xl p-4 " +
             // ✨ Smooth Animations
             "data-[state=open]:animate-in data-[state=closed]:animate-out " +

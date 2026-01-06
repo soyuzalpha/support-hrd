@@ -56,7 +56,7 @@ export function NavigationMenuDemo() {
   return (
     <NavigationMenu
       viewport={isMobile}
-      className="mx-auto border border-white/40 bg-white/10 backdrop-blur-2xl bg-clip-padding backdrop-filter bg-opacity-10 backdrop-saturate-100 backdrop-contrast-100 flex flex-col gap-6 rounded-full px-8 py-4"
+      className="mx-auto border border-white/40 bg-white/70 backdrop-blur-2xl bg-clip-padding backdrop-filter bg-opacity-10 backdrop-saturate-100 backdrop-contrast-100 flex flex-col gap-6 rounded-full px-8 py-4"
     >
       <NavigationMenuList className="flex-wrap">
         <NavigationMenuItem>
@@ -70,7 +70,7 @@ export function NavigationMenuDemo() {
                     href="/"
                   >
                     <div className="mb-2 text-lg font-medium sm:mt-4">shadcn/ui</div>
-                    <p className="text-muted-foreground text-sm leading-tight">
+                    <p className="text-muted-foreground text-xs leading-tight">
                       Beautifully designed components built with Tailwind CSS.
                     </p>
                   </a>
@@ -187,8 +187,8 @@ function ListItem({ title, children, href, ...props }: React.ComponentPropsWitho
     <li {...props}>
       <NavigationMenuLink asChild>
         <Link href={href}>
-          <div className="text-sm leading-none font-medium">{title}</div>
-          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">{children}</p>
+          <div className="text-xs leading-none font-medium">{title}</div>
+          <p className="text-muted-foreground line-clamp-2 text-xs leading-snug">{children}</p>
         </Link>
       </NavigationMenuLink>
     </li>

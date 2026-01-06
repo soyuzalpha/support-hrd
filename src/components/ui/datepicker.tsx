@@ -143,7 +143,7 @@ export function DateTimePicker({
             <>
               <Separator className="my-3" />
               <div className="space-y-2">
-                <Label htmlFor="time-input" className="text-sm font-medium">
+                <Label htmlFor="time-input" className="text-xs font-medium">
                   Waktu
                 </Label>
                 <div className="flex items-center space-x-2">

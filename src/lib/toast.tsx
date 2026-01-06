@@ -23,11 +23,11 @@ export const toastAlert = {
             onClick: options.action.onClick,
           }
         : undefined,
-      className: "toast-success text-white",
+      className: "toast-success ",
       style: {
         background: "rgba(255, 255, 255, 0.2)", // semi-transparent background
         border: "1px solid #22c55e",
-        color: "#ffffff", // white text
+        // color: "#000000", // white text
         backdropFilter: "blur(10px)", // glassmorphism effect
       },
     });
@@ -44,11 +44,11 @@ export const toastAlert = {
             onClick: options.action.onClick,
           }
         : undefined,
-      className: "toast-error text-white",
+      className: "toast-error ",
       style: {
         background: "rgba(255, 255, 255, 0.2)", // semi-transparent background
         border: "1px solid #ef4444",
-        color: "#ffffff", // white text
+        // color: "#000000", // white text
         backdropFilter: "blur(10px)", // glassmorphism effect
       },
     });
@@ -59,7 +59,7 @@ export const toastAlert = {
       <div>
         <ul className="list-disc list-inside space-y-1">
           {errors.map((error, index) => (
-            <li key={index} className="text-white">
+            <li key={index} className="">
               {error}
             </li>
           ))}
@@ -77,11 +77,11 @@ export const toastAlert = {
             onClick: options.action.onClick,
           }
         : undefined,
-      className: "toast-error-list text-white",
+      className: "toast-error-list ",
       style: {
         background: "rgba(255, 255, 255, 0.2)", // semi-transparent background
         border: "1px solid #ef4444",
-        color: "#ffffff", // white text
+        // color: "#000000", // white text
         backdropFilter: "blur(10px)", // glassmorphism effect
       },
     });
@@ -98,11 +98,11 @@ export const toastAlert = {
             onClick: options.action.onClick,
           }
         : undefined,
-      className: "toast-warning text-white",
+      className: "toast-warning ",
       style: {
         background: "rgba(255, 255, 255, 0.2)", // semi-transparent background
         border: "1px solid #f59e0b",
-        color: "#ffffff", // white text
+        // color: "#000000", // white text
         backdropFilter: "blur(10px)", // glassmorphism effect
       },
     });
@@ -119,11 +119,11 @@ export const toastAlert = {
             onClick: options.action.onClick,
           }
         : undefined,
-      className: "toast-info text-white",
+      className: "toast-info ",
       style: {
         background: "rgba(255, 255, 255, 0.2)", // semi-transparent background
         border: "1px solid #3b82f6",
-        color: "#ffffff", // white text
+        // color: "#000000", // white text
         backdropFilter: "blur(10px)", // glassmorphism effect
       },
     });

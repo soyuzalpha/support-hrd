@@ -31,42 +31,42 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <h1 className="text-4xl font-bold text-white">{details.full_name}</h1>
-                    <span className="px-4 py-1.5 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-700">
+                    <h1 className="text-4xl font-bold ">{details.full_name}</h1>
+                    <span className="px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
                       {details.nick_name}
                     </span>
                   </div>
-                  <p className="text-white text-sm">Employee ID: #{details.id_employee}</p>
+                  <p className=" text-xs">Employee ID: #{details.id_employee}</p>
                 </div>
               </div>
 
               <GlassContainer>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <p className="text-white">
+                    <p className="">
                       <strong>NIK:</strong> {details.nik}
                     </p>
-                    <p className="text-white">
+                    <p className="">
                       <strong>NPWP:</strong> {details.npwp}
                     </p>
-                    <p className="text-white">
+                    <p className="">
                       <strong>Email:</strong> {details.personal_email}
                     </p>
-                    <p className="text-white">
+                    <p className="">
                       <strong>Birth:</strong> {details.birth_place}, {details.birth_date}
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-white">
+                    <p className="">
                       <strong>Gender:</strong> {details.gender}
                     </p>
-                    <p className="text-white">
+                    <p className="">
                       <strong>Religion:</strong> {details.religion}
                     </p>
-                    <p className="text-white">
+                    <p className="">
                       <strong>Marital Status:</strong> {details.marital_status}
                     </p>
-                    <p className="text-white">
+                    <p className="">
                       <strong>Blood Type:</strong> {details.blood_type}
                     </p>
                   </div>
@@ -81,13 +81,13 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                   <div className="bg-blue-100 p-2 rounded-lg">
                     <Phone className="text-blue-600" size={20} />
                   </div>
-                  <h2 className="text-xl font-bold text-white">Contact Numbers</h2>
+                  <h2 className="text-xl font-bold ">Contact Numbers</h2>
                 </div>
 
                 <div className="space-y-3">
                   {details?.contacts?.map((contact, index) => (
-                    <div key={index} className="p-2 bg-white/10 rounded-lg">
-                      <p className="text-white">{contact?.phone_number}</p>
+                    <div key={index} className="p-2 bg-white/70 rounded-lg">
+                      <p className="">{contact?.phone_number}</p>
                     </div>
                   ))}
                 </div>
@@ -99,14 +99,14 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                   <div className="bg-purple-100 p-2 rounded-lg">
                     <Users className="text-purple-600" size={20} />
                   </div>
-                  <h2 className="text-xl font-bold text-white">Family Members</h2>
+                  <h2 className="text-xl font-bold ">Family Members</h2>
                 </div>
 
                 <div className="space-y-3">
                   {details?.family?.map((member, index) => (
-                    <div key={index} className="p-2 bg-white/10 rounded-lg">
-                      <p className="text-white font-semibold">{member?.name_family}</p>
-                      <p className="text-white text-sm">
+                    <div key={index} className="p-2 bg-white/70 rounded-lg">
+                      <p className=" font-semibold">{member?.name_family}</p>
+                      <p className=" text-xs">
                         {member?.relationship} - {member?.phone_number}
                       </p>
                     </div>
@@ -121,7 +121,7 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                 <div className="bg-amber-100 p-2 rounded-lg">
                   <FileImage className="text-amber-600" size={20} />
                 </div>
-                <h2 className="text-xl font-bold text-white">Documents</h2>
+                <h2 className="text-xl font-bold ">Documents</h2>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -131,10 +131,10 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
                     href={doc.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                    className="p-4 bg-white/70 rounded-lg hover:bg-white/20 transition-colors"
                   >
-                    <p className="text-white font-semibold">{doc?.document_type}</p>
-                    <p className="text-white text-sm truncate">{doc?.file_name}</p>
+                    <p className=" font-semibold">{doc?.document_type}</p>
+                    <p className=" text-xs truncate">{doc?.file_name}</p>
                   </a>
                 ))}
               </div>

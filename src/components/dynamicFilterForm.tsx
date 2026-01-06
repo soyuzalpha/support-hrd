@@ -73,7 +73,7 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
                 case "number":
                   return (
                     <div key={field.name} className="space-y-1">
-                      <label className="text-sm font-medium">{field.label}</label>
+                      <label className="text-xs font-medium">{field.label}</label>
                       <Input type={field.type} placeholder={field.placeholder} {...register(field.name)} />
                     </div>
                   );
@@ -81,7 +81,7 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
                 case "select":
                   return (
                     <div key={field.name} className="space-y-1">
-                      <label className="text-sm font-medium">{field.label}</label>
+                      <label className="text-xs font-medium">{field.label}</label>
                       <Controller
                         control={control}
                         name={field.name}
@@ -103,7 +103,7 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
                 case "async-select":
                   return (
                     <div key={field.name} className="space-y-1">
-                      <label className="text-sm font-medium">{field.label}</label>
+                      <label className="text-xs font-medium">{field.label}</label>
 
                       <Controller
                         control={control}
@@ -127,7 +127,7 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
                 case "date":
                   return (
                     <div key={field.name} className="space-y-1">
-                      <label className="text-sm font-medium">{field.label}</label>
+                      <label className="text-xs font-medium">{field.label}</label>
 
                       <Controller
                         control={control}

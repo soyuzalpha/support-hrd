@@ -21,7 +21,7 @@ export default function Pagination({ table, disabled = false, count }: Paginatio
 
   return (
     <div className="flex flex-col md:flex-row gap-2 items-center justify-between px-4 py-3">
-      <div className="flex-1 text-sm">
+      <div className="flex-1 text-xs">
         <h5>
           Showing {pageSize} of {count}
         </h5>
@@ -30,7 +30,7 @@ export default function Pagination({ table, disabled = false, count }: Paginatio
       <div className="flex-2 w-full flex items-center justify-between md:justify-end space-x-3 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <Show.When isTrue={!isMobile}>
-            <p className="text-sm font-medium">Rows per page</p>
+            <p className="text-xs font-medium">Rows per page</p>
           </Show.When>
 
           <Select
@@ -54,7 +54,7 @@ export default function Pagination({ table, disabled = false, count }: Paginatio
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+        <div className="flex w-[100px] items-center justify-center text-xs font-medium">
           Page {pageIndex + 1} of {Math.max(pageCount, 1)}
         </div>
         <div className="flex items-center space-x-2">
@@ -113,12 +113,12 @@ export default function Pagination({ table, disabled = false, count }: Paginatio
 // export default function Pagination({ table, disabled = false }: PaginationProps) {
 //   return (
 //     <div className="flex items-center justify-between px-2">
-//       <div className="flex-1 text-sm text-muted-foreground">
+//       <div className="flex-1 text-xs text-muted-foreground">
 //         {/* {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected. */}
 //       </div>
 //       <div className="flex items-center space-x-6 lg:space-x-8">
 //         <div className="flex items-center space-x-2">
-//           <p className="text-sm font-medium">Rows per page</p>
+//           <p className="text-xs font-medium">Rows per page</p>
 //           <Select
 //             value={`${table.getState().pagination.pageSize}`}
 //             onValueChange={(value) => {
@@ -140,7 +140,7 @@ export default function Pagination({ table, disabled = false, count }: Paginatio
 //             </SelectContent>
 //           </Select>
 //         </div>
-//         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+//         <div className="flex w-[100px] items-center justify-center text-xs font-medium">
 //           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
 //         </div>
 //         <div className="flex items-center space-x-2">

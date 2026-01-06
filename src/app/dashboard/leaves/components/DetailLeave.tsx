@@ -146,13 +146,13 @@ export default function LeaveRequestDetailCard({ dialogHandler }: { dialogHandle
 const Value = ({ label, value }: { label: string; value: any }) => (
   <div className="space-y-1">
     <p className="text-xs text-muted-foreground">{label}</p>
-    <p className="font-medium text-sm">{value}</p>
+    <p className="font-medium text-xs">{value}</p>
   </div>
 );
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="space-y-3">
-    <h3 className="text-sm font-semibold">{title}</h3>
+    <h3 className="text-xs font-semibold">{title}</h3>
     {children}
   </div>
 );

@@ -105,7 +105,7 @@ export default DetailApproval;
 
 const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <div className="flex items-start justify-between py-2 border-b last:border-none">
-    <span className="text-sm font-medium text-muted-foreground">{label}</span>
-    <span className="text-sm font-semibold text-right">{value ?? "-"}</span>
+    <span className="text-xs font-medium text-muted-foreground">{label}</span>
+    <span className="text-xs font-semibold text-right">{value ?? "-"}</span>
   </div>
 );

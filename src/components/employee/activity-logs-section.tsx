@@ -33,7 +33,7 @@ export default function ActivityLogsSection({ logs }: ActivityLogsSectionProps) 
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start mb-1">
                   <div>
-                    <p className="font-semibold text-sm">
+                    <p className="font-semibold text-xs">
                       {log?.action.id_contact ? "Contact Added" : "Family Member Added"}
                     </p>
                     <p className="text-xs text-muted-foreground">{dateDisplay(log.created_at)}</p>

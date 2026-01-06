@@ -53,7 +53,7 @@ const DetailEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRe
                 {fields.map((item, i) => (
                   <div key={i} className="space-y-1">
                     <p className="text-xs text-muted-foreground">{item.label}</p>
-                    <p className="font-medium text-sm">{item.value}</p>
+                    <p className="font-medium text-xs">{item.value}</p>
                   </div>
                 ))}
               </div>
@@ -62,8 +62,8 @@ const DetailEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRe
 
               {/* User Info */}
               <div className="space-y-2">
-                <h3 className="text-sm font-semibold">User</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <h3 className="text-xs font-semibold">User</h3>
+                <div className="grid grid-cols-2 gap-4 text-xs">
                   <Value label="Name" value={safe(data.user?.name)} />
                   <Value label="Employee Number" value={safe(data.user?.employee_number)} />
                   <Value label="Email" value={safe(data.user?.email)} />
@@ -72,8 +72,8 @@ const DetailEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRe
 
               {/* Manager */}
               <div className="space-y-2">
-                <h3 className="text-sm font-semibold">Manager</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <h3 className="text-xs font-semibold">Manager</h3>
+                <div className="grid grid-cols-2 gap-4 text-xs">
                   <Value label="Name" value={safe(data.manager?.name)} />
                   <Value label="Email" value={safe(data.manager?.email)} />
                 </div>
@@ -83,8 +83,8 @@ const DetailEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRe
 
               {/* Creator */}
               <div className="space-y-2">
-                <h3 className="text-sm font-semibold">Created By</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <h3 className="text-xs font-semibold">Created By</h3>
+                <div className="grid grid-cols-2 gap-4 text-xs">
                   <Value label="Name" value={safe(data.creator?.name)} />
                   <Value label="Email" value={safe(data.creator?.email)} />
                   <Value label="Created At" value={dateDisplay(data.created_at)} />
@@ -96,9 +96,9 @@ const DetailEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRe
                 <>
                   <Separator />
                   <div className="space-y-3">
-                    <h3 className="text-sm font-semibold">Activity Logs</h3>
+                    <h3 className="text-xs font-semibold">Activity Logs</h3>
                     {data.logs.map((log: any) => (
-                      <div key={log.id_employmentlog} className="rounded-md border p-3 text-sm space-y-1">
+                      <div key={log.id_employmentlog} className="rounded-md border p-3 text-xs space-y-1">
                         <p>
                           <span className="font-medium">Created At: </span>
                           {dateDisplay(log.created_at)}

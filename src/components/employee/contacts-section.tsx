@@ -23,12 +23,12 @@ export default function ContactsSection({ contacts }: ContactsSectionProps) {
           {contacts?.map((contact) => (
             <div key={contact?.id_contact} className="flex items-center justify-between p-3 bg-muted rounded-lg">
               <div>
-                <p className="text-sm text-muted-foreground">Phone Number</p>
+                <p className="text-xs text-muted-foreground">Phone Number</p>
                 <p className="font-semibold font-mono">{contact?.phone_number}</p>
               </div>
               <a
                 href={`tel:${contact?.phone_number}`}
-                className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors text-sm font-medium"
+                className="px-3 py-2 bg-red-500  rounded-md hover:bg-red-600 transition-colors text-xs font-medium"
               >
                 Call
               </a>

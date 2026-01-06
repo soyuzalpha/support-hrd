@@ -62,7 +62,7 @@ export const columnsMasterUser = ({
             <AvatarFallback>{row.original?.name ? row.original.name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
           </Avatar>
 
-          <div className="text-sm leading-tight">
+          <div className="text-xs leading-tight">
             <p className="font-medium">{row.original?.employee_number ?? "-"}</p>
             <p className="text-muted-foreground">{row.original?.name ?? "-"}</p>
             <p className="text-muted-foreground">{row.original?.username ?? "-"}</p>

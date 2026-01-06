@@ -18,7 +18,7 @@ export default function EmployeeHeader({ employee }: EmployeeHeaderProps) {
 
   return (
     <>
-      <Card className="border text-white">
+      <Card className="border ">
         <CardContent className="">
           <div className="flex flex-col md:flex-row md:items-center gap-6">
             {/* Avatar */}
@@ -53,9 +53,9 @@ export default function EmployeeHeader({ employee }: EmployeeHeaderProps) {
               </Show.When>
 
               <div className="text-right">
-                <p className="text-sm text-blue-100">Work Email</p>
+                <p className="text-xs text-blue-100">Work Email</p>
                 <p className="font-semibold mb-3">{employee?.user?.email}</p>
-                <p className="text-sm text-blue-100">Personal Email</p>
+                <p className="text-xs text-blue-100">Personal Email</p>
                 <p className="font-semibold">{employee?.personal_email}</p>
               </div>
             </div>

@@ -110,7 +110,7 @@ export function AttachmentViewer({ attachments, title = "Attachments" }: Attachm
 
                   <div className="flex-1 min-w-0">
                     <h4 className="font-medium truncate">{attachment.file_name}</h4>
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground mt-1">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mt-1">
                       <span className="flex items-center gap-1">
                         <User className="h-3 w-3" />
                         {attachment.created_by_name}

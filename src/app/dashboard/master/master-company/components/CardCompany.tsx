@@ -27,7 +27,7 @@ const CardCompany = ({
 
       {/* Data kosong */}
       <Show.When isTrue={!datas.length && !isLoading}>
-        <div className="w-full h-32 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">
+        <div className="w-full h-32 flex items-center justify-center text-gray-500 dark:text-gray-400 text-xs">
           No Results.
         </div>
       </Show.When>
@@ -45,7 +45,7 @@ const CardCompany = ({
               <CardTitle className="font-semibold ">{item.name}</CardTitle>
             </CardHeader>
 
-            <CardContent className="text-sm space-y-1">
+            <CardContent className="text-xs space-y-1">
               <div className="flex justify-between">
                 <span className="capitalize">Bank:</span>
                 <p className="font-medium">{item.bank}</p>
@@ -68,7 +68,7 @@ const CardCompany = ({
             </CardContent>
 
             <CardFooter className="w-full">
-              <div className="text-sm space-y-1 w-full">
+              <div className="text-xs space-y-1 w-full">
                 <div className="flex justify-between items-center">
                   <span className="capitalize">Status:</span>
                   <Badge variant="outline" className="text-muted-foreground px-1.5 gap-1 inline-flex items-center">

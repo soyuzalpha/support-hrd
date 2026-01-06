@@ -40,15 +40,15 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
               type="button"
               onClick={() => onChange(opt.value)}
               disabled={disable}
-              className={`px-4 py-1 rounded-sm border text-sm font-medium transition ${
+              className={`px-4 py-1 rounded-sm border text-xs font-medium transition ${
                 isActive
                   ? opt.value === false || opt.value === "inactive" || opt.value === 0
-                    ? "bg-red-600 text-white border-red-600" // nonaktif
+                    ? "bg-red-600  border-red-600" // nonaktif
                     : opt.value === "approved"
-                    ? "bg-green-600 text-white border-green-600" // approved
+                    ? "bg-green-600  border-green-600" // approved
                     : opt.value === "rejected"
-                    ? "bg-red-600 text-white border-red-600" // rejected
-                    : "bg-green-800 text-white border-green-800" // default aktif
+                    ? "bg-red-600  border-red-600" // rejected
+                    : "bg-green-800  border-green-800" // default aktif
                   : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"
               }`}
             >

@@ -8,7 +8,7 @@ interface LeaveQuotaDetailProps {
 
 export function LeaveQuotaList({ data }: LeaveQuotaDetailProps) {
   if (!data || data.length === 0)
-    return <p className="text-sm text-muted-foreground">No leave quota data available.</p>;
+    return <p className="text-xs text-muted-foreground">No leave quota data available.</p>;
 
   return (
     <div className="grid gap-4 grid-cols-1">
@@ -43,7 +43,7 @@ function LeaveQuotaCard({ item }: { item: any }) {
           {rows?.map((row) => (
             <div key={row.label} className="flex justify-between border-b py-1">
               <span className="text-xs text-muted-foreground">{row?.label}</span>
-              <span className="font-medium text-sm">{row?.value ?? "-"}</span>
+              <span className="font-medium text-xs">{row?.value ?? "-"}</span>
             </div>
           ))}
         </div>

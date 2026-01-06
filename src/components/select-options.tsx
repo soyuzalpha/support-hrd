@@ -68,7 +68,7 @@ export function SelectOptions<
             e.preventDefault();
             handleCreate();
           }}
-          className="cursor-pointer px-3 py-2 text-white/80 text-sm 
+          className="cursor-pointer px-3 py-2 /80 text-xs 
        hover:bg-white/15 rounded-lg mt-1 transition backdrop-blur-md"
         >
           ➕ Create “{inputValue}”
@@ -148,10 +148,10 @@ export function SelectOptions<
   };
 
   const classNames = {
-    control: () => "!rounded-xl !border-transparent text-sm",
+    control: () => "!rounded-xl !border-transparent text-xs",
     menu: () => "!rounded-xl backdrop-blur-xl",
-    option: () => "transition text-sm",
-    placeholder: () => "!text-white/40",
+    option: () => "transition text-xs",
+    placeholder: () => "!/40",
   };
 
   const baseProps = {
@@ -275,10 +275,10 @@ export function SelectOptions<
 //         state.isSelected ? "!bg-primary !text-primary-foreground" : state.isFocused ? "!bg-accent/30" : "!bg-popover"
 //       }`,
 //     menu: () =>
-//       "!bg-popover !border !border-border !rounded-[var(--radius)] !shadow-lg text-sm overflow-hidden !backdrop-blur-xl",
+//       "!bg-popover !border !border-border !rounded-[var(--radius)] !shadow-lg text-xs overflow-hidden !backdrop-blur-xl",
 //     singleValue: () => "!text-foreground",
 //     input: () => "!text-foreground",
-//     placeholder: () => "!text-muted-foreground text-sm",
+//     placeholder: () => "!text-muted-foreground text-xs",
 //     indicatorSeparator: () => "!bg-border/50",
 //     dropdownIndicator: () => "!text-muted-foreground hover:!text-foreground transition-colors duration-150",
 //     clearIndicator: () => "!text-muted-foreground hover:!text-foreground transition-colors duration-150",

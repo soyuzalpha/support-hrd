@@ -23,8 +23,8 @@ export default function UserDetailCard({ data }: Props) {
           </Avatar>
           <div>
             <p className="text-lg font-semibold">{F(data.name)}</p>
-            <p className="text-sm text-muted-foreground">{F(data.username)}</p>
-            <p className="text-sm text-muted-foreground">Emp. No: {F(data.employee_number)}</p>
+            <p className="text-xs text-muted-foreground">{F(data.username)}</p>
+            <p className="text-xs text-muted-foreground">Emp. No: {F(data.employee_number)}</p>
           </div>
         </CardContent>
       </Card>
@@ -141,7 +141,7 @@ function Section({ title, items }: { title: string; items: Record<string, any> }
       <CardHeader>
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-2 text-sm">
+      <CardContent className="grid gap-2 text-xs">
         {Object.entries(items).map(([label, value]) => (
           <div key={label} className="flex justify-between">
             <span className="text-muted-foreground">{label}</span>
@@ -170,7 +170,7 @@ function ListSection({
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
 
-      <CardContent className="space-y-4 text-sm">
+      <CardContent className="space-y-4 text-xs">
         {!data?.length && <p className="text-muted-foreground">{emptyText}</p>}
 
         {data?.map((item, i) => {
