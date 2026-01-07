@@ -64,13 +64,13 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
     <header className={cn("fixed top-0 z-50 w-full transition-all px-1", className)} {...props}>
       <div
         className={cn(
-          "container mx-auto mt-2 flex items-center justify-between px-4 py-2 rounded-full border",
+          "container mx-auto mt-2 flex items-center justify-between px-6 py-2 rounded-full border",
           "backdrop-blur-sm bg-background/20 shadow"
         )}
       >
         <Link href={"/dashboard"} className="flex items-center gap-2">
-          <Image src={"/logo.svg"} width={100} height={100} className="w-12 flex" alt="logo" loading="lazy" />
-          <h1 className="text-xl font-medium">Transtama</h1>
+          <Image src={"/TRANSTAMA.png"} width={500} height={500} className="w-32 flex" alt="logo" loading="lazy" />
+          {/* <h1 className="text-xl font-medium">Transtama</h1> */}
         </Link>
 
         <div className="flex items-center gap-3">

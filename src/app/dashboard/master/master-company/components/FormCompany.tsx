@@ -18,7 +18,7 @@ import { generateErrorMessage, generateSuccessMessage, isEmpty } from "@/utils";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { AppGridContainer } from "@/components/app-grid-container";
-import { FieldError, FieldGroup } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useScreenHeight } from "@/hooks/use-screen-height";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
@@ -73,27 +73,32 @@ const FormCompany = ({ dialogForm }: { dialogForm: any }) => {
 
   return (
     <Dialog open={dialogForm.open} onOpenChange={dialogForm.handleClose}>
-      <DialogContent className="" glass={true} size="xxl">
-        <form onSubmit={fForm.handleSubmit(onSubmit)}>
-          <DialogHeader>
-            <DialogTitle>Form Company</DialogTitle>
-            <DialogDescription>Make change to input and save</DialogDescription>
-          </DialogHeader>
+      <DialogContent glass={true} size="xxl">
+        <DialogHeader>
+          <DialogTitle>Form Company</DialogTitle>
+          <DialogDescription>Make change to input and save</DialogDescription>
+        </DialogHeader>
 
-          <AppGridContainer maxHeight={useScreenHeight() - 300} className="mt-3">
+        <form onSubmit={fForm.handleSubmit(onSubmit)}>
+          <AppGridContainer maxHeight={useScreenHeight() - 300}>
             <FieldGroup>
               <Controller
                 control={fForm.control}
                 name="name_company"
                 render={({ field, fieldState }) => (
-                  <FormItem>
-                    <FormLabel>Company Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Global Sarana Angkasa" {...field} aria-invalid={fieldState.invalid} />
-                    </FormControl>
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="name_company">Company Name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="name_company"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Global Sarana Angkasa"
+                      autoComplete="off"
+                    />
                     <FormDescription>Company display name.</FormDescription>
+
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </FormItem>
+                  </Field>
                 )}
               />
 
@@ -159,11 +164,16 @@ const FormCompany = ({ dialogForm }: { dialogForm: any }) => {
 
           <DialogFooter className="mt-4">
             <DialogClose asChild>
-              <Button type="button" variant="outline" onClick={dialogForm.handleClose}>
+              <Button type="button" variant="glassError" size={"xs"} onClick={dialogForm.handleClose}>
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" variant={"success"} loading={mutationCreate.isPending || mutationUpdate.isPending}>
+            <Button
+              type="submit"
+              variant={"glassSuccess"}
+              size={"xs"}
+              loading={mutationCreate.isPending || mutationUpdate.isPending}
+            >
               {fForm.getValues("id_company") ? "Update" : "Create"}
             </Button>
           </DialogFooter>

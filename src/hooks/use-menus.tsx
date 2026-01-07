@@ -1,6 +1,6 @@
-// import { getMenusUser } from "@/app/dashboard/role-management/api/role-management-service";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalStorage } from "./use-local-storage";
+import { apiGet } from "@/service/service";
 
 export type Menu = {
   id_menu_user: number;
@@ -47,4 +47,15 @@ export const useMenus = () => {
     },
     enabled: isReady,
   });
+};
+
+export const getMenusUser = async ({
+  id_position,
+  id_division,
+}: {
+  id_position?: number;
+  id_division?: number;
+}): Promise<MenuResponse[]> => {
+  const response = await apiGet(`/getMenuUser?id_position=${id_position}&id_division=${id_division}&limit=100`);
+  return response.data;
 };

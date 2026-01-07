@@ -25,31 +25,17 @@ export default function RootLayout({
           <SessionProvider>
             <ProvidersReactQuery>
               <AppContextProvider>
-                <div className="relative min-h-screen overflow-x-hidden">
-                  <div
+                <div className="relative min-h-screen overflow-x-hidden bg-[#EEECE3]">
+                  {/* <div
                     className="absolute inset-0 -z-10"
                     style={{
                       backgroundColor: "#EEECE3",
-                      backgroundImage: "radial-gradient(circle at 1px 1px, rgba(0,0,0,0.35) 1px, transparent 1px)",
+                      backgroundImage: "radial-gradient(circle at 1px 1px, rgba(0,0,0,0.35) 0.1px, transparent 1px)",
                       backgroundSize: "20px 20px",
                     }}
-                  />
+                  /> */}
                   {children}
                 </div>
-
-                {/* <div className={`antialiased ${poppins.variable}`}>
-                  <div
-                    className="absolute inset-0 z-0"
-                    style={{
-                      background: "#EEECE3",
-                      // background: "#FCF9EA",
-                      backgroundImage: "radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.35) 1px, transparent 0)",
-                      backgroundSize: "20px 20px",
-                    }}
-                  />
-                </div>
-
-                {children} */}
               </AppContextProvider>
               <Toaster position={useIsMobile() ? "bottom-center" : "top-right"} />
               <ToastStyles />

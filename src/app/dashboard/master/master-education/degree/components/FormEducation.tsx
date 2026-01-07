@@ -140,7 +140,11 @@ const FormEducation = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn 
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" variant={"success"} loading={mutationCreate.isPending || mutationUpdate.isPending}>
+            <Button
+              type="submit"
+              variant={"glassSuccess"}
+              loading={mutationCreate.isPending || mutationUpdate.isPending}
+            >
               {fForm.getValues("id_degree") ? "Update" : "Create"}
             </Button>
           </DialogFooter>

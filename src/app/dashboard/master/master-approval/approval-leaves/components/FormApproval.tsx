@@ -263,7 +263,11 @@ const FormApproval = ({ dialogForm }: { dialogForm: any }) => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" variant={"success"} loading={mutationCreate.isPending || mutationUpdate.isPending}>
+            <Button
+              type="submit"
+              variant={"glassSuccess"}
+              loading={mutationCreate.isPending || mutationUpdate.isPending}
+            >
               {fForm.getValues("id_flowapprovalleave") ? "Update" : "Create"}
             </Button>
           </DialogFooter>

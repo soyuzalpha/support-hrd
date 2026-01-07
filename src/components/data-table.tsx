@@ -239,11 +239,6 @@ export function DataTable({
               fields={filters}
               onSubmit={onSubmitFilter}
             />
-            {/* <DataTableFilters
-              columns={table.getAllColumns()}
-              filterConfigs={filterConfigs}
-              onFilterChange={handleFiltersChange}
-            /> */}
           </Show.When>
         </div>
 

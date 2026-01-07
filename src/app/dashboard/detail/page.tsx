@@ -97,6 +97,8 @@ const StaffProfile = () => {
 
   const staffData = user?.employee_datas ?? DEFAULT_STAFF_DATA;
 
+  const initialLetter = (staffData?.nick_name ?? staffData?.full_name ?? "-").charAt(0).toUpperCase();
+
   const InfoRow = ({ label, value, icon: Icon }: any) => (
     <div className="flex items-start gap-3 py-2">
       {Icon && <Icon className="w-4 h-4 text-gray-500 mt-1 shrink-0" />}
@@ -138,7 +140,7 @@ const StaffProfile = () => {
             <div className="flex items-end gap-4">
               {/* Avatar */}
               <div className="w-24 h-24 rounded-xl bg-white border-4 border-white shadow-lg flex items-center justify-center text-3xl font-bold shrink-0 translate-y-6 text-black">
-                {staffData?.nick_name?.charAt(0) || staffData?.full_name?.charAt(0)}
+                {initialLetter}
               </div>
 
               {/* Name */}

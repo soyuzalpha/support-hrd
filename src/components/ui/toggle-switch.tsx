@@ -43,12 +43,12 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
               className={`px-4 py-1 rounded-sm border text-xs font-medium transition ${
                 isActive
                   ? opt.value === false || opt.value === "inactive" || opt.value === 0
-                    ? "bg-red-600  border-red-600" // nonaktif
+                    ? "bg-red-600  border-red-600 text-white" // nonaktif
                     : opt.value === "approved"
-                    ? "bg-green-600  border-green-600" // approved
+                    ? "bg-green-600  border-green-600 text-white" // approved
                     : opt.value === "rejected"
-                    ? "bg-red-600  border-red-600" // rejected
-                    : "bg-green-800  border-green-800" // default aktif
+                    ? "bg-red-600  border-red-600 text-white" // rejected
+                    : "bg-green-800  border-green-800 text-white" // default aktif
                   : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"
               }`}
             >

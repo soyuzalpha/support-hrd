@@ -23,7 +23,7 @@ export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void
   const allowedMenu =
     roleAccess[role] === "all" ? menuItems : menuItems.filter((menu) => roleAccess[role]?.includes(menu.id));
 
-  console.log({ role, user: user?.userDatas });
+  // console.log({ role, user: user?.userDatas });
 
   // ⛔ FIX: Prevent SSR mismatch
   if (!isReady) return null;

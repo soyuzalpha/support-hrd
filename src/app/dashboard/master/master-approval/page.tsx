@@ -8,7 +8,7 @@ const MasterTypeLeaves = lazy(() => import("./type-leaves/page"));
 
 const page = () => {
   return (
-    <Tabs defaultValue="company" className="w-full">
+    <Tabs defaultValue="approval-leave" className="w-full">
       <div
         className="w-full overflow-x-auto scrollbar-hide"
         style={{
