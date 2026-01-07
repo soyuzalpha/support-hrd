@@ -11,23 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { isEmpty, toCapitalized } from "@/utils";
 import { defaultColumnsInformation } from "@/utils/tables";
-import { IconCircleCheckFilled, IconDotsVertical, IconXboxX } from "@tabler/icons-react";
+import { IconCircleCheckFilled, IconDotsVertical } from "@tabler/icons-react";
 import { createColumnHelper } from "@tanstack/react-table";
-import * as z from "zod";
-
-export const formSchemaPosition = z.object({
-  id_position: z.number().optional().nullable(),
-  name_position: z
-    .string()
-    .nonempty("Position name is required.")
-    .min(2, "Bug title must be at least 2 characters.")
-    .max(32, "Bug title must be at most 32 characters."),
-  description_position: z.string().max(100, "Description must be at most 100 characters."),
-  status: z.object({
-    label: z.string(),
-    value: z.string(),
-  }),
-});
 
 const columnHelper = createColumnHelper<any>();
 export const columnsMasterUser = ({
@@ -58,7 +43,6 @@ export const columnsMasterUser = ({
         <div className="flex items-center gap-3">
           <Avatar>
             <AvatarImage src={row.original?.photo_url || undefined} alt={row.original?.name || "User"} />
-
             <AvatarFallback>{row.original?.name ? row.original.name.charAt(0).toUpperCase() : "?"}</AvatarFallback>
           </Avatar>
 
@@ -100,10 +84,6 @@ export const columnsMasterUser = ({
         </p>
       ),
     }),
-    // columnHelper.accessor("description_position", {
-    //   header: "Description",
-    //   cell: (info) => <p className="text-wrap w-96">{info.getValue() ?? "-"}</p>,
-    // }),
     ...defaultColumnsInformation,
     columnHelper.display({
       id: "actions",
@@ -149,26 +129,29 @@ export const columnsMasterUser = ({
               >
                 Employee
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={(e) => {
-                  onCLickEmployments(row);
-                  e.stopPropagation();
-                }}
-              >
-                Employments
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={(e) => {
-                  onCLickPreview(row);
-                  e.stopPropagation();
-                }}
-              >
-                Preview
-              </DropdownMenuItem>
-
-              <DropdownMenuSeparator />
+              <Show.When isTrue={!isEmpty(row.original.employees)}>
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    onCLickEmployments(row);
+                    e.stopPropagation();
+                  }}
+                >
+                  Employments
+                </DropdownMenuItem>
+              </Show.When>
+              <Show.When isTrue={!isEmpty(row.original.employees) && !isEmpty(row.original.employments)}>
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    onCLickPreview(row);
+                    e.stopPropagation();
+                  }}
+                >
+                  Preview
+                </DropdownMenuItem>
+              </Show.When>
 
               <Show.When isTrue={isEmpty(data?.deleted_at)}>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={(e) => {
                     e.stopPropagation();
@@ -183,24 +166,6 @@ export const columnsMasterUser = ({
                   {data.deleted_at ? "Actived" : "Delete"}
                 </DropdownMenuItem>
               </Show.When>
-
-              {/* <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (data.deleted_at) {
-                    onClickData({ ...row });
-                  } else {
-                    onClickData({ ...row });
-                  }
-                }}
-                className={
-                  data.deleted_at
-                    ? "text-green-500 focus:bg-green-600 dark:focus:bg-green-900/20"
-                    : "text-red-500 focus:bg-red-600 dark:focus:bg-red-900/20"
-                }
-              >
-                {data.deleted_at ? "Restore" : "Delete"}
-              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         );

@@ -19,8 +19,8 @@ export default function LeaveRequestDetailCard({ dialogHandler }: { dialogHandle
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
       <DialogContent size="xxl" glass={true}>
         <DialogHeader>
-          <DialogTitle>Detail Employee Apprisal</DialogTitle>
-          <DialogDescription>Details Employee Apprisal</DialogDescription>
+          <DialogTitle>Detail Employee Appraisal</DialogTitle>
+          <DialogDescription>Details Employee Appraisal</DialogDescription>
         </DialogHeader>
 
         <AppGridContainer maxHeight={useScreenHeight() - 300}>

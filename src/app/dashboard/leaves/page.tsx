@@ -16,6 +16,7 @@ import { columnsLeaves } from "./utils";
 import FormLeaves from "./components/FormLeaves";
 import { toastAlert } from "@/lib/toast";
 import LeaveRequestDetailCard from "./components/DetailLeave";
+import { useUser } from "@/context/app-context";
 
 const Page = () => {
   const fForm = useForm();
@@ -23,6 +24,7 @@ const Page = () => {
   const dDialog = useDialogModal();
   const dDetail = useDialogModal();
   const dConfirm = useDialogModal();
+  const { user } = useUser();
 
   const {
     data: company,
@@ -36,6 +38,7 @@ const Page = () => {
       page: 1,
       limit: 10,
       searchKey: "",
+      id_user: user.id_user,
     },
   });
 

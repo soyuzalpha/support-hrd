@@ -30,11 +30,12 @@ import { fileToBase64, normalizeFile } from "@/utils/file";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChevronDownIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { formatDate } from "@/utils/dates";
+import { formatDate, toISOStringFormat } from "@/utils/dates";
 import Show from "@/components/show";
 import { AttachmentViewer } from "@/components/AttachmentViewer";
 import { getCityByProvince } from "../../master-zones/api/master-zones-service";
 import { apiPost } from "@/service/service";
+import { DateTimePicker } from "@/components/ui/datepicker";
 
 const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
@@ -163,22 +164,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
       toastAlert.error("Something went wrong!");
     }
   };
-
-  const handleCreateSchool = async (value: string) => {
-    console.log({ value });
-    // const res = await createSchoolService({ name: value });
-
-    // if (res?.data) {
-    //   // refresh options
-    //   await loadOptionsSchool("");
-
-    //   // set form value (auto select newly created item)
-    //   fForm.setValue("education_histories.id_school", {
-    //     label: res.data.name,
-    //     value: res.data.id,
-    //   });
-    // }
-  };
+  console.log({ values: fForm.getValues() });
 
   return (
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
@@ -191,7 +177,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
         <form onSubmit={fForm?.handleSubmit(onSubmit)}>
           <AppGridContainer maxHeight={useScreenHeight() - 300}>
             <FieldGroup>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                 {/* USER */}
                 <FormItem>
                   <FormLabel>User</FormLabel>
@@ -281,31 +267,26 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                 {/* BIRTH DATE */}
                 <FormItem>
                   <FormLabel>Birth Date</FormLabel>
-                  <div className="flex flex-col gap-3">
-                    <Popover open={open} onOpenChange={setOpen}>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" id="date" className="w-48 justify-between font-normal">
-                          {fForm.getValues("birth_date")
-                            ? format(fForm.getValues("birth_date"), "yyyy-MM-dd")
-                            : "Select date"}
-                          <ChevronDownIcon />
-                        </Button>
-                      </PopoverTrigger>
-
-                      <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={fForm.getValues("birth_date")}
-                          captionLayout="dropdown"
-                          onSelect={(date) => {
-                            fForm.setValue("birth_date", date);
-                            setOpen(false);
+                  <FormControl>
+                    <Controller
+                      name="birth_date"
+                      render={({ field }) => (
+                        <DateTimePicker
+                          {...field}
+                          date={field.value}
+                          placeholder={"Birth Date"}
+                          onChange={(value) => {
+                            field.onChange(toISOStringFormat(value as Date));
                           }}
+                          includeTime={false}
+                          withYear={true}
                         />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
+                      )}
+                    />
+                  </FormControl>
                 </FormItem>
+
+                {/* <FormDatePicker name="birth_date" label="Birth Date" buttonClassName="w-full justify-between" /> */}
 
                 {/* GENDER */}
                 <FormItem>
@@ -415,10 +396,6 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                               fForm.setValue("city_address", null);
                             }
                           }}
-                          // onChange={() => {
-                          //   field.onChange();
-                          //   mutationGetCityByProvince.mutate({ id_province: field.value?.value });
-                          // }}
                         />
                       )}
                     />
@@ -531,27 +508,14 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                   { name: "company_name", placeholder: "Company Name", inputType: "text", label: "Company Name" },
                   { name: "position", placeholder: "Position", inputType: "text", label: "Position" },
                   { name: "division", placeholder: "Division", inputType: "text", label: "Division" },
-                  { name: "start_date", placeholder: "Start Date", inputType: "date", label: "Start Date" },
-                  { name: "end_date", placeholder: "End Date", inputType: "date", label: "End Date" },
+                  { name: "start_date", placeholder: "Start Date", inputType: "date-year", label: "Start Date" },
+                  { name: "end_date", placeholder: "End Date", inputType: "date-year", label: "End Date" },
                   {
                     name: "responsibilities",
                     placeholder: "Responsibilities",
                     inputType: "textarea",
                     label: "Responsibilities",
                   },
-                  // {
-                  //   name: "relationship",
-                  //   placeholder: "Mother",
-                  //   inputType: "select",
-                  //   dataOptions: [
-                  //     createInputOptions("Orang Tua", "ORANG_TUA"),
-                  //     createInputOptions("Anak", "ANAK"),
-                  //     createInputOptions("Saudara", "SAUDARA"),
-                  //     createInputOptions("Pasangan", "PASANGAN"),
-                  //     createInputOptions("Lainnya", "LAINNYA"),
-                  //   ],
-                  //   label: "Relationship",
-                  // },
                 ]}
               />
 
@@ -593,27 +557,14 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                     label: "Study Program",
                     loadOptions: loadOptionsProgramStudy,
                   },
-                  { name: "start_date", placeholder: "Start Date", inputType: "date", label: "Start Date" },
-                  { name: "end_date", placeholder: "End Date", inputType: "date", label: "End Date" },
+                  { name: "start_date", placeholder: "Start Date", inputType: "date-year", label: "Start Date" },
+                  { name: "end_date", placeholder: "End Date", inputType: "date-year", label: "End Date" },
                   {
                     name: "responsibilities",
                     placeholder: "Responsibilities",
                     inputType: "textarea",
                     label: "Responsibilities",
                   },
-                  // {
-                  //   name: "relationship",
-                  //   placeholder: "Mother",
-                  //   inputType: "select",
-                  //   dataOptions: [
-                  //     createInputOptions("Orang Tua", "ORANG_TUA"),
-                  //     createInputOptions("Anak", "ANAK"),
-                  //     createInputOptions("Saudara", "SAUDARA"),
-                  //     createInputOptions("Pasangan", "PASANGAN"),
-                  //     createInputOptions("Lainnya", "LAINNYA"),
-                  //   ],
-                  //   label: "Relationship",
-                  // },
                 ]}
               />
 

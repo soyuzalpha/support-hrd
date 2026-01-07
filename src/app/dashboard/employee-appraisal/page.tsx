@@ -7,7 +7,7 @@ import { DataTable } from "@/components/data-table";
 import { useDatatable } from "@/hooks/use-datatable";
 import { useDialogModal } from "@/hooks/use-dialog-modal";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
-import { createInputOptions, isEmpty, toCapitalized } from "@/utils";
+import { createInputOptions, isEmpty } from "@/utils";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -15,9 +15,9 @@ import {
   restoreEmployeeAppraisal,
   deleteEmployeeAppraisal,
   getEmployeeAppraisals,
-} from "./api/employee-apprisal-service";
+} from "./api/employee-appraisal-service";
 import { columnsLeaves } from "./utils";
-import FormLeaves from "./components/FormEmployeeApprisal";
+import FormLeaves from "./components/FormEmployeeAppraisal";
 import { toastAlert } from "@/lib/toast";
 import LeaveRequestDetailCard from "./components/DetailLeave";
 
@@ -34,7 +34,7 @@ const Page = () => {
     currentState,
     setCurrentState,
   } = useDatatable({
-    queryKey: "employee-apprisal",
+    queryKey: "employee-Appraisal",
     queryFn: getEmployeeAppraisals,
     initialParams: {
       page: 1,
@@ -84,7 +84,7 @@ const Page = () => {
       {
         onSuccess: (res) => {
           toastAlert.success(res.message || "Berhasil");
-          invalidate([["employee-apprisal"]]);
+          invalidate([["employee-Appraisal"]]);
           dConfirm.handleClose();
         },
         onError: (err) => {
@@ -94,7 +94,7 @@ const Page = () => {
     );
   };
   return (
-    <AppContainer title="Employee Apprisal">
+    <AppContainer title="Employee Appraisal">
       <FormProvider {...fForm}>
         <DataTable
           isLoading={isLoading}

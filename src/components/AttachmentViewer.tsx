@@ -100,7 +100,7 @@ export function AttachmentViewer({ attachments, title = "Attachments" }: Attachm
               >
                 {/* Kiri: Icon + Info + Badge */}
                 <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
-                  <div className="shrink-0">
+                  <div className="shrink-0 text-xs">
                     {isImage(attachment.url) ? (
                       <ImageIcon className="h-8 w-8 text-blue-500" />
                     ) : (
@@ -109,13 +109,13 @@ export function AttachmentViewer({ attachments, title = "Attachments" }: Attachm
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium truncate">{attachment.file_name}</h4>
+                    <h4 className="font-medium truncate text-xs">{attachment.file_name}</h4>
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mt-1">
                       <span className="flex items-center gap-1">
                         <User className="h-3 w-3" />
                         {attachment.created_by_name}
                       </span>
-                      <span className="flex items-center gap-1">
+                      <span className="flex items-center gap-1 text-xs">
                         <Calendar className="h-3 w-3" />
                         {formatDate(attachment.created_at)}
                       </span>

@@ -11,14 +11,12 @@ import { IconPlus } from "@tabler/icons-react";
 import { DateTimePicker } from "@/components/ui/datepicker";
 import { useRef, useState, useCallback } from "react";
 import { Separator } from "@/components/ui/separator";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { toISOStringFormat } from "@/utils/dates";
 import Link from "next/link";
 import { toastAlert } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 import { SelectOptions } from "./select-options";
 import { CurrencyInput } from "./ui/currency-input";
-import { GlassContainer } from "./GlassContainer";
 
 type InputType =
   | "text"
@@ -30,7 +28,8 @@ type InputType =
   | "file"
   | "currency"
   | "time"
-  | "date-time";
+  | "date-time"
+  | "date-year";
 type DirectionType = "vertical" | "horizontal";
 
 interface FieldConfig {
@@ -479,6 +478,22 @@ export const DynamicFormFields = ({
                         );
                       }
 
+                      if (fieldCfg.inputType === "date-year") {
+                        return (
+                          <DateTimePicker
+                            {...field}
+                            date={field.value}
+                            placeholder={fieldCfg.placeholder}
+                            onChange={(value) => {
+                              field.onChange(toISOStringFormat(value as Date));
+                            }}
+                            includeTime={false}
+                            withYear={true}
+                            disabled={fieldCfg.isDisabled}
+                          />
+                        );
+                      }
+
                       // SELECT
                       if (fieldCfg.inputType === "select") {
                         return (
@@ -615,7 +630,7 @@ export const DynamicFormFields = ({
           ))}
           <div ref={scrollRef} />
           <Button
-            size="lg"
+            size="sm"
             type="button"
             variant="glassInfo"
             onClick={() => {

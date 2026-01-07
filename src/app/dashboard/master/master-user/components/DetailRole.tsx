@@ -1,19 +1,12 @@
-import { AppContainer } from "@/components/app-container";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { UseDialogModalReturn } from "@/hooks/use-dialog-modal";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import React from "react";
-import { useFormContext, useWatch } from "react-hook-form";
-import { User, Calendar, Activity, FileText } from "lucide-react";
-import { dateDisplay } from "@/utils/dates";
-import { GlassContainer } from "@/components/GlassContainer";
+import { useFormContext } from "react-hook-form";
 import { AppGridContainer } from "@/components/app-grid-container";
 import { useScreenHeight } from "@/hooks/use-screen-height";
-import PersonalInfoSection from "@/components/employee/personal-info-section";
-import ContactsSection from "@/components/employee/contacts-section";
-import FamilySection from "@/components/employee/family-section";
-import UserDetailCard from "./UserInfo";
+import { toCapitalized } from "@/utils";
+import EmployeeProfile from "./UserInfo";
 
 const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
@@ -21,14 +14,14 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
 
   return (
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
-      <DialogContent size="xxl" glass={true}>
+      <DialogContent size="jumbo" glass={true}>
         <DialogHeader>
-          <DialogTitle>{details.name_position}</DialogTitle>
-          <DialogDescription>Details</DialogDescription>
+          <DialogTitle>{toCapitalized(details.name ?? "-")}</DialogTitle>
+          <DialogDescription>Details User</DialogDescription>
         </DialogHeader>
 
-        <AppGridContainer maxHeight={useScreenHeight() - 300}>
-          <UserDetailCard data={fForm.getValues()} />
+        <AppGridContainer maxHeight={useScreenHeight() - 200}>
+          <EmployeeProfile />
         </AppGridContainer>
 
         <DialogFooter className="mt-4">

@@ -21,11 +21,11 @@ export const columnsLeaves = ({ onClickDetail, onClickEdit, onClickData }) => {
       cell: (info) => <p>{info.getValue()}</p>,
     }),
     columnHelper.accessor("appraisal_year", {
-      header: "Apprisal Year",
+      header: "Appraisal Year",
       cell: (info) => <p>{info.getValue()}</p>,
     }),
     columnHelper.accessor("total_score", {
-      header: "Apprisal Score",
+      header: "Appraisal Score",
       cell: (info) => <p>{info.getValue()}</p>,
     }),
     columnHelper.accessor("comments", {

@@ -21,15 +21,12 @@ import { generateErrorMessage, generateSuccessMessage, isEmpty } from "@/utils";
 import { toastAlert } from "@/lib/toast";
 import { ToggleSwitch } from "@/components/ui/toggle-switch";
 import * as z from "zod";
-import { formSchemaPosition } from "../utils";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import Show from "@/components/show";
 import { AppGridContainer } from "@/components/app-grid-container";
 import { useScreenHeight } from "@/hooks/use-screen-height";
 import { useSelectFetcher } from "@/hooks/use-select-fetcher";
 import { SelectOptions } from "@/components/select-options";
-
-type FormSchemaType = z.infer<typeof formSchemaPosition>;
 
 const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext<any>();
@@ -231,36 +228,6 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                 <FormDescription>Your division ID</FormDescription>
                 {fForm.formState.errors.id_division && <FieldError errors={[fForm.formState.errors.id_division]} />}
               </FormItem>
-
-              {/* Status Toggle */}
-              {/* <FormItem>
-                <FormControl>
-                  <Controller
-                    control={fForm.control}
-                    name="status"
-                    render={({ field }) => (
-                      <ToggleSwitch
-                        isRequired={true}
-                        value={field?.value?.value}
-                        onChange={(val) => {
-                          const selectedOption =
-                            val === "active"
-                              ? { label: "Active", value: "active" }
-                              : { label: "Inactive", value: "inactive" };
-
-                          fForm.setValue("status", selectedOption);
-                        }}
-                        options={[
-                          { label: "Active", value: "active" },
-                          { label: "Inactive", value: "inactive" },
-                        ]}
-                        disable={false}
-                      />
-                    )}
-                  />
-                </FormControl>
-                <FormDescription>Choose the user status</FormDescription>
-              </FormItem> */}
             </FieldGroup>
           </AppGridContainer>
 

@@ -12,16 +12,19 @@ import {
   PersonStanding,
   ShieldAlert,
   HandMetal,
+  HandGrab,
+  Ship,
+  Medal,
 } from "lucide-react";
 
 export const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: Home, path: "/dashboard" },
   { id: "master", label: "Master", icon: BarChart3, path: "/dashboard/master" },
   // { id: "attendance", label: "Attendance", icon: BookUser, path: "/dashboard/attendance" },
-  { id: "leave", label: "Leaves", icon: PartyPopper, path: "/dashboard/leaves" },
+  { id: "leave", label: "Leaves", icon: Ship, path: "/dashboard/leaves" },
   { id: "warning", label: "Employe Warning", icon: ShieldAlert, path: "/dashboard/employee-warning" },
-  { id: "apprisal", label: "Employe Apprisal", icon: HandMetal, path: "/dashboard/employee-apprisal" },
-  { id: "detail", label: "Details", icon: PersonStanding, path: "/dashboard/detail" },
+  { id: "Appraisal", label: "Employe Appraisal", icon: Medal, path: "/dashboard/employee-appraisal" },
+  { id: "detail", label: "Details", icon: BookUser, path: "/dashboard/detail" },
   // { id: "team", label: "Team", icon: Users, },
   // { id: "messages", label: "Messages", icon: MessageSquare },
   // { id: "notifications", label: "Notifications", icon: Bell },

@@ -12,7 +12,7 @@ import { UseDialogModalReturn } from "@/hooks/use-dialog-modal";
 import { generateErrorMessage, generateSuccessMessage, isEmpty } from "@/utils";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useFormContext } from "react-hook-form";
-import { createEmployeeAppraisal, updateEmployeeAppraisal } from "../api/employee-apprisal-service";
+import { createEmployeeAppraisal, updateEmployeeAppraisal } from "../api/employee-appraisal-service";
 import { toastAlert } from "@/lib/toast";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import { AppGridContainer } from "@/components/app-grid-container";
@@ -61,7 +61,7 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
       mutation.mutate(payload, {
         onSuccess: (res) => {
           dialogHandler.handleClose();
-          invalidate([["employee-apprisal"]]);
+          invalidate([["employee-Appraisal"]]);
           const message = generateSuccessMessage(res);
           toastAlert.success(message);
         },
@@ -80,7 +80,7 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
       <DialogContent className="" glass={true} size="xl">
         <form onSubmit={fForm.handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Form Employee Apprisal</DialogTitle>
+            <DialogTitle>Form Employee Appraisal</DialogTitle>
             <DialogDescription>Make change to input and save</DialogDescription>
           </DialogHeader>
 
