@@ -63,7 +63,7 @@ const Dashboard = () => {
   const { data: usersNotActiveData, isLoading: isLoadingUsersNotActive } = useDashboardUsersNotActive();
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 px-3">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <DashboardGreeting />
 

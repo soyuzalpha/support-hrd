@@ -24,7 +24,7 @@ const CardSummaryDashboard = ({
         <CardAction>{Icon && <Icon className="h-4 w-4 text-muted-foreground" />}</CardAction>
       </CardHeader>
 
-      <CardContent className="p-2 max-h-32 overflow-y-scroll">
+      <CardContent className="p-2 ">
         <div className={`text-2xl font-bold px-3 py-1 ${titleClassName}`}>{isLoading ? "..." : content}</div>
       </CardContent>
 
