@@ -7,7 +7,7 @@ import { AppGridContainer } from "@/components/app-grid-container";
 import { useScreenHeight } from "@/hooks/use-screen-height";
 import { toCapitalized } from "@/utils";
 import EmployeeProfile from "./UserInfo";
-import StaffProfile from "@/app/dashboard/detail/page";
+import StaffProfile from "@/app/dashboard/detail/components/StaffProfile";
 
 const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
