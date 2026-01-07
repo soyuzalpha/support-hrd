@@ -1,5 +1,4 @@
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import { ScrollArea } from "./ui/scroll-area";
 
 const CardSummaryDashboard = ({
   title = "Total",

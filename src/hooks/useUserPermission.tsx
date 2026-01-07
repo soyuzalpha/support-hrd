@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useMenus } from "./use-menus";
+// import { useMenus } from "./use-menus";
 import { usePathname } from "next/navigation";
 
 // Permissions interface
@@ -26,7 +26,7 @@ interface UsePermissionsOptions {
 export const usePermissions = (options: UsePermissionsOptions = {}): Permissions => {
   const { exactMatch = false, customPath } = options;
   const pathname = usePathname();
-  const { data: menuData, isLoading: menuLoading, error } = useMenus();
+  // const { data: menuData, isLoading: menuLoading, error } = useMenus();
 
   const [permissions, setPermissions] = useState<Permissions>({
     canCreate: false,
@@ -62,78 +62,83 @@ export const usePermissions = (options: UsePermissionsOptions = {}): Permissions
     }
   };
 
-  useEffect(() => {
-    // If still loading menu data, keep loading state
-    if (menuLoading) {
-      setPermissions((prev) => ({ ...prev, isLoading: true }));
-      return;
-    }
+  // useEffect(() => {
+  //   // If still loading menu data, keep loading state
+  //   if (menuLoading) {
+  //     setPermissions((prev) => ({ ...prev, isLoading: true }));
+  //     return;
+  //   }
 
-    // If there's an error or no data, set no permissions
-    //@ts-ignore
-    if (error || !menuData?.data) {
-      setPermissions({
-        canCreate: false,
-        canRead: false,
-        canUpdate: false,
-        canDelete: false,
-        canApprove: false,
-        canReject: false,
-        canPrint: false,
-        canExport: false,
-        canImport: false,
-        hasAccess: false,
-        isLoading: false,
-        menuData: null,
-      });
-      return;
-    }
+  //   // If there's an error or no data, set no permissions
+  //   //@ts-ignore
+  //   if (error || !menuData?.data) {
+  //     setPermissions({
+  //       canCreate: false,
+  //       canRead: false,
+  //       canUpdate: false,
+  //       canDelete: false,
+  //       canApprove: false,
+  //       canReject: false,
+  //       canPrint: false,
+  //       canExport: false,
+  //       canImport: false,
+  //       hasAccess: false,
+  //       isLoading: false,
+  //       menuData: null,
+  //     });
+  //     return;
+  //   }
 
-    // Use custom path or current pathname
-    const pathToCheck = customPath || pathname;
+  //   // Use custom path or current pathname
+  //   const pathToCheck = customPath || pathname;
 
-    // Find matching menu item based on path
-    //@ts-ignore
-    const matchingMenu = menuData.data.find((menu: any) => {
-      // Skip menus with # path (parent menus)
-      if (menu.path === "#") return false;
+  //   // Find matching menu item based on path
+  //   //@ts-ignore
+  //   const matchingMenu = menuData.data.find((menu: any) => {
+  //     // Skip menus with # path (parent menus)
+  //     if (menu.path === "#") return false;
 
-      return pathMatches(menu.path, pathToCheck);
-    });
+  //     return pathMatches(menu.path, pathToCheck);
+  //   });
 
-    if (matchingMenu) {
-      setPermissions({
-        canCreate: Boolean(matchingMenu.can_create),
-        canRead: Boolean(matchingMenu.can_read),
-        canUpdate: Boolean(matchingMenu.can_update),
-        canDelete: Boolean(matchingMenu.can_delete),
-        canApprove: Boolean(matchingMenu.can_approve),
-        canReject: Boolean(matchingMenu.can_reject),
-        canPrint: Boolean(matchingMenu.can_print),
-        canExport: Boolean(matchingMenu.can_export),
-        canImport: Boolean(matchingMenu.can_import),
-        hasAccess: Boolean(matchingMenu.status && matchingMenu.can_read),
-        isLoading: false,
-        menuData: matchingMenu,
-      });
-    } else {
-      // No matching menu found - no permissions
-      setPermissions({
-        canCreate: false,
-        canRead: false,
-        canUpdate: false,
-        canDelete: false,
-        canApprove: false,
-        canReject: false,
-        canPrint: false,
-        canExport: false,
-        canImport: false,
-        hasAccess: false,
-        isLoading: false,
-        menuData: null,
-      });
-    }
-  }, [menuData, menuLoading, error, pathname, customPath, exactMatch]);
+  //   if (matchingMenu) {
+  //     setPermissions({
+  //       canCreate: Boolean(matchingMenu.can_create),
+  //       canRead: Boolean(matchingMenu.can_read),
+  //       canUpdate: Boolean(matchingMenu.can_update),
+  //       canDelete: Boolean(matchingMenu.can_delete),
+  //       canApprove: Boolean(matchingMenu.can_approve),
+  //       canReject: Boolean(matchingMenu.can_reject),
+  //       canPrint: Boolean(matchingMenu.can_print),
+  //       canExport: Boolean(matchingMenu.can_export),
+  //       canImport: Boolean(matchingMenu.can_import),
+  //       hasAccess: Boolean(matchingMenu.status && matchingMenu.can_read),
+  //       isLoading: false,
+  //       menuData: matchingMenu,
+  //     });
+  //   } else {
+  //     // No matching menu found - no permissions
+  //     setPermissions({
+  //       canCreate: false,
+  //       canRead: false,
+  //       canUpdate: false,
+  //       canDelete: false,
+  //       canApprove: false,
+  //       canReject: false,
+  //       canPrint: false,
+  //       canExport: false,
+  //       canImport: false,
+  //       hasAccess: false,
+  //       isLoading: false,
+  //       menuData: null,
+  //     });
+  //   }
+  // }, [
+  //   // menuData, menuLoading, error,
+  //   pathname,
+  //   customPath,
+  //   exactMatch,
+  // ]);
 
   return permissions;
 };
