@@ -26,6 +26,7 @@ import { useUser } from "@/context/app-context";
 import { useMutation } from "@tanstack/react-query";
 import { getEmployeeByUser } from "../master/master-employee/api/master-position-service";
 import { Spinner } from "@/components/ui/spinner";
+import { useFormContext } from "react-hook-form";
 
 const DEFAULT_STAFF_DATA = {
   id_employee: 0,
@@ -74,7 +75,7 @@ const DEFAULT_STAFF_DATA = {
   educationhistory: [],
 };
 
-const StaffProfile = () => {
+const StaffProfile = ({ idUser }: { idUser: string | number }) => {
   const [activeTab, setActiveTab] = useState("personal");
   const { user, updateUser } = useUser();
 
@@ -82,18 +83,36 @@ const StaffProfile = () => {
     mutationFn: getEmployeeByUser,
   });
 
+  // Tentukan target id_user
+  const targetUserId = !idUser ? user?.id_user : idUser;
+
   useEffect(() => {
-    if (user) {
-      userDetail.mutate(user.id_user, {
-        onSuccess: (res) => {
-          updateUser({
-            ...user,
-            employee_datas: res?.data,
-          });
-        },
-      });
-    }
-  }, [user?.id_user]);
+    if (!targetUserId) return;
+
+    userDetail.mutate(targetUserId, {
+      onSuccess: (res) => {
+        if (!user) return;
+
+        updateUser({
+          ...user,
+          employee_datas: res?.data,
+        });
+      },
+    });
+  }, [targetUserId]); // dependency TEPAT
+
+  // useEffect(() => {
+  //   if (user) {
+  //     userDetail.mutate(user.id_user, {
+  //       onSuccess: (res) => {
+  //         updateUser({
+  //           ...user,
+  //           employee_datas: res?.data,
+  //         });
+  //       },
+  //     });
+  //   }
+  // }, [user?.id_user]);
 
   const staffData = user?.employee_datas ?? DEFAULT_STAFF_DATA;
 

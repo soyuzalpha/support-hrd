@@ -59,7 +59,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <Navbar transparent />
 
         <main className="flex-1">
-          <div className="container mx-auto pt-24 mb-20">{children}</div>
+          <div className="container mx-auto pt-24 mb-24">{children}</div>
         </main>
 
         <DockMenu />

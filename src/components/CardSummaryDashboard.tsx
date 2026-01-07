@@ -42,7 +42,7 @@ export const ListDataRenderer = ({ data }) => {
       {Object.entries(data).map(([key, val]: any) => (
         <div key={key} className="flex items-center justify-between gap-3 rounded-md px-3 py-1 transition-colors">
           <span className="font-medium text-foreground truncate flex-1 text-xs">{key}</span>
-          <span className="inline-flex items-center justify-center min-w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold tabular-nums">
+          <span className="inline-flex items-center justify-center min-w-6 h-6 rounded-full bg-card text-black text-xs font-bold tabular-nums">
             {val}
           </span>
         </div>

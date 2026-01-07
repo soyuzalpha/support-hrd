@@ -121,7 +121,7 @@ const FormEmployeeWarning = ({ dialogHandler }: { dialogHandler: UseDialogModalR
                 name="warning_year"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Reason</FormLabel>
+                    <FormLabel>Year</FormLabel>
                     <FormControl>
                       <Input placeholder="2025" {...field} />
                     </FormControl>
@@ -130,6 +130,30 @@ const FormEmployeeWarning = ({ dialogHandler }: { dialogHandler: UseDialogModalR
                   </FormItem>
                 )}
               />
+
+              <FormItem>
+                <FormLabel>Level</FormLabel>
+                <FormControl>
+                  <Controller
+                    name="warning_level"
+                    render={({ field }) => (
+                      <SelectOptions
+                        options={[
+                          createInputOptions("SP1", "SP1"),
+                          createInputOptions("SP2", "SP2"),
+                          createInputOptions("SP3", "SP3"),
+                          createInputOptions("Termination", "Termination"),
+                        ]}
+                        placeholder="Select Level"
+                        value={field.value}
+                        onChange={(value) => {
+                          field.onChange(value);
+                        }}
+                      />
+                    )}
+                  />
+                </FormControl>
+              </FormItem>
 
               <FormField
                 control={fForm.control}
@@ -152,37 +176,13 @@ const FormEmployeeWarning = ({ dialogHandler }: { dialogHandler: UseDialogModalR
                   <FormItem>
                     <FormLabel>Action</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Reason" {...field} />
+                      <Textarea placeholder="Action" {...field} />
                     </FormControl>
                     {/* <FormDescription>Company address, company location, or company headquarters.</FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              <FormItem>
-                <FormLabel>Level</FormLabel>
-                <FormControl>
-                  <Controller
-                    name="warning_level"
-                    render={({ field }) => (
-                      <SelectOptions
-                        options={[
-                          createInputOptions("SP1", "SP1"),
-                          createInputOptions("SP2", "SP2"),
-                          createInputOptions("SP3", "SP3"),
-                          createInputOptions("Termination", "Termination"),
-                        ]}
-                        placeholder="Select Status"
-                        value={field.value}
-                        onChange={(value) => {
-                          field.onChange(value);
-                        }}
-                      />
-                    )}
-                  />
-                </FormControl>
-              </FormItem>
 
               {/* <FormItem>
                 <FormLabel>Status</FormLabel>

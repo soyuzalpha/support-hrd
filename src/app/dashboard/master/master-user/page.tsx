@@ -103,6 +103,7 @@ const MasterUser = () => {
     Object.entries(row).forEach(([key, value]) => {
       fForm.setValue(key, value);
     });
+    fForm.setValue("id_user", row.id);
     fForm.setValue("status", createInputOptions(toCapitalized(row.status), row.status));
     fForm.setValue("id_company", createInputOptions(row?.company?.name_company, row?.company?.id_company));
     dDetail.handleOpen();

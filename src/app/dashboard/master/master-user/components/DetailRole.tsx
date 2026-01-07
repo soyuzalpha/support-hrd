@@ -7,10 +7,13 @@ import { AppGridContainer } from "@/components/app-grid-container";
 import { useScreenHeight } from "@/hooks/use-screen-height";
 import { toCapitalized } from "@/utils";
 import EmployeeProfile from "./UserInfo";
+import StaffProfile from "@/app/dashboard/detail/page";
 
 const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
   const details = fForm.getValues();
+
+  const idUser = fForm.watch("id_user");
 
   return (
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
@@ -20,8 +23,12 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
           <DialogDescription>Details User</DialogDescription>
         </DialogHeader>
 
-        <AppGridContainer maxHeight={useScreenHeight() - 200}>
-          <EmployeeProfile />
+        <AppGridContainer maxHeight={useScreenHeight() - 300}>
+          {idUser ? (
+            <StaffProfile idUser={idUser} />
+          ) : (
+            <div className="text-sm text-muted-foreground p-4">Loading user data...</div>
+          )}
         </AppGridContainer>
 
         <DialogFooter className="mt-4">
