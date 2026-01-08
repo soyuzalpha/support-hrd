@@ -353,6 +353,25 @@ const MasterUser = () => {
       placeholder: "Search City...",
     },
     {
+      type: "select",
+      name: "gender",
+      label: "Gender",
+      placeholder: "Male",
+      options: [createInputOptions("Male", "male"), createInputOptions("Female", "female")],
+    },
+    {
+      type: "select",
+      name: "marital_status",
+      label: "Marital Status",
+      placeholder: "Single",
+      options: [
+        createInputOptions("Single", "single"),
+        createInputOptions("Married", "married"),
+        createInputOptions("Divorced", "divorced"),
+        createInputOptions("Widowed", "widowed"),
+      ],
+    },
+    {
       type: "number",
       name: "min_age",
       label: "Minimum Age",
