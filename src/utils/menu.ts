@@ -15,13 +15,14 @@ import {
   HandGrab,
   Ship,
   Medal,
+  DoorOpen,
 } from "lucide-react";
 
 export const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: Home, path: "/dashboard" },
   { id: "master", label: "Master", icon: BarChart3, path: "/dashboard/master" },
   // { id: "attendance", label: "Attendance", icon: BookUser, path: "/dashboard/attendance" },
-  { id: "leave", label: "Leaves", icon: Ship, path: "/dashboard/leaves" },
+  { id: "leave", label: "Leaves", icon: DoorOpen, path: "/dashboard/leaves" },
   { id: "warning", label: "Employe Warning", icon: ShieldAlert, path: "/dashboard/employee-warning" },
   { id: "Appraisal", label: "Employe Appraisal", icon: Medal, path: "/dashboard/employee-appraisal" },
   { id: "detail", label: "Details", icon: BookUser, path: "/dashboard/detail" },

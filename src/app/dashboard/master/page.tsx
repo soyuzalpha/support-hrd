@@ -11,6 +11,7 @@ const MasterUser = lazy(() => import("./master-user/page"));
 const MasterEmploye = lazy(() => import("./master-employee/page"));
 const MasterEmployements = lazy(() => import("./master-employments/page"));
 const MasterApproval = lazy(() => import("./master-approval/page"));
+const MasterTypeLeave = lazy(() => import("./type-leaves/page"));
 
 export default function Master() {
   return (
@@ -31,8 +32,8 @@ export default function Master() {
             <TabsTrigger value="division">Division</TabsTrigger>
             <TabsTrigger value="user">User</TabsTrigger>
             {/* <TabsTrigger value="employee">Employee</TabsTrigger> */}
-            {/* <TabsTrigger value="employments">Employements</TabsTrigger> */}
             <TabsTrigger value="approval">Approval</TabsTrigger>
+            <TabsTrigger value="type-leave">Type Leave</TabsTrigger>
           </TabsList>
         </div>
 
@@ -81,6 +82,12 @@ export default function Master() {
         <TabsContent value="approval">
           <Suspense fallback={<div>Loading Approval...</div>}>
             <MasterApproval />
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="type-leave">
+          <Suspense fallback={<div>Loading Approval...</div>}>
+            <MasterTypeLeave />
           </Suspense>
         </TabsContent>
       </Tabs>

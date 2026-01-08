@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Suspense, lazy } from "react";
 
 const ApprovalLeave = lazy(() => import("./approval-leaves/page"));
-const MasterTypeLeaves = lazy(() => import("./type-leaves/page"));
+const ApprovalUpdateUser = lazy(() => import("./approval-update-user/page"));
 
 const page = () => {
   return (
@@ -19,7 +19,7 @@ const page = () => {
       >
         <TabsList className="inline-flex min-w-max w-full border-b">
           <TabsTrigger value="approval-leave">Approval Leave</TabsTrigger>
-          <TabsTrigger value="type-leave">Type Leave</TabsTrigger>
+          <TabsTrigger value="update-user">Approval Update User</TabsTrigger>
         </TabsList>
       </div>
 
@@ -29,8 +29,8 @@ const page = () => {
         </Suspense>
       </TabsContent>
 
-      <TabsContent value="type-leave">
-        <Suspense fallback={<div>Loading Type Leave...</div>}>{<MasterTypeLeaves />}</Suspense>
+      <TabsContent value="update-user">
+        <Suspense fallback={<div>Loading...</div>}>{<ApprovalUpdateUser />}</Suspense>
       </TabsContent>
     </Tabs>
   );
