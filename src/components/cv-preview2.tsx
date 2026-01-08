@@ -35,7 +35,7 @@ export const CVContent = ({ userData }: { userData: any }) => (
       {/* Header Section */}
       <div className="bg-[#7B091F]  p-8">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-2">{userData?.employees?.full_name}</h1>
+          <h1 className="text-4xl font-bold mb-2 text-white">{userData?.employees?.full_name}</h1>
           <p className="text-xl text-slate-200 mb-4">
             {userData?.position?.name_position} - {userData?.division?.name_division}
           </p>
