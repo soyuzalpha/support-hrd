@@ -27,8 +27,16 @@ import { AppGridContainer } from "@/components/app-grid-container";
 import { useScreenHeight } from "@/hooks/use-screen-height";
 import { useSelectFetcher } from "@/hooks/use-select-fetcher";
 import { SelectOptions } from "@/components/select-options";
+import { signOut } from "next-auth/react";
+import { logoutService } from "@/service/service";
 
-const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
+const FormUser = ({
+  dialogHandler,
+  isFirstLogin = false,
+}: {
+  dialogHandler: UseDialogModalReturn;
+  isFirstLogin?: boolean;
+}) => {
   const fForm = useFormContext<any>();
   const { invalidate } = useAppRefreshQuery();
 
@@ -56,6 +64,18 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
     mutationFn: updateUser,
   });
 
+  const mutationSignout = useMutation({ mutationFn: logoutService });
+
+  const handleSignOut = () => {
+    mutationSignout.mutate(undefined, {
+      onSuccess: () => {
+        signOut({ callbackUrl: "/login" });
+        toastAlert.success("Berhasil Logout");
+      },
+      onError: () => toastAlert.error("Logout gagal, silahkan coba lagi"),
+    });
+  };
+
   const mutations = isEmpty(fForm.getValues("id")) ? mutation : updateMutation;
 
   const onSubmit = (data) => {
@@ -74,6 +94,9 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
 
       mutations.mutate(payload, {
         onSuccess: (res) => {
+          if (isFirstLogin) {
+            handleSignOut();
+          }
           const message = generateSuccessMessage(res);
           toastAlert.success(message);
           dialogHandler.handleClose();
@@ -108,6 +131,7 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                     placeholder="Norman Ardian"
                     {...fForm.register("name")}
                     aria-invalid={fForm.formState.errors.name ? "true" : "false"}
+                    disabled={isFirstLogin}
                   />
                 </FormControl>
                 <FormDescription>Your full name</FormDescription>
@@ -122,6 +146,7 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                     placeholder="norman"
                     {...fForm.register("username")}
                     aria-invalid={fForm.formState.errors.username ? "true" : "false"}
+                    disabled={isFirstLogin}
                   />
                 </FormControl>
                 <FormDescription>Your username</FormDescription>
@@ -136,6 +161,7 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                     placeholder="norman@example.com"
                     {...fForm.register("email")}
                     aria-invalid={fForm.formState.errors.email ? "true" : "false"}
+                    disabled={isFirstLogin}
                   />
                 </FormControl>
                 <FormDescription>Your email address</FormDescription>
@@ -173,6 +199,7 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                         onChange={(value) => {
                           field.onChange(value);
                         }}
+                        isDisabled={isFirstLogin}
                       />
                     )}
                   />
@@ -197,6 +224,7 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                         onChange={(value) => {
                           field.onChange(value);
                         }}
+                        isDisabled={isFirstLogin}
                       />
                     )}
                   />
@@ -221,6 +249,7 @@ const FormUser = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) =>
                         onChange={(value) => {
                           field.onChange(value);
                         }}
+                        isDisabled={isFirstLogin}
                       />
                     )}
                   />

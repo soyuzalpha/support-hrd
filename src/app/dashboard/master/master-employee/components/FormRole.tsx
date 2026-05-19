@@ -9,15 +9,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { format } from "date-fns";
 import { FieldError, FieldGroup } from "@/components/ui/field";
 import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UseDialogModalReturn } from "@/hooks/use-dialog-modal";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useFormContext } from "react-hook-form";
-import { createEmployee, updateEmployee } from "../api/master-position-service";
-import { createInputOptions, generateErrorMessage, generateSuccessMessage, isEmpty } from "@/utils";
+import { createEmployee, getEmployeeById, updateEmployee } from "../api/master-position-service";
+import { createInputOptions, generateErrorMessage, generateSuccessMessage, isEmpty, toCapitalized } from "@/utils";
 import { toastAlert } from "@/lib/toast";
 import { useAppRefreshQuery } from "@/hooks/use-refetch-data";
 import { DynamicFormFields } from "@/components/dynamic-form-fields";
@@ -27,15 +26,13 @@ import { useScreenHeight } from "@/hooks/use-screen-height";
 import { SelectOptions } from "@/components/select-options";
 import { useSelectFetcher } from "@/hooks/use-select-fetcher";
 import { fileToBase64, normalizeFile } from "@/utils/file";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ChevronDownIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 import { formatDate, toISOStringFormat } from "@/utils/dates";
 import Show from "@/components/show";
 import { AttachmentViewer } from "@/components/AttachmentViewer";
 import { getCityByProvince } from "../../master-zones/api/master-zones-service";
 import { apiPost } from "@/service/service";
 import { DateTimePicker } from "@/components/ui/datepicker";
+import { useUser } from "@/context/app-context";
 
 const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
   const fForm = useFormContext();
@@ -48,6 +45,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
     valueKey: "id",
     extraParams: { is_employee: 0 },
   });
+
   const { loadOptions: loadOptionsProvince } = useSelectFetcher({
     endpoint: "/getProvinces",
     labelKey: "province_name",
@@ -81,6 +79,81 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
     mutationFn: updateEmployee,
   });
 
+  const { user } = useUser();
+
+  const mutationDetailEmploye = useMutation({
+    mutationFn: getEmployeeById,
+  });
+
+  const handleRefetchEmployee = () => {
+    if (!user.userDatas?.id) return;
+    if (!user.employee_datas?.id_employee) return;
+
+    mutationDetailEmploye.mutate(user.employee_datas?.id_employee, {
+      onSuccess: (res) => {
+        Object.entries(res.data).forEach(([key, value]) => {
+          fForm.setValue(key, value);
+        });
+
+        fForm.setValue("id_user", {
+          ...user?.userDatas,
+          label: user?.userDatas?.name,
+          value: user?.userDatas?.id,
+        });
+
+        fForm.setValue("gender", createInputOptions(toCapitalized(res?.data?.gender), res?.data.gender));
+        fForm.setValue("religion", createInputOptions(toCapitalized(res?.data?.religion), res?.data.religion));
+        fForm.setValue(
+          "marital_status",
+          createInputOptions(toCapitalized(res?.data?.marital_status), res?.data.marital_status),
+        );
+        fForm.setValue("blood_type", createInputOptions(res?.data?.blood_type, res?.data.blood_type));
+        fForm.setValue(
+          "id_province",
+          createInputOptions(res?.data.province?.province_name, res?.data?.province?.id_province),
+        );
+        fForm.setValue("id_city", createInputOptions(res?.data?.city?.city_name, res?.data?.city?.id_city));
+
+        fForm.setValue(
+          "family",
+          res?.data.family?.map((item) => ({
+            ...item,
+            relationship: createInputOptions(toCapitalized(item.relationship), item.relationship),
+            last_education: createInputOptions(item?.last_education, item?.last_education),
+          })),
+        );
+
+        fForm.setValue(
+          "work_histories",
+          res?.data.workhistory?.map((item) => ({
+            ...item,
+            // relationship: createInputOptions(toCapitalized(item.relationship), item.relationship),
+          })),
+        );
+
+        fForm.setValue(
+          "education_histories",
+          res?.data.educationhistory?.map((item) => ({
+            ...item,
+            id_school: createInputOptions(toCapitalized(item?.school?.school_name), item.school?.id_school),
+            id_degree: createInputOptions(toCapitalized(item?.degree?.name_degree), item.degree?.id_degree),
+            id_studyprogram: createInputOptions(
+              toCapitalized(item?.studyprogram?.program_name),
+              item.studyprogram?.id_studyprogram,
+            ),
+          })),
+        );
+
+        fForm.setValue("list_documents", res?.data.documents);
+        fForm.setValue("documents", []);
+      },
+      onError: (err) => {
+        const message = generateErrorMessage(err);
+        toastAlert.error(message);
+      },
+    });
+  };
+
   const mutations = isEmpty(fForm?.getValues("id_employee")) ? mutation : updateMutation;
 
   const onSubmit = async (data) => {
@@ -92,7 +165,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
             file: file ? await fileToBase64(file) : null,
             document_type: item.document_type?.value ?? null,
           };
-        }) || []
+        }) || [],
       );
 
       const payload = {
@@ -121,9 +194,11 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
         })),
 
         family: (data?.family || []).map((f) => ({
+          ...f,
           name_family: f.name_family,
           relationship: f.relationship?.value ?? null,
           phone_number: f.phone_number,
+          last_education: f.last_education?.value ?? null,
         })),
 
         documents: attachments,
@@ -154,6 +229,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
           dialogHandler.handleClose();
           invalidate([["employees"]]);
           invalidate([["users"]]);
+          handleRefetchEmployee();
         },
         onError: (err) => {
           const message = generateErrorMessage(err);
@@ -164,11 +240,10 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
       toastAlert.error("Something went wrong!");
     }
   };
-  console.log({ values: fForm.getValues() });
 
   return (
     <Dialog open={dialogHandler.open} onOpenChange={dialogHandler.handleClose}>
-      <DialogContent glass={true} size="ultra">
+      <DialogContent glass={true} size="xxxl">
         <DialogHeader>
           <DialogTitle>Form Employee</DialogTitle>
           <DialogDescription>Make change to input and save</DialogDescription>
@@ -455,7 +530,8 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                 control={fForm.control}
                 name="contacts"
                 repeatable
-                direction={useIsMobile() ? "vertical" : "horizontal"}
+                // direction={useIsMobile() ? "vertical" : "horizontal"}
+                directionContent="vertical"
                 title="Contacts"
                 titleAdd="Add contact"
                 fields={[
@@ -474,7 +550,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                 name="family"
                 repeatable
                 direction={useIsMobile() ? "vertical" : "horizontal"}
-                directionContent="horizontal"
+                directionContent="vertical"
                 title="Family"
                 titleAdd="Add"
                 fields={[
@@ -493,6 +569,21 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
                     label: "Relationship",
                   },
                   { name: "phone_number", placeholder: "Phone Number", inputType: "text", label: "Phone Number" },
+                  { name: "birth_date", placeholder: "Birth Date", inputType: "date", label: "Birth Data" },
+                  {
+                    name: "last_education",
+                    placeholder: "Last Education",
+                    inputType: "select",
+                    label: "Last Education",
+                    dataOptions: [
+                      createInputOptions("SD", "SD"),
+                      createInputOptions("SMA/SMK", "SMA/SMK"),
+                      createInputOptions("S1", "S1"),
+                      createInputOptions("S2", "S2"),
+                      createInputOptions("S3", "S3"),
+                    ],
+                  },
+                  { name: "work", placeholder: "Work", inputType: "text", label: "Work" },
                 ]}
               />
 

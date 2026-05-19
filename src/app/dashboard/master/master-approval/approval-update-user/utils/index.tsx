@@ -42,7 +42,7 @@ export const columnsMasterApprovalLeave = ({ onClickDetail, onClickEdit, onClick
             <span className="rounded-md bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-700">Pending</span>
           );
         },
-      }
+      },
     ),
 
     columnHelper.accessor("full_name", {
@@ -62,6 +62,9 @@ export const columnsMasterApprovalLeave = ({ onClickDetail, onClickEdit, onClick
     columnHelper.display({
       id: "actions",
       header: "Actions",
+      meta: {
+        freeze: "right",
+      },
       cell: ({ row }) => {
         const item = row.original;
         return (

@@ -43,14 +43,14 @@ export function AppContainer({
 
         // misc className override
         "p-2",
-        className
+        className,
       )}
       style={{
         height: fullHeight ? `calc(100vh - ${dockOffset}px - ${navbarHeight}px)` : "auto",
       }}
     >
       {/* Title */}
-      {title && <h1 className="text-lg lg:text-2xl font-bold mb-2">{title}</h1>}
+      {title && <h1 className="text-lg lg:text-2xl font-semibold mb-2">{title}</h1>}
 
       {children}
     </div>

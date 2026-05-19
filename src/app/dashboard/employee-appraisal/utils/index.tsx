@@ -35,6 +35,9 @@ export const columnsLeaves = ({ onClickDetail, onClickEdit, onClickData }) => {
     ...defaultColumnsInformation,
     columnHelper.display({
       id: "actions",
+      meta: {
+        freeze: "right",
+      },
       cell: ({ row }) => {
         const customer = row.original;
 

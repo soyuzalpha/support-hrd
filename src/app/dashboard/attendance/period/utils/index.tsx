@@ -40,6 +40,9 @@ export const columnsPeriodAttendance = ({ onClickDetail, onClickEdit, onClickDat
     ...defaultColumnsInformation,
     columnHelper.display({
       id: "actions",
+      meta: {
+        freeze: "right",
+      },
       cell: ({ row }) => {
         const customer = row.original;
 

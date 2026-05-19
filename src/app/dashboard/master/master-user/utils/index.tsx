@@ -87,6 +87,9 @@ export const columnsMasterUser = ({
     ...defaultColumnsInformation,
     columnHelper.display({
       id: "actions",
+      meta: {
+        freeze: "right",
+      },
       cell: ({ row }) => {
         const data = row.original;
 

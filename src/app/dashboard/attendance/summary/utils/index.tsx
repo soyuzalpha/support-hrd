@@ -56,6 +56,9 @@ export const columnsSummaryAttendance = ({ onClickDetail, onClickEdit, onClickDa
     ...defaultColumnsInformation,
     columnHelper.display({
       id: "actions",
+      meta: {
+        freeze: "right",
+      },
       cell: ({ row }) => {
         const customer = row.original;
 

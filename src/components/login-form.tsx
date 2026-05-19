@@ -2,8 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
@@ -13,7 +13,6 @@ import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { isEmpty } from "@/utils";
 import { useUser } from "@/context/app-context";
-import { GlassContainer } from "./GlassContainer";
 import Image from "next/image";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
@@ -70,16 +69,14 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
   return (
     <div className={cn("flex flex-col gap-6 w-full max-w-sm", className)} {...props}>
-      <GlassContainer>
-        <div className="flex justify-center mb-6">
-          <Image src="/TRANSTAMA.png" alt="logo" width={200} height={200} className="w-52 h-auto object-contain" />
-        </div>
+      <Card>
+        <CardHeader>
+          <div className="flex justify-center mb-6">
+            <Image src="/TRANSTAMA.png" alt="logo" width={200} height={200} className="w-52 h-auto object-contain" />
+          </div>
+        </CardHeader>
 
-        <div className="text-center mb-8">
-          <CardTitle className="text-xl ">Welcome back</CardTitle>
-          <CardDescription className="">Login your account to continue</CardDescription>
-        </div>
-        <div>
+        <CardContent>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -88,10 +85,6 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
           >
             <FieldGroup>
               <Field>
-                {/* <div className="grid gap-3">
-                  <Label htmlFor="login">Username</Label>
-                  <Input id="login" type="text" placeholder="admin" required {...fForm.register("login")} />
-                </div> */}
                 <FieldLabel htmlFor="login" className="">
                   Username
                 </FieldLabel>
@@ -102,9 +95,6 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                   <FieldLabel htmlFor="password" className="">
                     Password
                   </FieldLabel>
-                  {/* <a href="#" className="ml-auto text-xs underline-offset-4 hover:underline">
-                    Forgot your password?
-                  </a> */}
                 </div>
                 <Input
                   id="password"
@@ -116,17 +106,19 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                 />
               </Field>
               <Field>
-                <Button className="bg-white hover:bg-white text-black rounded-full" type="submit" size={"lg"}>
+                <Button className="rounded-full" type="submit" size={"sm"}>
                   Login
                 </Button>
-                {/* <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
-                </FieldDescription> */}
               </Field>
             </FieldGroup>
           </form>
-        </div>
-      </GlassContainer>
+        </CardContent>
+      </Card>
+
+      {/* <div className="text-center mb-8">
+        <CardTitle className="text-xl ">Welcome back</CardTitle>
+        <CardDescription className="">Login your account to continue</CardDescription>
+      </div> */}
     </div>
   );
 }

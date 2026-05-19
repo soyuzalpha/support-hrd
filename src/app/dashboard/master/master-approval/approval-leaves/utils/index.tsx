@@ -71,6 +71,9 @@ export const columnsMasterApprovalLeave = ({ onClickDetail, onClickEdit, onClick
     columnHelper.display({
       id: "actions",
       header: "Actions",
+      meta: {
+        freeze: "right",
+      },
       cell: ({ row }) => {
         const item = row.original;
         return (

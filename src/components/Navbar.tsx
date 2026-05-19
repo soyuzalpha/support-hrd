@@ -19,8 +19,8 @@ import { useMutation } from "@tanstack/react-query";
 import { logoutService, setLogoutCallback } from "@/service/service";
 import { signOut } from "next-auth/react";
 import { toastAlert } from "@/lib/toast";
-import { FontSwitcher } from "./font-switcher";
-import { ColorSchemaToggle } from "./color-schema-toggle";
+import SettingProvider from "./setting-provider";
+import { Button } from "./ui/button";
 
 interface NavbarProps extends React.HTMLAttributes<HTMLDivElement> {
   transparent?: boolean;
@@ -52,7 +52,6 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
   const handleSignOut = () => {
     mutation.mutate(undefined, {
       onSuccess: () => {
-        updateUser({});
         signOut({ callbackUrl: "/login" });
         toastAlert.success("Berhasil Logout");
       },
@@ -64,8 +63,8 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
     <header className={cn("fixed top-0 z-50 w-full transition-all px-1", className)} {...props}>
       <div
         className={cn(
-          "container mx-auto mt-2 flex items-center justify-between px-6 py-2 rounded-full border",
-          "backdrop-blur-sm bg-background/20 shadow"
+          "max-w-5xl mx-auto mt-2 flex items-center justify-between px-6 py-2 rounded-full border",
+          "backdrop-blur-sm bg-background/20 shadow",
         )}
       >
         <Link href={"/dashboard"} className="flex items-center gap-2">
@@ -74,7 +73,8 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
         </Link>
 
         <div className="flex items-center gap-3">
-          <FontSwitcher />
+          <SettingProvider />
+          {/* <FontSwitcher /> */}
           {/* <ColorSchemaToggle /> */}
 
           <div className="flex items-center gap-3">
@@ -102,13 +102,18 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Help & Support</DropdownMenuItem> */}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="text-destructive"
-                  onClick={() => {
-                    handleSignOut();
-                  }}
-                >
-                  Logout
+                <DropdownMenuItem className="text-destructive">
+                  <Button
+                    variant={"ghost"}
+                    className="w-full"
+                    size={"xs"}
+                    type="button"
+                    onClick={() => {
+                      handleSignOut();
+                    }}
+                  >
+                    Logout
+                  </Button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

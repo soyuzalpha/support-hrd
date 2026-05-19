@@ -34,10 +34,19 @@ import Pagination from "./pagination";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { type FilterConfig } from "./data-table-filters";
 import { DynamicFilterForm, FilterField } from "./dynamicFilterForm";
+import { cn } from "@/lib/utils";
 
 export interface DataTableColumn {
   [key: string]: any;
   filterConfig?: FilterConfig;
+}
+
+declare module "@tanstack/react-table" {
+  interface ColumnMeta<TData, TValue> {
+    freeze?: "left" | "right";
+    freezeIndex?: number;
+    width?: number;
+  }
 }
 
 export function DataTable({
@@ -246,7 +255,7 @@ export function DataTable({
           <Show.When isTrue={!isEmpty(dialogHandler)}>
             <Button
               type="button"
-              variant="glassSuccess"
+              variant="outline"
               size="sm"
               onClick={() => {
                 dialogHandler.handleOpen();
@@ -305,6 +314,96 @@ export function DataTable({
       <Show.When isTrue={tabValue === "table"}>
         <div className="overflow-hidden rounded-xl duration-300 backdrop-blur-sm border bg-background/20 shadow-md">
           <Table>
+            <TableHeader className="bg-muted sticky top-0 z-10">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  <TableHead className="sticky left-0 z-20 bg-muted w-16 text-center">No</TableHead>
+                  {headerGroup.headers.map((header) => {
+                    const freeze = header.column.columnDef.meta?.freeze;
+                    return (
+                      <TableHead
+                        key={`${headerGroup.id}_${header?.id}`}
+                        colSpan={header?.colSpan}
+                        className={cn(
+                          freeze === "left" && "sticky left-0 z-20 bg-muted",
+                          freeze === "right" && "sticky right-0 z-20 bg-muted shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.1)]",
+                        )}
+                        style={freeze === "left" ? { left: 0 } : freeze === "right" ? { right: 0 } : undefined}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header?.column?.columnDef?.header, header?.getContext())}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+
+            <TableBody className="**:data-[slot=table-cell]:first:w-8">
+              {isLoading ? (
+                Array.from({ length: 10 }).map((_, rowIdx) => (
+                  <TableRow key={`skeleton-${rowIdx}`}>
+                    {table.getVisibleFlatColumns().map((column, colIdx) => {
+                      const freeze = column.columnDef.meta?.freeze;
+                      return (
+                        <TableCell
+                          key={column.id || colIdx}
+                          className={cn(
+                            "px-4 py-2",
+                            freeze === "left" && "sticky left-0 z-10 bg-background",
+                            freeze === "right" &&
+                              "sticky right-0 z-10 bg-background shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.1)]",
+                          )}
+                          style={freeze === "left" ? { left: 0 } : freeze === "right" ? { right: 0 } : undefined}
+                        >
+                          <Skeleton className="h-4 w-full rounded" />
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))
+              ) : table.getRowModel().rows?.length ? (
+                <>
+                  {table.getRowModel().rows.map((row, index) => (
+                    <TableRow
+                      key={row.id}
+                      onClick={() => handleClickRow && handleClickRow(row)}
+                      className="cursor-pointer"
+                    >
+                      <TableCell className="sticky left-0 z-10 bg-background w-16 text-center px-4 py-2 font-medium text-muted-foreground">
+                        {pagination.pageIndex * pagination.pageSize + index + 1}
+                      </TableCell>
+                      {row.getVisibleCells().map((cell) => {
+                        const freeze = cell.column.columnDef.meta?.freeze;
+                        return (
+                          <TableCell
+                            key={cell.id}
+                            className={cn(
+                              "px-4 py-2 text-left",
+                              freeze === "left" && "sticky left-0 z-10 bg-background",
+                              freeze === "right" &&
+                                "sticky right-0 z-10 bg-background shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.1)]",
+                            )}
+                            style={freeze === "left" ? { left: 0 } : freeze === "right" ? { right: 0 } : undefined}
+                          >
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </>
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          {/* <Table>
             <TableHeader className="sticky top-0 z-10 backdrop-blur-xl border-b text-xs">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -355,7 +454,7 @@ export function DataTable({
                 </TableRow>
               )}
             </TableBody>
-          </Table>
+          </Table> */}
           <Pagination table={table} count={count} />
         </div>
       </Show.When>
