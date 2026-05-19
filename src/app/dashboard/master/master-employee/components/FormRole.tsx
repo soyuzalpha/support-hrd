@@ -204,6 +204,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
         documents: attachments,
 
         work_histories: (data?.work_histories || []).map((w) => ({
+          ...w,
           company_name: w.company_name,
           position: w.position,
           division: w.division,
@@ -213,6 +214,7 @@ const FormEmployee = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }
         })),
 
         education_histories: (data?.education_histories || []).map((e) => ({
+          ...e,
           id_school: e.id_school?.value || null,
           id_degree: e.id_degree?.value || null,
           id_studyprogram: e.id_studyprogram?.value || null,
