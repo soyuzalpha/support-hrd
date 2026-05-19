@@ -63,7 +63,7 @@ export default function EmployeeHeader({ employee }: EmployeeHeaderProps) {
         </CardContent>
       </Card>
 
-      <FormEmployee dialogHandler={dDialogEmployee} />
+      <FormEmployee dialogHandler={dDialogEmployee} handleRefetchEmployee={null} isDisabledInputUser={false} />
     </>
   );
 }

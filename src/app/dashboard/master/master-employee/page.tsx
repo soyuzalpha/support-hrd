@@ -36,6 +36,7 @@ const MasterEmployee = () => {
     isLoading,
     currentState,
     setCurrentState,
+    refetch,
   } = useDatatable({
     queryKey: "employees",
     queryFn: getEmployees,
@@ -50,7 +51,7 @@ const MasterEmployee = () => {
     (newState) => {
       setCurrentState(newState);
     },
-    [setCurrentState]
+    [setCurrentState],
   );
 
   const handleClickDetail = (row: any) => {
@@ -89,7 +90,7 @@ const MasterEmployee = () => {
       row.family?.map((item) => ({
         ...item,
         relationship: createInputOptions(toCapitalized(item.relationship), item.relationship),
-      }))
+      })),
     );
 
     fForm.setValue(
@@ -97,7 +98,7 @@ const MasterEmployee = () => {
       row.workhistory?.map((item) => ({
         ...item,
         // relationship: createInputOptions(toCapitalized(item.relationship), item.relationship),
-      }))
+      })),
     );
 
     fForm.setValue(
@@ -108,9 +109,9 @@ const MasterEmployee = () => {
         id_degree: createInputOptions(toCapitalized(item?.degree?.name_degree), item.degree?.id_degree),
         id_studyprogram: createInputOptions(
           toCapitalized(item?.studyprogram?.program_name),
-          item.studyprogram?.id_studyprogram
+          item.studyprogram?.id_studyprogram,
         ),
-      }))
+      })),
     );
 
     fForm.setValue("list_documents", row.documents);
@@ -143,7 +144,7 @@ const MasterEmployee = () => {
         onError: (err) => {
           toastAlert.error(err.message || "Gagal ubah status");
         },
-      }
+      },
     );
   };
 
@@ -202,7 +203,7 @@ const MasterEmployee = () => {
         }
       />
 
-      <FormRole dialogHandler={dDialog} />
+      <FormRole dialogHandler={dDialog} handleRefetchEmployee={refetch} isDisabledInputUser={false} />
       <DetailRole dialogHandler={dDetail} />
 
       <ConfirmationDialog

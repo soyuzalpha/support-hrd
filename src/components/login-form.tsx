@@ -12,12 +12,10 @@ import { useMutation } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { isEmpty } from "@/utils";
-import { useUser } from "@/context/app-context";
 import Image from "next/image";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   const fForm = useForm();
-  const { updateUser } = useUser();
   const router = useRouter();
 
   const mutation = useMutation({
@@ -46,17 +44,18 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       if (res && res?.code === 401) {
         toastAlert.error(res?.meta_data?.message || "Email atau password salah!");
       } else {
-        const decoded = jwtDecode<any>(res?.data?.token);
+        // const decoded = jwtDecode<any>(res?.data?.token);
 
-        updateUser({
-          email: decoded.email,
-          id_division: decoded.id_division,
-          id_position: decoded.id_position,
-          id_role: decoded.id_role,
-          id_user: decoded.id_user,
-          name: decoded.name,
-          token: res?.data?.token,
-        });
+        // updateUser({
+        //   ...decoded,
+        //   email: decoded.email,
+        //   id_division: decoded.id_division,
+        //   id_position: decoded.id_position,
+        //   id_role: decoded.id_role,
+        //   id_user: decoded.id_user,
+        //   name: decoded.name,
+        //   token: res?.data?.token,
+        // });
 
         toastAlert.success("Login Berhasil 🎉");
         router.push("/dashboard");

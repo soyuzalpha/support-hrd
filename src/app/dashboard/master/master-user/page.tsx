@@ -96,7 +96,7 @@ const MasterUser = () => {
     (newState) => {
       setCurrentState(newState);
     },
-    [setCurrentState]
+    [setCurrentState],
   );
 
   const handleClickDetail = (row: any) => {
@@ -116,15 +116,15 @@ const MasterUser = () => {
 
     fForm.setValue(
       "id_company",
-      createInputOptions(toCapitalized(row?.company?.name_company), row?.company?.id_company)
+      createInputOptions(toCapitalized(row?.company?.name_company), row?.company?.id_company),
     );
     fForm.setValue(
       "id_position",
-      createInputOptions(toCapitalized(row?.position?.name_position), row?.position?.id_position)
+      createInputOptions(toCapitalized(row?.position?.name_position), row?.position?.id_position),
     );
     fForm.setValue(
       "id_division",
-      createInputOptions(toCapitalized(row?.division?.name_division), row?.division?.id_division)
+      createInputOptions(toCapitalized(row?.division?.name_division), row?.division?.id_division),
     );
 
     dDialog.handleOpen();
@@ -148,7 +148,7 @@ const MasterUser = () => {
         onError: (err) => {
           toastAlert.error(err.message || "Gagal ubah status");
         },
-      }
+      },
     );
   };
 
@@ -251,7 +251,7 @@ const MasterUser = () => {
           emp?.family?.map((item) => ({
             ...item,
             relationship: createInputOptions(toCapitalized(item.relationship), item.relationship),
-          })) || []
+          })) || [],
         );
 
         // Work History (simple list)
@@ -259,7 +259,7 @@ const MasterUser = () => {
           "work_histories",
           emp?.workhistory?.map((item) => ({
             ...item,
-          })) || []
+          })) || [],
         );
 
         // Education History (needs select formatting)
@@ -270,7 +270,7 @@ const MasterUser = () => {
             id_school: createInputOptions(item.school?.school_name, item.school?.id_school),
             id_degree: createInputOptions(item.degree?.name_degree, item.degree?.id_degree),
             id_studyprogram: createInputOptions(item.studyprogram?.program_name, item.studyprogram?.id_studyprogram),
-          })) || []
+          })) || [],
         );
 
         // Documents
@@ -497,7 +497,7 @@ const MasterUser = () => {
       <FormUser dialogHandler={dDialog} />
       <DetailRole dialogHandler={dDetail} />
       <DialogPreviewCv dialogHandler={dPreview} />
-      <FormEmployee dialogHandler={dEmployee} />
+      <FormEmployee dialogHandler={dEmployee} handleRefetchEmployee={refetch} isDisabledInputUser={false} />
       <FormEmployements dialogHandler={dEmployements} />
 
       <ConfirmationDialog

@@ -22,13 +22,13 @@ import { FieldError, FieldGroup } from "@/components/ui/field";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { SelectOptions } from "@/components/select-options";
 import { Textarea } from "@/components/ui/textarea";
-import { useUser } from "@/context/app-context";
 import { Input } from "@/components/ui/input";
+import { useUser } from "@/hooks/useUser";
 
 const FormEmployeeWarning = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
-  const { user } = useUser();
   const fForm = useFormContext();
   const { invalidate } = useAppRefreshQuery();
+  const { user } = useUser();
 
   const { loadOptions: loadOptionsUser } = useSelectFetcher({
     endpoint: "/getUsers",
@@ -42,7 +42,7 @@ const FormEmployeeWarning = ({ dialogHandler }: { dialogHandler: UseDialogModalR
     labelKey: "name_typeleave",
     valueKey: "id_typeleave",
     //@ts-ignore
-    extraParams: { gender_specific: user?.userDatas?.employees?.gender ?? null },
+    extraParams: { gender_specific: user?.employees?.gender ?? null },
   });
 
   const mutationCreate = useMutation({

@@ -20,18 +20,18 @@ export const getEmployees = async (params) => {
   return res;
 };
 
-export const getEmployeeById = async (id: any) => {
+export const getEmployeeById = async (id_employee: any) => {
   const response = await apiGet(`/getEmployeeById`, {
     params: {
-      id_employee: id,
+      id_employee,
     },
   });
   return response;
 };
-export const getEmployeeByUser = async (id: any) => {
+export const getEmployeeByUser = async (id_user: any) => {
   const response = await apiGet(`/getEmployeeByUser`, {
     params: {
-      id_user: id,
+      id_user,
     },
   });
   return response;

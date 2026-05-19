@@ -34,23 +34,22 @@ import { toISOStringFormat } from "@/utils/dates";
 import { fileToBase64, normalizeFile } from "@/utils/file";
 import { AttachmentViewer } from "@/components/AttachmentViewer";
 import Show from "@/components/show";
-import { useUser } from "@/context/app-context";
+import { useUser } from "@/hooks/useUser";
 
 const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
-  const { user } = useUser();
   const fForm = useFormContext();
   const { invalidate } = useAppRefreshQuery();
   const dDateStart = useDialogModal();
   const dDateEnd = useDialogModal();
   const [open, setOpen] = React.useState(false);
-  // const [date, setDate] = React.useState<Date | undefined>(undefined);
+  const { user } = useUser();
 
   const { loadOptions: loadOptionsTypeLeaves } = useSelectFetcher({
     endpoint: "/getTypeleaves",
     labelKey: "name_typeleave",
     valueKey: "id_typeleave",
     //@ts-ignore
-    extraParams: { gender_specific: user?.userDatas?.employees?.gender ?? null },
+    extraParams: { gender_specific: user?.employees?.gender ?? null },
   });
 
   const mutationCreate = useMutation({
@@ -70,7 +69,7 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
           return {
             image: file ? await fileToBase64(file) : null,
           };
-        }) || []
+        }) || [],
       );
 
       const payload = {

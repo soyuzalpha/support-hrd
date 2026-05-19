@@ -4,26 +4,26 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { menuItems, roleAccess } from "@/utils/menu";
 import { useRouter, usePathname } from "next/navigation";
-import { useUser } from "@/context/app-context";
 import { isEmpty } from "@/utils";
+import { useMutation } from "@tanstack/react-query";
+import { getUserById } from "@/app/dashboard/master/master-user/api/master-position-service";
+import { useUser } from "@/hooks/useUser";
 
 export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void }) {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const { user } = useUser();
 
   const router = useRouter();
   const path = usePathname();
-  const { updateUser, user } = useUser();
 
   useEffect(() => {
     setIsReady(true);
   }, []);
 
-  const role = user?.userDatas?.position?.name_position ?? "staff";
+  const role = user?.position?.name_position ?? "staff";
   const allowedMenu =
     roleAccess[role] === "all" ? menuItems : menuItems.filter((menu) => roleAccess[role]?.includes(menu.id));
-
-  // console.log({ role, user: user?.userDatas });
 
   // ⛔ FIX: Prevent SSR mismatch
   if (!isReady) return null;
@@ -33,7 +33,7 @@ export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void
       <div
         className={cn(
           "flex items-center gap-4 px-5 py-4 rounded-full pointer-events-auto",
-          "backdrop-blur-sm bg-background/20 shadow"
+          "backdrop-blur-sm bg-background/20 shadow",
         )}
       >
         {/* Menu */}
@@ -63,8 +63,8 @@ export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void
                       isActive
                         ? "opacity-100 scale-110"
                         : hoveredItem === item.id
-                        ? "opacity-90 scale-105"
-                        : "opacity-70"
+                          ? "opacity-90 scale-105"
+                          : "opacity-70",
                     )}
                   />
 

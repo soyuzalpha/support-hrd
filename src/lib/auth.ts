@@ -40,7 +40,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               id: data.data.user?.id || decoded.id_user,
               email: decoded?.email,
               name: decoded?.name,
+              username: decoded?.username,
               accessToken: data.data.token,
+              id_position: decoded?.id_position,
+              id_division: decoded?.id_division,
+              id_company: decoded?.id_company,
             };
           }
 
@@ -55,12 +59,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
         token.accessToken = user.accessToken;
+        token.id_position = user.id_position;
+        token.id_division = user.id_division;
+        token.id_company = user.id_company;
       }
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken as string;
+      if (token) {
+        session.user.id = token.id as any;
+        session.accessToken = token.accessToken as string;
+        session.user.id_position = token.id_position as number;
+        session.user.id_division = token.id_division as number;
+        session.user.id_company = token.id_company as number;
+      }
+
       return session;
     },
   },

@@ -16,7 +16,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { updateUser } from "@/app/dashboard/master/master-user/api/master-position-service";
 import { useMutation } from "@tanstack/react-query";
-import { logoutService, setLogoutCallback } from "@/service/service";
+import { logoutService } from "@/service/service";
 import { signOut } from "next-auth/react";
 import { toastAlert } from "@/lib/toast";
 import SettingProvider from "./setting-provider";
@@ -40,12 +40,6 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
   const userName = session?.data?.user?.name
     ? session.data.user.name.charAt(0).toUpperCase() + session.data.user.name.slice(1)
     : "User";
-
-  React.useEffect(() => {
-    setLogoutCallback(() => {
-      updateUser({});
-    });
-  }, [updateUser]);
 
   const mutation = useMutation({ mutationFn: logoutService });
 

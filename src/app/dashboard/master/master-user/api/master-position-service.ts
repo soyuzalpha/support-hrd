@@ -22,7 +22,7 @@ export const getUsers = async (params) => {
 export const getUserById = async (id: any) => {
   const response = await apiGet(`/getUserById`, {
     params: {
-      id: id,
+      id,
     },
   });
   return response;

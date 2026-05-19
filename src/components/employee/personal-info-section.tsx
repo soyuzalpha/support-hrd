@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useUser } from "@/context/app-context";
 import { dateDisplay } from "@/utils/dates";
 
 import { format } from "date-fns";

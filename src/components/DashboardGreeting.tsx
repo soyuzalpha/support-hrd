@@ -49,10 +49,10 @@ function getGreetingMessage(name: string) {
     timeOfDay === "morning"
       ? "Good morning"
       : timeOfDay === "afternoon"
-      ? "Good afternoon"
-      : timeOfDay === "evening"
-      ? "Good evening"
-      : "Good night";
+        ? "Good afternoon"
+        : timeOfDay === "evening"
+          ? "Good evening"
+          : "Good night";
 
   return { greeting: `${baseGreeting}, ${name}`, message: randomMessage };
 }
@@ -115,7 +115,7 @@ export default function DashboardGreeting() {
 
           <TextType
             text={greet.message}
-            typingSpeed={75}
+            typingSpeed={100}
             pauseDuration={1000}
             showCursor={true}
             cursorCharacter="_"

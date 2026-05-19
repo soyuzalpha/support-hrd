@@ -22,11 +22,9 @@ import { FieldError, FieldGroup } from "@/components/ui/field";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { SelectOptions } from "@/components/select-options";
 import { Textarea } from "@/components/ui/textarea";
-import { useUser } from "@/context/app-context";
 import { Input } from "@/components/ui/input";
 
 const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) => {
-  const { user } = useUser();
   const fForm = useFormContext();
   const { invalidate } = useAppRefreshQuery();
 
