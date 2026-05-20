@@ -95,6 +95,7 @@ const Detail = () => {
   const handleAddEmployeeData = () => {
     if (user) {
       console.log({ user });
+      setIsDisabledInputUser(true);
       Object.entries(user).forEach(([key, value]) => {
         fForm.setValue(key, value);
       });

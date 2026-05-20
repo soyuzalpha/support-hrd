@@ -28,7 +28,7 @@ function DialogOverlay({ className, ...props }: React.ComponentProps<typeof Dial
       data-slot="dialog-overlay"
       className={cn(
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
-        className
+        className,
       )}
       {...props}
     />
@@ -55,6 +55,7 @@ function DialogContent({
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
       <DialogPrimitive.Content
+        onInteractOutside={(event) => event.preventDefault()}
         data-slot="dialog-content"
         className={cn(
           // base animation & layout
@@ -73,7 +74,7 @@ function DialogContent({
           size === "mega" && "sm:max-w-7xl",
           size === "full" && "sm:max-w-full",
 
-          className
+          className,
         )}
         {...props}
       >

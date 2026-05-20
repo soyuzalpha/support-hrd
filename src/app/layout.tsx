@@ -21,7 +21,7 @@ export default function RootLayout({
       <Head />
 
       <body className={` antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
           <SessionProvider>
             <ProvidersReactQuery>
               <SettingsProvider>{children}</SettingsProvider>
