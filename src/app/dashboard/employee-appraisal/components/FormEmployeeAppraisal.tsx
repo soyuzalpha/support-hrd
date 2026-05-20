@@ -54,8 +54,6 @@ const FormLeaves = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
         appraisal_year: data?.appraisal_year,
       };
 
-      console.log({ payload, data });
-
       mutation.mutate(payload, {
         onSuccess: (res) => {
           dialogHandler.handleClose();

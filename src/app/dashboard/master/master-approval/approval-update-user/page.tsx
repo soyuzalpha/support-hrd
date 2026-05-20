@@ -14,17 +14,9 @@ import { useDatatable } from "@/hooks/use-datatable";
 
 const ApprovalUpdateUser = () => {
   const fForm = useForm();
-  const { invalidate } = useAppRefreshQuery();
-
   const dDialog = useDialogModal();
   const dDetail = useDialogModal();
   const dConfirm = useDialogModal();
-
-  const { loadOptions: loadOptionsDivision } = useSelectFetcher({
-    endpoint: "/getDivisions",
-    labelKey: "name_division",
-    valueKey: "id_division",
-  });
 
   const {
     data: company,
@@ -45,13 +37,14 @@ const ApprovalUpdateUser = () => {
     (newState) => {
       setCurrentState(newState);
     },
-    [setCurrentState]
+    [setCurrentState],
   );
 
   // --------------------------------------------------
   // TABLE ITEM ACTION HANDLERS
   // --------------------------------------------------
   const assignFormValues = (row: any) => {
+    fForm.reset();
     Object.entries(row).forEach(([key, value]) => {
       //@ts-ignore
       fForm.setValue(key, value);
@@ -60,58 +53,11 @@ const ApprovalUpdateUser = () => {
 
   const handleClickDetail = (row: any) => {
     assignFormValues(row);
-    // fForm.setValue("status", createInputOptions(toCapitalized(row?.status ?? ""), row?.status));
     dDetail.handleOpen();
   };
 
   const handleClickEdit = (row: any) => {
     if (!row) return;
-
-    // --- mapping request company, position, division
-    // const mappedForm = {
-    //   id_flowapprovalleave: row.id_flowapprovalleave ?? null,
-
-    //   request_company: row.request_company_data
-    //     ? {
-    //         label: row.request_company_data.name_company,
-    //         value: row.request_company_data.id_company,
-    //       }
-    //     : null,
-
-    //   request_position: row.request_position_data
-    //     ? {
-    //         label: row.request_position_data.name_position,
-    //         value: row.request_position_data.id_position,
-    //       }
-    //     : null,
-
-    //   request_division: row.request_division_data
-    //     ? {
-    //         label: row.request_division_data.name_division,
-    //         value: row.request_division_data.id_division,
-    //       }
-    //     : null,
-
-    //   comments: row.comments ?? "",
-
-    //   // --- mapping approver list
-    //   approver:
-    //     row.approver_list?.length > 0
-    //       ? row.approver_list.map((item: any) => ({
-    //           company: item.company ? { label: item.company.name_company, value: item.company.id_company } : null,
-    //           position: item.position ? { label: item.position.name_position, value: item.position.id_position } : null,
-    //           division: item.division ? { label: item.division.name_division, value: item.division.id_division } : null,
-    //         }))
-    //       : [],
-
-    //   // --- status mapping (toggle)
-    //   status: row.request_company_data?.status
-    //     ? {
-    //         label: row.request_company_data.status === "active" ? "Active" : "Inactive",
-    //         value: row.request_company_data.status,
-    //       }
-    //     : { label: "Inactive", value: "inactive" },
-    // };
 
     assignFormValues(row);
     dDialog.handleOpen();
@@ -147,7 +93,7 @@ const ApprovalUpdateUser = () => {
             {company?.data?.data?.map((item, index) => (
               <CardMaster
                 key={index}
-                title={item?.name_typeleave}
+                title={item?.full_name}
                 description={item?.description}
                 item={item}
                 onClickDetail={() => {

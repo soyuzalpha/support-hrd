@@ -79,7 +79,7 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
             type_attachment: item?.type_attachment,
             // item.type_pengeluaran?.value || item.type_pengeluaran?.id_typepengeluaran || item.type_pengeluaran,
           };
-        })
+        }),
       );
 
       const payload = {
@@ -96,8 +96,6 @@ const FormEmployements = ({ dialogHandler }: { dialogHandler: UseDialogModalRetu
         notes: data?.notes,
         attachments: detail,
       };
-
-      console.log({ data, payload });
 
       mutations.mutate(payload, {
         onSuccess: (res) => {

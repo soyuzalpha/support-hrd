@@ -64,7 +64,6 @@ const FormEmployeeWarning = ({ dialogHandler }: { dialogHandler: UseDialogModalR
         action_taken: data?.action_taken,
         warning_level: data?.warning_level?.value ?? null,
       };
-      console.log({ data, payload });
 
       mutation.mutate(payload, {
         onSuccess: (res) => {

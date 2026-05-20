@@ -148,8 +148,6 @@ const MasterEmployee = () => {
     );
   };
 
-  console.log({ values: fForm.getValues() });
-
   return (
     <FormProvider {...fForm}>
       <DataTable

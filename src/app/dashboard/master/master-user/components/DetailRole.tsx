@@ -25,7 +25,9 @@ const DetailRole = ({ dialogHandler }: { dialogHandler: UseDialogModalReturn }) 
 
         <AppGridContainer maxHeight={useScreenHeight() - 300}>
           {idUser ? (
-            <>{/* <StaffProfile idUser={idUser} /> */}</>
+            <>
+              <EmployeeProfile />
+            </>
           ) : (
             <div className="text-sm text-muted-foreground p-4">Loading user data...</div>
           )}
