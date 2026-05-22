@@ -36,6 +36,6 @@ export const roleAccess = {
   Superadmin: "all",
   Admin: "all",
   Manager: "all",
-  Staff: ["dashboard", "leave", "detail"],
+  Staff: ["leave", "detail"],
   "Super Admin": "all",
 } as const;

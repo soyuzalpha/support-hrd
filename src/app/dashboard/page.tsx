@@ -20,8 +20,15 @@ import CardSummaryDashboard, { ListDataRenderer } from "@/components/CardSummary
 import { Building2, Network, Briefcase, MapPin, Building, Users2, UserRound, Clock } from "lucide-react";
 import DashboardGreeting from "@/components/DashboardGreeting";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSession } from "next-auth/react";
+import { useUser } from "@/hooks/useUser";
+import { redirect } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
+import { useEffect } from "react";
 
 const Dashboard = () => {
+  const session = useSession();
+  const user = useUser();
   const { data: usersActiveData, isLoading: isLoadingUsersActive } = useDashboardUsersActive();
   const { data: usersByEducationData, isLoading: isLoadingUsersByEducation } = useDashboardUsersByEducation();
   const { data: usersByCompanyData, isLoading: isLoadingUsersByCompany } = useDashboardUsersByCompany();
@@ -37,6 +44,34 @@ const Dashboard = () => {
   const { data: usersByYearsOfServiceData, isLoading: isLoadingUsersByYearsOfService } =
     useDashboardUsersByYearsOfService();
   const { data: usersNotActiveData, isLoading: isLoadingUsersNotActive } = useDashboardUsersNotActive();
+
+  const isLoading =
+    isLoadingUsersActive ||
+    isLoadingUsersByEducation ||
+    isLoadingUsersByCompany ||
+    isLoadingUsersByCompanyDivision ||
+    isLoadingUsersByCompanyPosition ||
+    isLoadingUsersByPosition ||
+    isLoadingUsersByProvince ||
+    isLoadingUsersByCity ||
+    isLoadingUsersByGender ||
+    isLoadingUsersByAgeGroup ||
+    isLoadingUsersByYearsOfService ||
+    isLoadingUsersNotActive;
+
+  useEffect(() => {
+    if (user?.user?.position?.name_position === "Staff") {
+      return redirect("/dashboard/detail");
+    }
+  }, [user]);
+
+  if (isLoading) {
+    return (
+      <div className="fle items-center justify-center h-screen w-full">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-3 px-3">
