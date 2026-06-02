@@ -49,6 +49,7 @@ interface FieldConfig {
   isDisabled?: boolean;
   create?: boolean;
   onCreate?: (value: string) => Promise<any>;
+  isClearable?: boolean;
 }
 
 interface FormFieldGroupProps {
@@ -147,7 +148,7 @@ export const DynamicFormFields = ({
               }
             },
             "image/jpeg",
-            quality
+            quality,
           );
         };
 
@@ -173,7 +174,7 @@ export const DynamicFormFields = ({
               return compressedFile;
             }
             return file;
-          })
+          }),
         );
 
         // Simulate upload delay
@@ -190,7 +191,7 @@ export const DynamicFormFields = ({
         setUploadingFiles((prev) => ({ ...prev, [fieldName]: false }));
       }
     },
-    [compressImage]
+    [compressImage],
   );
 
   const FileInput = ({ field, fieldCfg, fieldName, inputClassName }: any) => {
@@ -219,7 +220,7 @@ export const DynamicFormFields = ({
           handleFileUpload(droppedFiles, fieldName, field.onChange, isMultiple);
         }
       },
-      [fieldName, field.onChange, isMultiple, handleFileUpload]
+      [fieldName, field.onChange, isMultiple, handleFileUpload],
     );
 
     const handleFileSelect = useCallback(
@@ -229,7 +230,7 @@ export const DynamicFormFields = ({
           handleFileUpload(selectedFiles, fieldName, field.onChange, isMultiple);
         }
       },
-      [fieldName, field.onChange, isMultiple, handleFileUpload]
+      [fieldName, field.onChange, isMultiple, handleFileUpload],
     );
 
     const removeFile = useCallback(
@@ -241,7 +242,7 @@ export const DynamicFormFields = ({
           field.onChange(null);
         }
       },
-      [files, field.onChange, isMultiple]
+      [files, field.onChange, isMultiple],
     );
 
     const formatFileSize = (bytes: number) => {
@@ -259,7 +260,7 @@ export const DynamicFormFields = ({
             "relative border-2 border-dashed rounded-lg p-6 transition-all duration-200 cursor-pointer",
             isDragOver ? "border-primary bg-primary/5" : "border-border hover:border-primary/50",
             inputClassName,
-            isUploading && "pointer-events-none opacity-50"
+            isUploading && "pointer-events-none opacity-50",
           )}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -394,7 +395,7 @@ export const DynamicFormFields = ({
             className={cn(
               "flex-1 gap-3",
               usingPrimary && repeatable ? "pt-8" : "",
-              directionContent === "horizontal" ? "flex flex-row items-center gap-4" : "flex flex-col gap-4"
+              directionContent === "horizontal" ? "flex flex-row items-center gap-4" : "flex flex-col gap-4",
             )}
           >
             {fields.map((fieldCfg) => {
@@ -419,7 +420,7 @@ export const DynamicFormFields = ({
                         isPrimary && usingPrimary
                           ? "border-yellow-300 focus:border-yellow-500 focus:ring-yellow-500 dark:border-yellow-400 dark:focus:border-yellow-400 dark:focus:ring-yellow-400"
                           : "",
-                        fieldCfg.isDisabled ? "opacity-60 cursor-not-allowed bg-gray-100 dark:bg-gray-800" : ""
+                        fieldCfg.isDisabled ? "opacity-60 cursor-not-allowed bg-gray-100 dark:bg-gray-800" : "",
                       );
 
                       // FILE
@@ -507,6 +508,7 @@ export const DynamicFormFields = ({
                             formatOptionLabel={fieldCfg.formatOptionLabel}
                             isDisabled={fieldCfg.isDisabled}
                             create={fieldCfg.create}
+                            isClearable={fieldCfg.isClearable}
                             onCreateOption={async (input: string) => {
                               // jika user pass onCreate handler di field cfg, gunakan itu
                               if (!fieldCfg.onCreate) return null;
@@ -554,7 +556,7 @@ export const DynamicFormFields = ({
                             step="0"
                             className={cn(
                               "bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none",
-                              inputClassName
+                              inputClassName,
                             )}
                             disabled={fieldCfg.isDisabled}
                           />
@@ -598,7 +600,7 @@ export const DynamicFormFields = ({
                     onItemRemove?.(removedItem, itemIndex);
                   }
                 }}
-                className={"w-full lg:w-10 h-10 lg:h-10 p-0"}
+                className={"w-full p-0"}
               >
                 <Trash className="h-4 w-4" />
               </Button>

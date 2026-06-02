@@ -32,6 +32,8 @@ import { AttachmentViewer } from "@/components/AttachmentViewer";
 import { getCityByProvince } from "../../master-zones/api/master-zones-service";
 import { apiPost } from "@/service/service";
 import { DateTimePicker } from "@/components/ui/datepicker";
+import { createMasterEducation } from "../../master-education/school/api/master-education-service";
+import { createMasterEducation as createMasterStudyProgram } from "../../master-education/study-program/api/master-education-service";
 
 const FormEmployee = ({
   dialogHandler,
@@ -71,6 +73,13 @@ const FormEmployee = ({
     endpoint: "/getStudyprograms",
     labelKey: "program_name",
     valueKey: "id_studyprogram",
+  });
+
+  const mutationCreateSchool = useMutation({
+    mutationFn: createMasterEducation,
+  });
+  const mutationCreateStudyProgram = useMutation({
+    mutationFn: createMasterStudyProgram,
   });
 
   const mutationGetCityByProvince = useMutation({
@@ -483,7 +492,7 @@ const FormEmployee = ({
                 control={fForm.control}
                 name="family"
                 repeatable
-                direction={useIsMobile() ? "vertical" : "horizontal"}
+                // direction={useIsMobile() ? "vertical" : "horizontal"}
                 directionContent="vertical"
                 title="Family"
                 titleAdd="Add"
@@ -555,6 +564,15 @@ const FormEmployee = ({
                 fields={[
                   {
                     isAsync: true,
+                    name: "id_degree",
+                    placeholder: "Degree",
+                    inputType: "select",
+                    label: "Degree",
+                    loadOptions: loadOptionsDegree,
+                    isClearable: true,
+                  },
+                  {
+                    isAsync: true,
                     create: true,
                     name: "id_school",
                     placeholder: "School Name",
@@ -562,17 +580,18 @@ const FormEmployee = ({
                     label: "School Name",
                     loadOptions: loadOptionsSchool,
                     onCreate: async (value) => {
-                      const res = await apiPost("/createSchool", { school_name: value });
-                      return { label: res.data?.school_name, value: res.data.id_school };
+                      const res = await mutationCreateSchool.mutateAsync({
+                        school_name: value,
+                      });
+
+                      toastAlert.success(generateSuccessMessage(res));
+
+                      return {
+                        label: res.data?.school_name,
+                        value: res.data?.id_school,
+                      };
                     },
-                  },
-                  {
-                    isAsync: true,
-                    name: "id_degree",
-                    placeholder: "Degree",
-                    inputType: "select",
-                    label: "Degree",
-                    loadOptions: loadOptionsDegree,
+                    isClearable: true,
                   },
                   {
                     isAsync: true,
@@ -580,7 +599,22 @@ const FormEmployee = ({
                     placeholder: "Study Program",
                     inputType: "select",
                     label: "Study Program",
+                    isClearable: true,
+                    create: true,
                     loadOptions: loadOptionsProgramStudy,
+                    onCreate: async (value) => {
+                      const res = await mutationCreateStudyProgram.mutateAsync({
+                        program_name: value,
+                      });
+
+                      console.log({ res });
+                      toastAlert.success(generateSuccessMessage(res));
+
+                      return {
+                        label: res.data?.program_name,
+                        value: res.data?.id_studyprogram,
+                      };
+                    },
                   },
                   { name: "start_date", placeholder: "Start Date", inputType: "date-year", label: "Start Date" },
                   { name: "end_date", placeholder: "End Date", inputType: "date-year", label: "End Date" },
