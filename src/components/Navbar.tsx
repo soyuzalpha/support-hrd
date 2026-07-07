@@ -54,15 +54,15 @@ export function Navbar({ transparent = true, className, ...props }: NavbarProps)
   };
 
   return (
-    <header className={cn("fixed top-0 z-50 w-full transition-all px-1", className)} {...props}>
+    <header className={cn("fixed top-0 z-50 w-full px-1", className)} {...props}>
       <div
         className={cn(
-          "max-w-5xl mx-auto mt-2 flex items-center justify-between px-6 py-2 rounded-full border",
-          "backdrop-blur-sm bg-background/20 shadow",
+          "container mx-auto mt-2 flex items-center justify-between px-6 py-2 rounded-full border",
+          "backdrop-blur-sm bg-background/20",
         )}
       >
         <Link href={"/dashboard"} className="flex items-center gap-2">
-          <Image src={"/TRANSTAMA.png"} width={500} height={500} className="w-32 flex" alt="logo" loading="lazy" />
+          <Image src={"/TRANSTAMA.png"} width={100} height={100} className="w-32 flex" alt="logo" loading="lazy" />
           {/* <h1 className="text-xl font-medium">Transtama</h1> */}
         </Link>
 

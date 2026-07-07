@@ -67,8 +67,8 @@ const Dashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="fle items-center justify-center h-screen w-full">
-        <Spinner />
+      <div className="flex items-center justify-center h-screen w-full">
+        <Spinner className="w-8 h-8" />
       </div>
     );
   }

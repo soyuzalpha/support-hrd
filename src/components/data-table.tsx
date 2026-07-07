@@ -312,7 +312,7 @@ export function DataTable({
       </Show.When>
 
       <Show.When isTrue={tabValue === "table"}>
-        <div className="overflow-hidden rounded-xl duration-300 backdrop-blur-sm border bg-background/20 shadow-md">
+        <div className="overflow-hidden rounded-xl duration-300 backdrop-blur-sm border bg-background/20">
           <Table>
             <TableHeader className="bg-muted sticky top-0 z-10">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -326,7 +326,7 @@ export function DataTable({
                         colSpan={header?.colSpan}
                         className={cn(
                           freeze === "left" && "sticky left-0 z-20 bg-muted",
-                          freeze === "right" && "sticky right-0 z-20 bg-muted shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.1)]",
+                          freeze === "right" && "sticky right-0 z-20 bg-muted",
                         )}
                         style={freeze === "left" ? { left: 0 } : freeze === "right" ? { right: 0 } : undefined}
                       >
@@ -352,8 +352,7 @@ export function DataTable({
                           className={cn(
                             "px-4 py-2",
                             freeze === "left" && "sticky left-0 z-10 bg-background",
-                            freeze === "right" &&
-                              "sticky right-0 z-10 bg-background shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.1)]",
+                            freeze === "right" && "sticky right-0 z-10 bg-background",
                           )}
                           style={freeze === "left" ? { left: 0 } : freeze === "right" ? { right: 0 } : undefined}
                         >
@@ -382,8 +381,7 @@ export function DataTable({
                             className={cn(
                               "px-4 py-2 text-left",
                               freeze === "left" && "sticky left-0 z-10 bg-background",
-                              freeze === "right" &&
-                                "sticky right-0 z-10 bg-background shadow-[-4px_0_8px_-2px_rgba(0,0,0,0.1)]",
+                              freeze === "right" && "sticky right-0 z-10 bg-background ",
                             )}
                             style={freeze === "left" ? { left: 0 } : freeze === "right" ? { right: 0 } : undefined}
                           >

@@ -21,9 +21,23 @@ export function DockMenu({ onItemClick }: { onItemClick?: (item: string) => void
     setIsReady(true);
   }, []);
 
-  const role = user?.position?.name_position ?? "staff";
+  // const role = user?.position?.name_position ?? "staff";
+  // const division = user?.division?.name_division;
+  // const allowedMenu =
+  //   roleAccess[role] === "all" ? menuItems : menuItems.filter((menu) => roleAccess[role]?.includes(menu.id));
+
+  const role = user?.position?.name_position;
+  const division = user?.division?.name_division;
+
+  const isSuperAdmin = role === "Super Admin";
+  const isHRD = division === "HRD";
+  const isManager = role === "Manager";
+  const isStaff = role === "Staff";
+
   const allowedMenu =
-    roleAccess[role] === "all" ? menuItems : menuItems.filter((menu) => roleAccess[role]?.includes(menu.id));
+    isSuperAdmin || (isHRD && (isManager || isStaff)) ? menuItems : menuItems.filter((menu) => menu.id === "detail");
+
+  console.log({ user });
 
   // ⛔ FIX: Prevent SSR mismatch
   if (!isReady) return null;

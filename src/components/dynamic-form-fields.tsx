@@ -507,6 +507,7 @@ export const DynamicFormFields = ({
                             className="w-full"
                             formatOptionLabel={fieldCfg.formatOptionLabel}
                             isDisabled={fieldCfg.isDisabled}
+                            //@ts-ignore
                             create={fieldCfg.create}
                             isClearable={fieldCfg.isClearable}
                             onCreateOption={async (input: string) => {
