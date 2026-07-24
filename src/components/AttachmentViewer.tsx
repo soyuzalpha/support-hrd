@@ -19,6 +19,8 @@ interface Attachment {
   created_at: string;
   deleted_at: string | null;
   deleted_by_name: string | null;
+  document_type?: string;
+  type_attachment?: string;
 }
 
 interface AttachmentViewerProps {
@@ -110,6 +112,11 @@ export function AttachmentViewer({ attachments, title = "Attachments" }: Attachm
 
                   <div className="flex-1 min-w-0">
                     <h4 className="font-medium truncate text-xs">{attachment.file_name}</h4>
+                    {(attachment.document_type || attachment.type_attachment) && (
+                      <p className="text-xs text-blue-600 font-medium mt-1">
+                        {attachment.document_type || attachment.type_attachment}
+                      </p>
+                    )}
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mt-1">
                       <span className="flex items-center gap-1">
                         <User className="h-3 w-3" />

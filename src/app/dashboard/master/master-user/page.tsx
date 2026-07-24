@@ -2,7 +2,7 @@
 
 import { useDatatable } from "@/hooks/use-datatable";
 import { useMutation } from "@tanstack/react-query";
-import React from "react";
+import React, { useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DataTable } from "@/components/data-table";
 import { useDialogModal } from "@/hooks/use-dialog-modal";
@@ -22,6 +22,7 @@ import { exportToCSV } from "@/utils/export-csv";
 import DialogPreviewCv from "@/components/DialogPreviewCv";
 import FormEmployee from "../master-employee/components/FormRole";
 import FormEmployements from "../master-employments/components/FormEmployments";
+import { apiGet } from "@/service/service";
 
 const MasterUser = () => {
   const { invalidate } = useAppRefreshQuery();
@@ -75,6 +76,45 @@ const MasterUser = () => {
   const mutationGetCityByProvince = useMutation({
     mutationFn: getCityByProvince,
   });
+
+  const loadOptionsCity = useCallback(
+    async (inputValue: string, formControl?: any) => {
+      try {
+        let idProvince = null;
+        
+        if (formControl?.getValues) {
+          const provinceValue = formControl.getValues("id_province");
+          idProvince = provinceValue?.value || provinceValue;
+        }
+
+        const params: any = {
+          limit: 10,
+        };
+
+        if (idProvince) {
+          params.id_province = idProvince;
+        }
+
+        if (inputValue) {
+          params.searchKey = inputValue;
+        }
+
+        console.log("🔍 loadOptionsCity params:", params);
+
+        const res = await apiGet("/getCities", { params });
+        const data = Array.isArray(res.data) ? res.data : Array.isArray(res.data?.data) ? res.data.data : [];
+
+        return data.map((item: any) => ({
+          label: item.city_name,
+          value: item.id_city,
+        }));
+      } catch (error) {
+        console.error("Error loading cities:", error);
+        return [];
+      }
+    },
+    []
+  );
 
   const {
     data: company,
@@ -333,24 +373,14 @@ const MasterUser = () => {
       label: "Province",
       placeholder: "Search Province...",
       loadOptions: loadOptionsProvince,
-      onValueChange: (value) => {
-        fForm.setValue("id_city", null);
-        mutationGetCityByProvince.reset();
-        mutationGetCityByProvince.mutate({ id_province: value?.value, onEmployeeAddress: 1 });
-      },
     },
     {
-      type: "select",
+      type: "async-select",
       name: "id_city",
       label: "City",
-      // options: [],
-      options: mutationGetCityByProvince.data
-        ? mutationGetCityByProvince?.data?.data?.data?.map((city: any) => ({
-            label: city.city_name,
-            value: city.id_city,
-          }))
-        : [],
+      loadOptions: loadOptionsCity,
       placeholder: "Search City...",
+      dependsOn: "id_province",
     },
     {
       type: "select",

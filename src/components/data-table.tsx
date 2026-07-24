@@ -131,7 +131,7 @@ export function DataTable({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     manualPagination: true,
-    pageCount: Math.ceil((currentState.total || 0) / pagination.pageSize),
+    pageCount: Math.ceil((count || 0) / pagination.pageSize),
   });
 
   React.useEffect(() => {

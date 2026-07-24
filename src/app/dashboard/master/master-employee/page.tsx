@@ -201,7 +201,7 @@ const MasterEmployee = () => {
         }
       />
 
-      <FormRole dialogHandler={dDialog} handleRefetchEmployee={refetch} isDisabledInputUser={false} />
+      <FormRole dialogHandler={dDialog} handleRefetchEmployee={refetch} isDisabledInputUser={true} />
       <DetailRole dialogHandler={dDetail} />
 
       <ConfirmationDialog

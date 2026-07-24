@@ -49,8 +49,8 @@ export function DateTimePicker({
   const initialDate = toDate(date);
 
   const currentYear = new Date().getFullYear();
-  const fromYear = yearRange?.from ?? currentYear - 50;
-  const toYear = yearRange?.to ?? currentYear + 10;
+  const fromYear = yearRange?.from ?? 1900;
+  const toYear = yearRange?.to ?? 2050;
 
   const [timeValue, setTimeValue] = React.useState(() => {
     if (initialDate && includeTime) {

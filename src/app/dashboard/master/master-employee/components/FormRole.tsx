@@ -28,9 +28,15 @@ import { useSelectFetcher } from "@/hooks/use-select-fetcher";
 import { fileToBase64, normalizeFile } from "@/utils/file";
 import { formatDate, toISOStringFormat } from "@/utils/dates";
 import Show from "@/components/show";
+import { useCallback } from "react";
+
+const RequiredLabel = ({ children }: { children: React.ReactNode }) => (
+  <FormLabel>
+    {children} <span className="text-red-500">*</span>
+  </FormLabel>
+);
 import { AttachmentViewer } from "@/components/AttachmentViewer";
-import { getCityByProvince } from "../../master-zones/api/master-zones-service";
-import { apiPost } from "@/service/service";
+import { apiPost, apiGet } from "@/service/service";
 import { DateTimePicker } from "@/components/ui/datepicker";
 import { createMasterEducation } from "../../master-education/school/api/master-education-service";
 import { createMasterEducation as createMasterStudyProgram } from "../../master-education/study-program/api/master-education-service";
@@ -38,7 +44,7 @@ import { createMasterEducation as createMasterStudyProgram } from "../../master-
 const FormEmployee = ({
   dialogHandler,
   handleRefetchEmployee,
-  isDisabledInputUser = false,
+  isDisabledInputUser = true,
 }: {
   dialogHandler: UseDialogModalReturn;
   handleRefetchEmployee: any;
@@ -59,6 +65,36 @@ const FormEmployee = ({
     labelKey: "province_name",
     valueKey: "id_province",
   });
+
+  const loadOptionsCity = useCallback(
+    async (inputValue: string) => {
+      const idProvince = fForm.getValues("id_province")?.value;
+      if (!idProvince) return [];
+
+      try {
+        const params: any = {
+          id_province: idProvince,
+          limit: inputValue ? 100 : 10,
+        };
+
+        if (inputValue) {
+          params.searchKey = inputValue;
+        }
+
+        const res = await apiGet("/getCities", { params });
+        const data = Array.isArray(res.data) ? res.data : Array.isArray(res.data?.data) ? res.data.data : [];
+
+        return data.map((item: any) => ({
+          label: item.city_name,
+          value: item.id_city,
+        }));
+      } catch (error) {
+        console.error("Error loading cities:", error);
+        return [];
+      }
+    },
+    [fForm]
+  );
   const { loadOptions: loadOptionsDegree } = useSelectFetcher({
     endpoint: "/getDegrees",
     labelKey: "name_degree",
@@ -80,10 +116,6 @@ const FormEmployee = ({
   });
   const mutationCreateStudyProgram = useMutation({
     mutationFn: createMasterStudyProgram,
-  });
-
-  const mutationGetCityByProvince = useMutation({
-    mutationFn: getCityByProvince,
   });
 
   const mutation = useMutation({
@@ -197,7 +229,7 @@ const FormEmployee = ({
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                 {/* USER */}
                 <FormItem>
-                  <FormLabel>User</FormLabel>
+                  <RequiredLabel>User</RequiredLabel>
                   <FormControl>
                     <Controller
                       control={fForm.control}
@@ -210,7 +242,10 @@ const FormEmployee = ({
                           value={field.value}
                           aria-invalid={!!fForm.formState.errors.id_user}
                           onChange={(value) => field.onChange(value)}
-                          isDisabled={isDisabledInputUser}
+                          isDisabled={true}
+                          isSearchable={false}
+                          isClearable={false}
+                          menuIsOpen={false}
                         />
                       )}
                     />
@@ -221,7 +256,7 @@ const FormEmployee = ({
 
                 {/* NIK */}
                 <FormItem>
-                  <FormLabel>NIK</FormLabel>
+                  <RequiredLabel>NIK</RequiredLabel>
                   <FormControl>
                     <Input {...fForm.register("nik")} placeholder="1234567890123456" />
                   </FormControl>
@@ -252,7 +287,7 @@ const FormEmployee = ({
 
                 {/* FULL NAME */}
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <RequiredLabel>Full Name</RequiredLabel>
                   <FormControl>
                     <Input {...fForm.register("full_name")} placeholder="Norman Ardian" />
                   </FormControl>
@@ -268,15 +303,15 @@ const FormEmployee = ({
 
                 {/* PERSONAL EMAIL */}
                 <FormItem>
-                  <FormLabel>Personal Email</FormLabel>
+                  <RequiredLabel>Personal Email</RequiredLabel>
                   <FormControl>
-                    <Input {...fForm.register("personal_email")} placeholder="email@example.com" />
+                    <Input {...fForm.register("personal_email")} placeholder="norman@example.com" type="email" />
                   </FormControl>
                 </FormItem>
 
                 {/* BIRTH PLACE */}
                 <FormItem>
-                  <FormLabel>Birth Place</FormLabel>
+                  <RequiredLabel>Birth Place</RequiredLabel>
                   <FormControl>
                     <Input {...fForm.register("birth_place")} placeholder="Jakarta" />
                   </FormControl>
@@ -284,7 +319,7 @@ const FormEmployee = ({
 
                 {/* BIRTH DATE */}
                 <FormItem>
-                  <FormLabel>Birth Date</FormLabel>
+                  <RequiredLabel>Birth Date</RequiredLabel>
                   <FormControl>
                     <Controller
                       name="birth_date"
@@ -308,7 +343,7 @@ const FormEmployee = ({
 
                 {/* GENDER */}
                 <FormItem>
-                  <FormLabel>Gender</FormLabel>
+                  <RequiredLabel>Gender</RequiredLabel>
                   <FormControl>
                     <Controller
                       name="gender"
@@ -328,7 +363,7 @@ const FormEmployee = ({
 
                 {/* RELIGION */}
                 <FormItem>
-                  <FormLabel>Religion</FormLabel>
+                  <RequiredLabel>Religion</RequiredLabel>
                   <FormControl>
                     <Controller
                       name="religion"
@@ -351,7 +386,7 @@ const FormEmployee = ({
 
                 {/* MARITAL STATUS */}
                 <FormItem>
-                  <FormLabel>Marital Status</FormLabel>
+                  <RequiredLabel>Marital Status</RequiredLabel>
                   <FormControl>
                     <Controller
                       control={fForm.control}
@@ -361,6 +396,8 @@ const FormEmployee = ({
                           options={[
                             { label: "Single", value: "single" },
                             { label: "Married", value: "married" },
+                            { label: "Divorced", value: "divorced" },
+                            { label: "Widowed", value: "widowed" },
                           ]}
                           value={field.value}
                           onChange={(value) => {
@@ -381,7 +418,7 @@ const FormEmployee = ({
                       name="blood_type"
                       render={({ field }) => (
                         <SelectOptions
-                          options={["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"].map((i) => ({
+                          options={["-", "O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"].map((i) => ({
                             label: i,
                             value: i,
                           }))}
@@ -394,7 +431,7 @@ const FormEmployee = ({
                 </FormItem>
 
                 <FormItem>
-                  <FormLabel>Province</FormLabel>
+                  <RequiredLabel>Province</RequiredLabel>
                   <FormControl>
                     <Controller
                       control={fForm.control}
@@ -406,13 +443,7 @@ const FormEmployee = ({
                           value={field.value}
                           onChange={(value) => {
                             field.onChange(value);
-
-                            if (value?.value) {
-                              mutationGetCityByProvince.mutate({ id_province: value.value });
-
-                              // Reset city karena provinsi berubah
-                              fForm.setValue("city_address", null);
-                            }
+                            fForm.setValue("id_city", null);
                           }}
                         />
                       )}
@@ -421,23 +452,21 @@ const FormEmployee = ({
                 </FormItem>
 
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <RequiredLabel>City</RequiredLabel>
                   <FormControl>
                     <Controller
                       control={fForm.control}
                       name="id_city"
                       render={({ field }) => (
                         <SelectOptions
-                          options={
-                            mutationGetCityByProvince?.data?.data?.data?.map((c: any) => ({
-                              label: c.city_name,
-                              value: c.id_city,
-                            })) ?? []
-                          }
-                          isLoading={mutationGetCityByProvince.isPending}
-                          placeholder="Select city"
+                          isAsync
+                          key={fForm.watch("id_province")?.value}
+                          loadOptions={loadOptionsCity}
+                          defaultOptions={true}
+                          placeholder="Search city"
                           value={field.value}
                           onChange={field.onChange}
+                          isDisabled={!fForm.watch("id_province")}
                         />
                       )}
                     />
@@ -445,7 +474,7 @@ const FormEmployee = ({
                 </FormItem>
 
                 <FormItem>
-                  <FormLabel>Postal Code</FormLabel>
+                  <RequiredLabel>Postal Code</RequiredLabel>
                   <FormControl>
                     <Controller
                       control={fForm.control}
@@ -457,7 +486,7 @@ const FormEmployee = ({
 
                 {/* ADDRESS */}
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <RequiredLabel>Address</RequiredLabel>
                   <FormControl>
                     <Controller
                       control={fForm.control}
@@ -475,7 +504,11 @@ const FormEmployee = ({
                 repeatable
                 // direction={useIsMobile() ? "vertical" : "horizontal"}
                 directionContent="vertical"
-                title="Contacts"
+                title={
+                  <span>
+                    Contacts <span className="text-red-500">*</span>
+                  </span>
+                }
                 titleAdd="Add contact"
                 fields={[
                   {
@@ -494,7 +527,11 @@ const FormEmployee = ({
                 repeatable
                 // direction={useIsMobile() ? "vertical" : "horizontal"}
                 directionContent="vertical"
-                title="Family"
+                title={
+                  <span>
+                    Family <span className="text-red-500">*</span>
+                  </span>
+                }
                 titleAdd="Add"
                 fields={[
                   { name: "name_family", placeholder: "Name", inputType: "text", label: "Name" },
@@ -559,7 +596,11 @@ const FormEmployee = ({
                 repeatable
                 direction={"vertical"}
                 directionContent="vertical"
-                title="Education Histories"
+                title={
+                  <span>
+                    Education Histories <span className="text-red-500">*</span>
+                  </span>
+                }
                 titleAdd="Add"
                 fields={[
                   {

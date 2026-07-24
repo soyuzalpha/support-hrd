@@ -15,7 +15,7 @@ interface SelectOptionsProps<
   Group extends GroupBase<Option> = GroupBase<Option>,
 > extends SelectProps<Option, IsMulti, Group> {
   isAsync?: boolean;
-  loadOptions?: (inputValue: string) => Promise<Option[]>;
+  loadOptions?: (inputValue: string, currentValue?: Option | Option[] | null) => Promise<Option[]>;
   debounceMs?: number;
   defaultOptions?: boolean | Option[];
 }
@@ -28,7 +28,8 @@ export function SelectOptions<
   isAsync,
   loadOptions,
   debounceMs = 500,
-  defaultOptions = false,
+  defaultOptions = true,
+  isDisabled,
   ...props
 }: SelectOptionsProps<Option, IsMulti, Group>) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -46,14 +47,15 @@ export function SelectOptions<
 
       timeoutRef.current = setTimeout(async () => {
         try {
-          const result = await loadOptions(inputValue);
+          const currentValue = props.value as Option | Option[] | null | undefined;
+          const result = await loadOptions(inputValue, currentValue);
           callback(result ?? []);
         } catch {
           callback([]);
         }
       }, debounceMs);
     },
-    [loadOptions, debounceMs],
+    [loadOptions, debounceMs, props.value],
   );
 
   const customStyles = {
@@ -126,6 +128,7 @@ export function SelectOptions<
       <AsyncSelect
         loadOptions={debouncedLoadOptions}
         defaultOptions={defaultOptions}
+        isDisabled={isDisabled}
         menuShouldBlockScroll={true}
         // menuPortalTarget={document.body}
         menuPortalTarget={typeof window !== "undefined" ? document.body : null}
@@ -153,6 +156,7 @@ export function SelectOptions<
 
   return (
     <ReactSelect
+      isDisabled={isDisabled}
       classNames={classNames}
       menuPortalTarget={typeof window !== "undefined" ? document.body : null}
       menuPosition="fixed"

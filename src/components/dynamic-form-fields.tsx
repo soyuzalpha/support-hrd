@@ -55,7 +55,7 @@ interface FieldConfig {
 interface FormFieldGroupProps {
   control: Control<any>;
   name: string;
-  title?: string;
+  title?: React.ReactNode;
   fields: FieldConfig[];
   repeatable?: boolean;
   direction?: DirectionType;

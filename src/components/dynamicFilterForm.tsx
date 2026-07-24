@@ -1,6 +1,7 @@
 "use client";
 
-import { Controller, useForm } from "react-hook-form";
+import React from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,12 +29,57 @@ export type FilterField =
     })
   | (BaseField & {
       type: "async-select";
-      loadOptions: (input: string) => Promise<{ label: string; value: string | number }[]>;
+      loadOptions: (input: string, formControl?: any) => Promise<{ label: string; value: string | number }[]>;
       onValueChange?: (value: any) => void;
+      dependsOn?: string;
     })
   | (BaseField & {
       type: "date";
-    });
+     });
+
+const AsyncSelectField = ({ field, control, getValues }: { field: FilterField & { type: "async-select" }; control: any; getValues: any }) => {
+  const dependencyValue = field.dependsOn ? useWatch({ control, name: field.dependsOn }) : undefined;
+
+  const customLoadOptions = React.useCallback(
+    (input: string) => {
+      return field.loadOptions(input, { getValues });
+    },
+    [field.loadOptions, getValues, dependencyValue?.value]
+  );
+
+  return (
+    <div className="space-y-1">
+      <label className="text-xs font-medium">{field.label}</label>
+      <Controller
+        control={control}
+        name={field.name}
+        render={({ field: f }) => {
+          React.useEffect(() => {
+            if (field.dependsOn && dependencyValue !== undefined) {
+              f.onChange(null);
+            }
+          }, [dependencyValue?.value]);
+
+          return (
+            <SelectOptions
+              isAsync
+              key={`${field.name}-${dependencyValue?.value || 'no-dep'}`}
+              loadOptions={customLoadOptions}
+              defaultOptions={true}
+              placeholder={field.placeholder}
+              value={f.value}
+              onChange={(value) => {
+                f.onChange(value);
+                field.onValueChange?.(value);
+              }}
+              isDisabled={field.dependsOn && !dependencyValue?.value}
+            />
+          );
+        }}
+      />
+    </div>
+  );
+};
 
 export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[]; onSubmit: (v: any) => void }) {
   const groupedFields = fields.reduce((acc, field) => {
@@ -48,7 +94,7 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
     return acc;
   }, {} as Record<string, any>);
 
-  const { register, handleSubmit, control, reset } = useForm({
+  const { register, handleSubmit, control, reset, getValues } = useForm({
     defaultValues,
   });
 
@@ -108,28 +154,9 @@ export function DynamicFilterForm({ fields, onSubmit }: { fields: FilterField[];
                             </div>
                           );
 
-                        case "async-select":
-                          return (
-                            <div key={field.name} className="space-y-1">
-                              <label className="text-xs font-medium">{field.label}</label>
-                              <Controller
-                                control={control}
-                                name={field.name}
-                                render={({ field: f }) => (
-                                  <SelectOptions
-                                    isAsync
-                                    loadOptions={field.loadOptions}
-                                    placeholder={field.placeholder}
-                                    value={f.value}
-                                    onChange={(value) => {
-                                      f.onChange(value);
-                                      field.onValueChange?.(value);
-                                    }}
-                                  />
-                                )}
-                              />
-                            </div>
-                          );
+                        case "async-select": {
+                          return <AsyncSelectField key={field.name} field={field} control={control} getValues={getValues} />;
+                        }
 
                         case "date":
                           return (
