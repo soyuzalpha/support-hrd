@@ -72,7 +72,7 @@ const AsyncSelectField = ({ field, control, getValues }: { field: FilterField & 
                 f.onChange(value);
                 field.onValueChange?.(value);
               }}
-              isDisabled={field.dependsOn && !dependencyValue?.value}
+              isDisabled={!!(field.dependsOn && !dependencyValue?.value)}
             />
           );
         }}
